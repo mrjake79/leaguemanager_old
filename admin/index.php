@@ -10,7 +10,7 @@ if ( isset($_POST['addLeague']) && !isset($_POST['deleteit']) ) {
 }
 ?>
 <div class="wrap" style="margin-bottom: 1em;">
-	<h2><?php _e( 'Leaguemanager', 'leaguemanager' ) ?></h2>
+	<h2><?php _e( 'LeagueManager', 'leaguemanager' ) ?></h2>
 	
 	<div id="col-container">
 
