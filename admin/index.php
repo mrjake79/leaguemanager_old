@@ -1,7 +1,7 @@
 <?php
 if ( isset($_POST['addLeague']) && !isset($_POST['deleteit']) ) {
 	check_admin_referer('leaguemanager_add-league');
-	$this->addLeague( $_POST['league_title'] );
+	$this->addLeague( $_POST['league_title'], $_POST['league_sport'] );
 	$this->printMessage();
 } elseif ( isset($_POST['doaction']) && $_POST['action'] == 'delete' ) {
 	check_admin_referer('leagues-bulk');
@@ -72,7 +72,18 @@ if ( isset($_POST['addLeague']) && !isset($_POST['deleteit']) ) {
 		<h3><?php _e( 'Add League', 'leaguemanager' ) ?></h3>
 		<table class="form-table">
 		<tr valign="top">
-			<th scope="row"><label for="league_title"><?php _e( 'League', 'leaguemanager' ) ?></label></th><td><input type="text" name="league_title" id="league_title" value="" size="30" style="margin-bottom: 1em;" /></td>
+            <th scope="row"><label for="league_title"><?php _e( 'League', 'leaguemanager' ) ?></label></th><td><input type="text" name="league_title" id="league_title" value="" size="30" style="margin-bottom: 1em;" /></td>
+        </tr>
+        <tr valign='top'>
+            <th scope="row"><label for="league_sport"><?php _e( 'Sport', 'leaguemanager' ) ?></label></th>
+            <td>
+                <select size="1" name="league_sport" id="league_sport">
+                    <?php foreach ( $leaguemanager->getLeagueTypes() AS $id => $title ) : ?>
+                        <option value="<?php echo $id ?>"<?php if ( $id == $league->sport ) echo ' selected="selected"' ?>><?php echo $title ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <span class="setting-description"><?php printf( __( "Check the <a href='%s'>Documentation</a> for details", 'leaguemanager'), admin_url() . 'admin.php?page=leaguemanager-doc' ) ?></span>
+            </td>
 		</tr>
 		</table>
 		<p class="submit"><input type="submit" name="addLeague" value="<?php _e( 'Add League', 'leaguemanager' ) ?> &raquo;" class="button button-primary" /></p>
