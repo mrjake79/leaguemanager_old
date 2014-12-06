@@ -491,8 +491,10 @@ class LeagueManagerAdminPanel extends LeagueManager
 			$points['plus'] = $this->calculatePoints( $team_id, 'plus' );
 			$points['minus'] = $this->calculatePoints( $team_id, 'minus' );
 
-			$points2 = array( 'plus' => 0, 'minus' => 0 );
-			$points2 = apply_filters( 'team_points2_'.$league->sport, $team_id );
+            $points2 = array( 'plus' => 0, 'minus' => 0 );
+            if(has_filter('team_points2_'.$league->sport)) {
+                $points2 = apply_filters( 'team_points2_'.$league->sport, $team_id );
+            }
 
 			$diff = $points2['plus'] - $points2['minus'];
 
