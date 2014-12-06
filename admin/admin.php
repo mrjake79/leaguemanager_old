@@ -568,11 +568,14 @@ class LeagueManagerAdminPanel extends LeagueManager
 	 * @param string $title
 	 * @return void
 	 */
-	function addLeague( $title )
+	function addLeague( $title, $sport = null )
 	{
 		global $wpdb;
 
 		$settings = array( 'upload_dir' => 'wp-content/uploads/leaguemanager', 'standings' => array('pld' => 1, 'won' => 1, 'tie' => 1, 'lost' => 1) );
+        if($sport) {
+            $settings['sport'] = $sport;
+        }
 		$wpdb->query( $wpdb->prepare ( "INSERT INTO {$wpdb->leaguemanager} (title, settings, seasons) VALUES ('%s', '%s', '%s')", $title, maybe_serialize($settings), '') );
 		parent::setMessage( __('League added', 'leaguemanager') );
 	}
