@@ -9,7 +9,7 @@ else :
 				$add_teams = isset($_POST['no_add_teams']) ? false : true;
 				$this->saveSeason( htmlspecialchars($_POST['season']), intval($_POST['num_match_days']), $add_teams );
 			} else {
-				$this->saveSeason( htmlspecialchars($_POST['season']), intval($_POST['num_match_days']), false, $_POST['season_id'] );
+				$this->saveSeason( htmlspecialchars($_POST['season']), intval($_POST['num_match_days']), false, htmlspecialchars($_POST['season_id']) );
 			}
 		} else {
 			$leaguemanager->setMessage( __( 'Season was empty', 'leaguemanager' ), true );
