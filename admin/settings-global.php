@@ -31,7 +31,21 @@ else :
 	</tr>
 	<tr valign='top'>
 		<th scope='row'><label for='color_rows_relegation'><?php _e( 'Teams Relegation', 'leaguemanager' ) ?></label></th><td><input type='text' name='color_rows_relegation' id='color_rows_relegation' value='<?php echo ( isset($options['colors']['rows']['relegation']) ? ($options['colors']['rows']['relegation']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["colors"].color_rows_relegation,"pick_color_rows_relegation"); return false;' id='pick_color_rows_relegation'>&#160;&#160;&#160;</a></td>
-	</tr>
+    </tr>
+    <tr valign='top'>
+        <th scope='row'><label for='hide_admin_widgets'><?php _e( 'Hide Admin Widgets', 'leaguemanager') ?></label></th>
+        <td>
+            <label>
+                <input type='radio' name='hide_admin_widgets' id='hide_admin_widgets_no' value='0'
+                <?php if(!$options['hide_admin_widgets']) print 'checked="checked"'; ?> />
+                No
+            </label>
+            <label>
+                <input type='radio' name='hide_admin_widgets' id='hide_admin_widgets_yes' value='1'
+                <?php if($options['hide_admin_widgets']) print 'checked="checked"'; ?> />
+                Yes
+            </label>
+        </td>
 	</table>
 	
 	<input type='hidden' name='page_options' value='color_headers,color_rows,color_rows_alt,color_rows_ascend,color_rows_descend,color_rows_relegation' />
