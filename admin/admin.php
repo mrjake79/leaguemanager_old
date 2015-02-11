@@ -17,12 +17,16 @@ class LeagueManagerAdminPanel extends LeagueManager
 	 */
 	function __construct()
 	{
-		require_once( ABSPATH . 'wp-admin/includes/template.php' );
+        require_once( ABSPATH . 'wp-admin/includes/template.php' );
+
+        // Get options
+        $options = get_option('leaguemanager');
 
 		add_action('admin_enqueue_scripts', array(&$this, 'loadScripts') );
 		add_action('admin_enqueue_scripts', array(&$this, 'loadStyles') );
-		
-		add_action('wp_dashboard_setup', array( $this, 'register_admin_widgets'));
+        if(!isset($options['hide_admin_widgets']) || !$options['hide_admin_widgets']) {
+            add_action('wp_dashboard_setup', array( $this, 'register_admin_widgets'));
+        }
 		add_action( 'admin_menu', array(&$this, 'menu') );
 
 		// Add meta box to post screen
@@ -1164,7 +1168,8 @@ class LeagueManagerAdminPanel extends LeagueManager
 		if ( isset($_POST['updateLeagueManager']) ) {
 			check_admin_referer('leaguemanager_manage-global-league-options');
 			$options['colors']['headers'] = htmlspecialchars($_POST['color_headers']);
-			$options['colors']['rows'] = array( 'alternate' => htmlspecialchars($_POST['color_rows_alt']), 'main' => htmlspecialchars($_POST['color_rows']), 'ascend' => htmlspecialchars($_POST['color_rows_ascend']), 'descend' => htmlspecialchars($_POST['color_rows_descend']), 'relegation' => htmlspecialchars($_POST['color_rows_relegation']) );
+            $options['colors']['rows'] = array( 'alternate' => htmlspecialchars($_POST['color_rows_alt']), 'main' => htmlspecialchars($_POST['color_rows']), 'ascend' => htmlspecialchars($_POST['color_rows_ascend']), 'descend' => htmlspecialchars($_POST['color_rows_descend']), 'relegation' => htmlspecialchars($_POST['color_rows_relegation']) );
+            $options['hide_admin_widgets'] = (isset($_POST['hide_admin_widgets']) ? ((bool) $_POST['hide_admin_widgets']) : false);
 
 			update_option( 'leaguemanager', $options );
 			parent::setMessage(__( 'Settings saved', 'leaguemanager' ));
