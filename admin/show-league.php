@@ -18,7 +18,6 @@ if ( isset($_POST['updateLeague']) && !isset($_POST['doaction']) && !isset($_POS
 		}
 	} elseif ( 'match' == $_POST['updateLeague'] ) {
 		check_admin_referer('leaguemanager_manage-matches');
-//print_r($_POST);
 		$group = isset($_POST['group']) ? htmlspecialchars($_POST['group']) : '';
 		if ( 'add' == $_POST['mode'] ) {
 			$num_matches = count($_POST['match']);
@@ -137,6 +136,17 @@ if ( $league_mode != 'championship' ) {
 	$teams = $leaguemanager->getTeams( $team_search );
 	$matches = $leaguemanager->getMatches( $match_search );
 }
+
+$matches_file = apply_filters('leaguemanager_matches_file_'.$league->sport, $league);
+if($matches_file == null)
+{
+    $matches_file = apply_filters('leaguemanager_matches_file');
+    if($matches_file == null)
+    {
+        $matches_file = 'matches.php';
+    }
+}
+
 ?>
 <div class="wrap">
 	<p class="leaguemanager_breadcrumb"><a href="admin.php?page=leaguemanager"><?php _e( 'LeagueManager', 'leaguemanager' ) ?></a> &raquo; <?php echo $league->title ?></p>
@@ -177,8 +187,8 @@ if ( $league_mode != 'championship' ) {
 		<h3 style="clear: both;"><?php _e( 'Table', 'leaguemanager' ) ?></h3>
 		<?php include_once('standings.php'); ?>
 
-		<br style="clear: both;" />
-		<h3><?php _e( 'Match Plan','leaguemanager' ) ?></h3>
-		<?php include('matches.php'); ?>
+        <br style="clear: both;" />
+        <h3><?php _e( 'Match Plan','leaguemanager' ) ?></h3>
+        <?php include($matches_file); ?>
 	<?php endif; ?>
 </div>
