@@ -6,7 +6,7 @@ if ( isset($_POST['updateLeague']) && !isset($_POST['doaction']) && !isset($_POS
         $_POST = stripslashes_deep($_POST);
 
 		$home = isset( $_POST['home'] ) ? 1 : 0;
-		$custom = !isset($_POST['custom']) ? array() : htmlspecialchars($_POST['custom']);
+		$custom = !isset($_POST['custom']) ? array() : $_POST['custom'];
 		$roster = ( isset($_POST['roster_group']) && isset($_POST['roster']) ) ? array('id' => intval($_POST['roster']), 'cat_id' => intval($_POST['roster_group'])) : array( 'id' => '', 'cat_id' => false );
 		$group = isset($_POST['group']) ? htmlspecialchars($_POST['group']) : '';
 		if ( '' == $_POST['team_id'] ) {
