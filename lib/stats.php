@@ -244,6 +244,13 @@ class LeagueManagerStats extends LeagueManager
 
 		$stats = $wpdb->get_results( $sql );
 
+		$i = 0;
+		foreach ($stats AS $stat) {
+			$stats[$i]->name = stripslashes($stat->name);
+			$stats[$i]->fields = stripslashes_deep(maybe_unserialize($stat->fields));
+			$i++;
+		}
+		
 		if ( $id )
 			return $stats[0];
 
@@ -336,7 +343,7 @@ class LeagueManagerStats extends LeagueManager
 	 */
 	function addStatsField( $number = false, $name = false, $type = false, $ajax = true )
 	{
-		$num = !$ajax ? $number : intval($_POST['number']);
+		$num = !$ajax ? $number : time();
 
 		$types = array('text' => __( 'Text', 'leaguemanager' ), 'roster' => __( 'Team Roster', 'leaguemanager' ) );
 		$html = '';
@@ -375,8 +382,8 @@ class LeagueManagerStats extends LeagueManager
 	{
 		global $leaguemanager, $lmBridge;
 
-		$i = intval($_POST['number']);
-		$parent_id = intval($_POST['parent_id']);
+		$i = time();
+		$parent_id = $_POST['parent_id'];
 		$match_id = (int)$_POST['match_id'];
 		$stat_id = (int)$_POST['stat_id'];
 
@@ -385,7 +392,8 @@ class LeagueManagerStats extends LeagueManager
 
 		$roster = array();
 		if ( $league->hasBridge ) {
-			$lmBridge->setProjectID( $league->project_id );
+			$project_id = isset($league->projecct_id) ? $league->project_id : false;
+			$lmBridge->setProjectID( $project_id );
 
 			$home = $leaguemanager->getTeam($match->home_team);
 			$away = $leaguemanager->getTeam($match->away_team);

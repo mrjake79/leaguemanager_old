@@ -111,6 +111,9 @@ else :
 			$matches[] = new stdClass();
 			$matches[0]->year = ( isset($_GET['season']) && is_numeric($_GET['season']) ) ? intval($_GET['season']) : date("Y");
 		}
+		
+		// Simply limit the number of matches to add to 50
+		if ($max_matches > 50) $max_matches = 50;
 
 		for ( $h = 0; $h < $max_matches; $h++ ) {
 			$matches[] = new stdClass();

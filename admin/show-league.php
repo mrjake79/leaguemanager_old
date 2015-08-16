@@ -114,7 +114,7 @@ if ( $group )
 	$match_search .= " AND `group` = '".$group."'";
 if ( isset($_POST['doaction3'])) {
 	if ($_POST['match_day'] != -1) {
-		$matchDay = $_POST['match_day'];
+		$matchDay = intval($_POST['match_day']);
 		$leaguemanager->setMatchDay($matchDay);
 		$match_search .= " AND `match_day` = '".$matchDay."'";
 	}

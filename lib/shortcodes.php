@@ -408,7 +408,7 @@ class LeagueManagerShortcodes extends LeagueManager
 
 		$match->homeTeam = $home ? $home->title : '';
 		$match->awayTeam = $away ? $away->title : '';
-		if (!$match->title) $match->title = $match->homeTeam . "&#8211;" . $match->awayTeam;
+		if (!isset($match->title)) $match->title = $match->homeTeam . "&#8211;" . $match->awayTeam;
 
 		$match->homeLogo = $home ? $home->logo : '';
 		$match->awayLogo = $away ? $away->logo : '';
@@ -485,7 +485,7 @@ class LeagueManagerShortcodes extends LeagueManager
 
 		$finals = array();
 		foreach ( $championship->getFinals() AS $final ) {
-			$class = ( 'alternate' == $class ) ? '' : 'alternate';
+			$class = ( !isset($class) || 'alternate' == $class ) ? '' : 'alternate';
 			$data['class'] = $class;
 
 			$data['key'] = $final['key'];
@@ -513,10 +513,10 @@ class LeagueManagerShortcodes extends LeagueManager
 
 					if ( $match->home_points != NULL && $match->away_points != NULL ) {
 						if ( $match->hadPenalty )
-							$match->score = sprintf("%s:%s", $match->penalty['home'], $match->penalty['away'])." "._x( 'o.P.', 'leaguemanager' );
+							$match->score = sprintf("%s:%s", $match->penalty['home'], $match->penalty['away'])." ".__( 'o.P.', 'leaguemanager' );
 						elseif ( $match->hadOvertime )
-						//	$match->score = sprintf("%s:%s", $match->overtime['home'], $match->overtime['away'])." "._x( 'AET|after extra time', 'leaguemanager' );
-							$match->score = sprintf("%s:%s", $match->home_points, $match->away_points);
+							$match->score = sprintf("%s:%s", $match->overtime['home'], $match->overtime['away'])." ".__( 'AET', 'leaguemanager' );
+							//$match->score = sprintf("%s:%s", $match->home_points, $match->away_points);
 						else
 							$match->score = sprintf("%s:%s", $match->home_points, $match->away_points);
 						if ( $final['key'] == 'final' ) {

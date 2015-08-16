@@ -4,7 +4,7 @@
  *
  * @author 	Kolja Schleich
  * @package	LeagueManager
- * @copyright 	Copyright 2008-2014
+ * @copyright Copyright 2008
 */
 class LeagueManagerSoccer extends LeagueManager
 {

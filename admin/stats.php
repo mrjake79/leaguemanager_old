@@ -35,7 +35,12 @@ if ( isset($_GET['match_id']) ) {
 	// Load ProjectManager Bridge
 	$roster = array();
 	if ( $league->hasBridge ) {
-		$lmBridge->setProjectID( $league->project_id );
+		if (isset($league->project_id))
+			$project_id = $league->project_id;
+		else
+			$project_id = false;
+		
+		$lmBridge->setProjectID( $project_id );
 
 		$home->teamRoster = $lmBridge->getTeamRoster( $home->roster );
 		$away->teamRoster = $lmBridge->getTeamRoster( $away->roster );
@@ -84,7 +89,7 @@ if ( isset($_GET['match_id']) ) {
 		<?php $stat->fields = maybe_unserialize($stat->fields) ?>
 		<?php if (is_array($stat->fields)) : ?>
 		<?php foreach ( (array)$stat->fields AS $x => $field ) : ?>
-		<?php $value = isset($values[sanitize_title($field['name'])]) ? $values[sanitize_title($field['name'])] : "" ?>
+		<?php $value = isset($values[sanitize_title($field['name'])]) ? stripslashes($values[sanitize_title($field['name'])])	 : "" ?>
 		<td>
 			<input type="text" size="10" name="stats[<?php echo $stat->key ?>][<?php echo $i ?>][<?php echo sanitize_title($field['name']) ?>]" id="<?php echo $stat->key ?>_<?php echo sanitize_title($field['name']) ?>_<?php echo $i ?>" value="<?php echo $value ?>" />
 			<?php if ( 'roster' == $field['type'] && !empty($roster) ) : ?>
@@ -136,16 +141,16 @@ if ( isset($_GET['match_id']) ) {
 	<tr>
 		<th scope="col" class="check-column"><input type="checkbox" onclick="Leaguemanager.checkAll(document.getElementById('stats-filter'));" /></th>
 		<th scope="col"><?php _e( 'Name', 'leaguemanager' ) ?></th>
-		<th class="num" scope="col"><?php _e ( 'Number of Fields', 'leaguemanager' ) ?></th>
+		<th scope="col"><?php _e ( 'Number of Fields', 'leaguemanager' ) ?></th>
 		<th scope="col"><?php _e( 'Actions', 'leaguemanager' ) ?></th>
 	</tr>
 	</thead>
 	<tbody id="stats-list">
-	<?php foreach ( (array)$lmStats->get($league->id) AS $stat ) : ?>
+	<?php foreach ( (array)$lmStats->get($league->id) AS $stat ) : $fields = maybe_unserialize($stat->fields); ?>
 	<tr>
 		<th scope="row" class="check-column"><input type="checkbox" value="<?php echo $stat->id ?>" name="stat_id[<?php echo $stat->id ?>]" /></th>
 		<td><?php echo $stat->name ?></td>
-		<td></td>
+		<td><?php echo count($fields) ?></td>
 		<td><a href="admin.php?page=leaguemanager&amp;subpage=matchstats&amp;league_id=<?php echo $league->id ?>&amp;edit=<?php echo $stat->id ?>"><?php _e( 'Edit', 'leaguemanager' ) ?></a></td>
 	</tr>
 	<?php endforeach; ?>

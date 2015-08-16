@@ -1,5 +1,9 @@
 var Leaguemanager = new Object();
 
+Leaguemanager.reInit = function() {
+	tb_init('a.thickbox, area.thickbox, input.thickbox');
+}
+
 Leaguemanager.insertLogoFromLibrary = function() {
   logo = document.getElementById('logo_library_url').value;
 
@@ -18,33 +22,38 @@ Leaguemanager.insertLogoFromLibrary = function() {
 
 Leaguemanager.addStatsField = function(requestUrl) {
   time = new Date();
-  element_number = time.getTime();
 
   var ajax = new sack(requestUrl);
   ajax.execute = 1;
   ajax.method = 'POST';
   ajax.setVar( 'action', 'leaguemanager_add_stats_field' );
-  ajax.setVar( 'number', element_number );
   ajax.onError = function() { alert('Ajax error while getting seasons'); };
   ajax.onCompletion = function() { return true; };
   ajax.runAJAX();
 }
 
-Leaguemanager.addStat = function(el_id, stat_id, match_id){
+Leaguemanager.addStat = function(el_id, stat_id, match_id) {
   time = new Date();
-  element_number = time.getTime();
 
   var ajax = new sack(LeagueManagerAjaxL10n.requestUrl);
   ajax.execute = 1;
   ajax.method = 'POST';
   ajax.setVar( 'action', 'leaguemanager_add_stat' );
-  ajax.setVar( 'number', element_number );
   ajax.setVar( 'parent_id', el_id );
   ajax.setVar( 'stat_id', stat_id );
   ajax.setVar( 'match_id', match_id );
   ajax.onError = function() { alert('Ajax error while getting seasons'); };
   ajax.onCompletion = function() { return true; };
   ajax.runAJAX();
+}
+
+Leaguemanager.removeField = function(field_id, parent_id) {
+	element_count = document.getElementById(parent_id).childNodes.length;
+	if(element_count > 0) {
+		target_element = document.getElementById(field_id);
+		document.getElementById(parent_id).removeChild(target_element);
+	}
+	return false;
 }
 
 Leaguemanager.toggleTeamRosterGroups = function( roster ) {

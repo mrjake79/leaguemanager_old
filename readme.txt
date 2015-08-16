@@ -3,7 +3,7 @@ Contributors: Kolja Schleich, LaMonte Forthun
 Donate link: 
 Tags: sport, widget, basketball, football, hockey, league, soccer, volleyball, gymnastics, tennis, baseball, rugby
 Requires at least: 2.7
-Tested up to: 4.1
+Tested up to: 4.2.4
 Stable tag: 3.9.1.4
 License: LGPLv2.1 or later
 
@@ -82,6 +82,13 @@ The LeagueManager icon is taken from the Fugue Icons of http://www.pinvoke.com/.
 * TO-DO - The Match Day (Fixtures) filter on the admin standings page isn't currently working. I'm aware of the issue and importances to those using the Match Day filter to get around the PHP variable limit. I hope to have this resolved shortly.
 * TO-DO - Updating the translation code to remove the deprecated code has broken some translations due to a change in how WordPress handles multiple options. The translations files need some attention, so do the sport files...
 * Coming soon - Players, pagination for leagues, teams, matches, and players. New admin dashboard. New sport files.
+
+= 3.9.1.5 =
+* BUGFIX: add stripslashes
+* BUGFIX: limit the number of matches to add to 50 (to avoid problems with memory limit)
+* BUGFIX: fixed some possible security issues
+* BUGFIX: fixed several small issues
+* BUGFIX: fixed issues with match statistics
 
 = 3.9.1.4 =
 * BUGFIX: ordering of teams by rank

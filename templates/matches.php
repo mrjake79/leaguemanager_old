@@ -16,7 +16,7 @@ The following variables are usable:
 	<?php leaguemanager_match($_GET['match']); ?>
 <?php else : ?>
 <?php if ( ($league->show_match_day_selection || $league->show_team_selection) && $league->mode != 'championship' ) : ?>
-<div style='float: left; margin-top: 1em;'>
+<div style='float: left; margin-top: 1em; clear: both;'>
 	<form method='get' action='<?php the_permalink(get_the_ID()) ?>'>
 	<div>
 		<input type='hidden' name='page_id' value='<?php the_ID() ?>' />
@@ -57,7 +57,7 @@ The following variables are usable:
 <?php foreach ( $matches AS $match ) : ?>
 
 <tr class='<?php echo $match->class ?>'>
-	<td class='match'><?php echo $match->date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $match->title ?></a> <?php echo $match->report ?></td>
+	<td class='match'><?php echo $match->date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $leaguemanager->getMatchTitle($match->id) ?></a> <?php echo $match->report ?></td>
 	<td class='score' valign='bottom'><?php echo $match->score ?></td>
 </tr>
 

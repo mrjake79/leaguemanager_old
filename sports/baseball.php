@@ -4,7 +4,7 @@
  * 
  * @author 	Kolja Schleich
  * @package	LeagueManager
- * @copyright 	Copyright 2008-2009
+ * @copyright Copyright 2008
 */
 class LeagueManagerBaseball extends LeagueManager
 {
@@ -91,7 +91,8 @@ class LeagueManagerBaseball extends LeagueManager
 	{
 		global $wpdb;
 
-		$team = $wpdb->get_results( "SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = {$team_id}" );
+		$team_id = intval($team_id);
+		$team = $wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d'", $team_id) );
 		$custom = maybe_unserialize($team->custom);
 
 		$custom['runs'] = $this->getRuns($team_id);

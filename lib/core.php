@@ -4,7 +4,7 @@
  * 
  * @author 	Kolja Schleich
  * @package	LeagueManager
- * @copyright 	Copyright 2008-2009
+ * @copyright Copyright 2008-2015
 */
 class LeagueManager
 {
@@ -264,7 +264,7 @@ class LeagueManager
 	function getImagePath( $file = false )
 	{
 		$league = $this->getCurrentLeague();
-		if ( $file ) 
+		if ( $file )
 			return trailingslashit($_SERVER['DOCUMENT_ROOT']) . substr($file,strlen($_SERVER['HTTP_HOST'])+8, strlen($file));
 		 else 
 			return ABSPATH . $league->upload_dir;
@@ -281,7 +281,7 @@ class LeagueManager
 	{
 		$league = $this->getCurrentLeague();
 		if ( $file )
-			return trailingslashit(get_option('siteurl')) . $league->upload_dir . $file;
+			return trailingslashit(get_option('siteurl')) . trailingslashit($league->upload_dir) . $file;
 		else
 			return trailingslashit(get_option('siteurl')) . $league->upload_dir;
 	}
@@ -464,13 +464,14 @@ class LeagueManager
 		$leagues = $wpdb->get_results($wpdb->prepare( "SELECT `title`, `id`, `settings`, `seasons` FROM {$wpdb->leaguemanager} ORDER BY id ASC LIMIT %d, %d", intval($offset), intval($limit) ));
 		$i = 0;
 		foreach ( $leagues AS $league ) {
+			$leagues[$i]->title = stripslashes($league->title);
 			$leagues[$i]->seasons = $league->seasons = maybe_unserialize($league->seasons);
 			$league->settings = maybe_unserialize($league->settings);
 
 			$leagues[$i] = (object)array_merge((array)$league,(array)$league->settings);
 			unset($leagues[$i]->settings, $league->settings);
 
-			$this->leagues[$league->id] = $league;
+			$this->leagues[$league->id] = $leagues[$i];
 			$i++;
 		}
 		return $leagues;
@@ -490,6 +491,7 @@ class LeagueManager
 		$league = $wpdb->get_results($wpdb->prepare("SELECT `title`, `id`, `seasons`, `settings` FROM {$wpdb->leaguemanager} WHERE `id` = '%d' OR `title` = '%d'", intval($league_id), intval($league_id)) );
 		$league[] = new stdClass();
 		$league = $league[0];
+		$league->title = stripslashes($league->title);
 		$league->seasons = maybe_unserialize($league->seasons);
 		$league->settings = (array)maybe_unserialize($league->settings);
 
@@ -521,15 +523,15 @@ class LeagueManager
 		$teamlist = $wpdb->get_results( "SELECT `title`, `website`, `coach`, `stadium`, `logo`, `home`, `group`, `roster`, `points_plus`, `points_minus`, `points2_plus`, `points2_minus`, `add_points`, `done_matches`, `won_matches`, `draw_matches`, `lost_matches`, `diff`, `league_id`, `id`, `season`, `rank`, `status`, `custom` FROM {$wpdb->leaguemanager_teams} $search ORDER BY $orderby" );
 		$teams = array(); $i = 0;
 		foreach ( $teamlist AS $team ) {
-			$team->custom = maybe_unserialize($team->custom);
+			$team->custom = stripslashes_deep(maybe_unserialize($team->custom));
 			if ( 'ARRAY' == $output ) {
 				$teams[$team->id]['title'] = htmlspecialchars(stripslashes($team->title), ENT_QUOTES);
 				$teams[$team->id]['rank'] = $team->rank;
 				$teams[$team->id]['status'] = $team->status;
 				$teams[$team->id]['season'] = $team->season;
 				$teams[$team->id]['website'] = $team->website;
-				$teams[$team->id]['coach'] = $team->coach;
-				$teams[$team->id]['stadium'] = $team->stadium;
+				$teams[$team->id]['coach'] = stripslashes($team->coach);
+				$teams[$team->id]['stadium'] = stripslashes($team->stadium);
 				$teams[$team->id]['logo'] = $team->logo;
 				$teams[$team->id]['home'] = $team->home;
 				$teams[$team->id]['group'] = $team->group;
@@ -542,7 +544,7 @@ class LeagueManager
 				$teams[$team->id]['points2'] = array( 'plus' => $team->points2_plus, 'minus' => $team->points2_minus );
 				$teams[$team->id]['add_points'] = $team->add_points;
 				foreach ( (array)$team->custom AS $key => $value )
-					$teams[$team->id][$key] = $value;
+					$teams[$team->id][$key] = stripslashes_deep($value);
 			} else {
 				$teamlist[$i]->roster = maybe_unserialize($team->roster);
 				if ( $this->hasBridge() ) {
@@ -550,6 +552,8 @@ class LeagueManager
 					$teamlist[$i]->teamRoster = $lmBridge->getTeamRoster(maybe_unserialize($team->roster));
 				}
 				$teamlist[$i]->title = htmlspecialchars(stripslashes($team->title), ENT_QUOTES);
+				$teamlist[$i]->coach = stripslashes($team->coach);
+				$teamlist[$i]->stadium = stripslashes($team->stadium);
 				$teamlist[$i] = (object)array_merge((array)$team, (array)$team->custom);
 			}
 
@@ -581,7 +585,9 @@ class LeagueManager
 		$team = $team[0];
 
 		$team->title = htmlspecialchars(stripslashes($team->title), ENT_QUOTES);
-		$team->custom = maybe_unserialize($team->custom);
+		$team->coach = stripslashes($team->coach);
+		$team->stadium = stripslashes($team->stadium);
+		$team->custom = stripslashes_deep(maybe_unserialize($team->custom));
 		$team->roster = maybe_unserialize($team->roster);
 		if ( $this->hasBridge() ) {
 			global $lmBridge;
@@ -614,15 +620,17 @@ class LeagueManager
 	 * gets number of teams for specific league
 	 *
 	 * @param int $league_id
+	 * @param string $group
 	 * @return int
 	 */
 	function getNumTeams( $league_id, $group = '' )
 	{
 		global $wpdb;
+		$league_id = intval($league_id);
 		if ($group == ''){
-			$num_teams = $wpdb->get_var( "SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `league_id` = '".$league_id."'" );
+			$num_teams = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `league_id` = '%d'", $league_id) );
 		} else {
-			$num_teams = $wpdb->get_var( "SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `league_id` = '".$league_id."'AND `group` = '".$group."'" );
+			$num_teams = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `league_id` = '%d' AND `group` = '%s'", $league_id, $group) );
 		}
 		return $num_teams;
 	}
@@ -653,7 +661,7 @@ class LeagueManager
 	{
 		global $wpdb;
 	
-		$num_matches = $wpdb->get_var( "SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE `league_id` = '".$league_id."'" );
+		$num_matches = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE `league_id` = '%d'", $league_id) );
 		return $num_matches;
 	}
 	
@@ -764,8 +772,8 @@ class LeagueManager
 
 		$i = 0;
 		foreach ( $matches AS $match ) {
-			$matches[$i]->custom = $match->custom = maybe_unserialize($match->custom);
-			$matches[$i]->custom = $match->custom = stripslashes_deep($match->custom);
+			$matches[$i]->location = stripslashes($match->location);
+			$matches[$i]->custom = $match->custom = stripslashes_deep(maybe_unserialize($match->custom));
 			$matches[$i] = (object)array_merge((array)$match, (array)$match->custom);
 		//	unset($matches[$i]->custom);
 
@@ -788,8 +796,8 @@ class LeagueManager
 		$match = $wpdb->get_results("SELECT `group`, `home_team`, `away_team`, DATE_FORMAT(`date`, '%Y-%m-%d %H:%i') AS date, DATE_FORMAT(`date`, '%e') AS day, DATE_FORMAT(`date`, '%c') AS month, DATE_FORMAT(`date`, '%Y') AS year, DATE_FORMAT(`date`, '%H') AS `hour`, DATE_FORMAT(`date`, '%i') AS `minutes`, `match_day`, `location`, `league_id`, `home_points`, `away_points`, `winner_id`, `loser_id`, `post_id`, `season`, `id`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `id` = '".intval($match_id)."'");
 		$match = $match[0];
 
-		$match->custom = maybe_unserialize($match->custom);
-		$match->custom = stripslashes_deep($match->custom);
+		$match->location = stripslashes($match->location);
+		$match->custom = stripslashes_deep(maybe_unserialize($match->custom));
 		$match = (object)array_merge((array)$match, (array)$match->custom);
 		//unset($match->custom);
 
@@ -812,7 +820,7 @@ class LeagueManager
 
 		if (!isset($teams[$match->home_team]) || !isset($teams[$match->away_team]) || $match->home_team == $match->away_team) {
 			if (isset($match->title))
-				$title = $match->title;
+				$title = stripslashes($match->title);
 			else
 				$title = "";
 		} else {

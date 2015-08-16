@@ -13,9 +13,7 @@ The following variables are usable:
 <?php if ( $match ) : ?>
 
 <div class="match" id="match-<?php echo $match->id ?>">
-	<h3><?php echo $match->title ?></h3>
-	
-		
+	<h3><?php echo $leaguemanager->getMatchTitle($match->id, false) ?></h3>
 	
 	<?php if ( $match->score == '0:0' ) : ?>
 	<p class="matchdate"><?php echo $match->date." ".$match->start_time." ".$match->location ?></p>

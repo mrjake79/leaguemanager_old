@@ -63,3 +63,4 @@ The following variables are usable:
 	
 	<?php endif; ?>
 </div>
+<br style="clear: both;" />

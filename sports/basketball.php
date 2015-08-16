@@ -4,7 +4,7 @@
  *
  * @author 	Kolja Schleich, LaMonte Forthun
  * @package	LeagueManager
- * @copyright 	Copyright 2008-2014
+ * @copyright Copyright 2008
 */
 class LeagueManagerBasketball extends LeagueManager
 {
@@ -90,6 +90,7 @@ class LeagueManagerBasketball extends LeagueManager
 
 		$goals = array( 'plus' => 0, 'minus' => 0 );
 
+		$team_id = intval($team_id);
 		$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '".$team_id."'" );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {

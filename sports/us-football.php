@@ -4,7 +4,7 @@
  * 
  * @author 	LaMonte Forthun
  * @package	LeagueManager
- * @copyright 	Copyright 2014
+ * @copyright Copyright 2014
 */
 class LeagueManagerUSFootball extends LeagueManager
 {
