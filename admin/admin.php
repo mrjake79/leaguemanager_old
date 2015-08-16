@@ -517,29 +517,30 @@ class LeagueManagerAdminPanel extends LeagueManager
 		$league = $this->league;
 
 		$rule = $this->getPointRule( $league->point_rule );
+		$team_id = intval($team_id);
 		$points = array( 'plus' => 0, 'minus' => 0 );
 		$team_points = 0;
 		
 		if ( 'score' == $rule ) {
-			$home = $this->getMatches( "`home_team` = '".$team_id."'" );
+			$home = $this->getMatches( array("home_team" => $team_id) );
 			foreach ( $home AS $match ) {
 				$points['plus'] += $match->home_points;
 				$points['minus'] += $match->away_points;
 			}
 
-			$away = $this->getMatches("`away_team` = '".$team_id."'" );
+			$away = $this->getMatches( array("away_team" => $team_id) );
 			foreach ( $away AS $match ) {
 				$points['plus'] += $match->away_points;
 				$points['minus'] += $match->home_points;
 			}
 		} else {
 			extract( $rule );
-			$home = $this->getMatches( "`home_team` = '".$team_id."'" );
+			$home = $this->getMatches( array("home_team" => $team_id) );
 			foreach ( $home AS $match ) {
 				$team_points += $match->home_points;
 			}
 			
-			$away = $this->getMatches("`away_team` = '".$team_id."'" );
+			$away = $this->getMatches( array("away_team" => $team_id) );
 			foreach ( $away AS $match ) {
 				$team_points += $match->away_points;
 			}
@@ -604,7 +605,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 		global $wpdb;
 
 		// Delete Teams and with it Matches
-		foreach ( parent::getTeams( "league_id = '".$league_id."'" ) AS $team ) {
+		foreach ( parent::getTeams( array("league_id" => $league_id )) AS $team ) {
 			$this->delTeam( $team->id );
 		}
 
@@ -632,7 +633,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 		if ( $add_teams && !empty($league->seasons) && !$key ) {
 			$last_season = end($league->seasons);
 			if ( !empty($last_season) ) {
-				if ( $teams = $leaguemanager->getTeams("`league_id` = ".$league->id." AND `season` = '".$last_season['name']."'") ) {
+				if ( $teams = $leaguemanager->getTeams(array("league_id" => $league->id, "season" => $last_season['name'])) ) {
 					foreach ( $teams AS $team ) {
 						$this->addTeamFromDB( $league->id, $season, $team->id, false );
 					}
@@ -642,12 +643,12 @@ class LeagueManagerAdminPanel extends LeagueManager
 
 		if ( $key ) {
 			$key = htmlspecialchars($key);
-			if ( $teams = $leaguemanager->getTeams( "`season` = '".$key."' AND `league_id` = ".$league->id ) ) {
+			if ( $teams = $leaguemanager->getTeams( array("season" => $key, "league_id" => $league->id) ) ) {
 				foreach ( $teams AS $team ) {
 					$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_teams} SET `season` = '%s' WHERE `id` = '%d'", $season, $team->id) );
 				}
 			}
-			if ( $matches = $leaguemanager->getMatches( "`season` = '".$key."' AND `league_id` = ".$league->id ) ) {
+			if ( $matches = $leaguemanager->getMatches( array("season" => $key, "league_id" => $league->id) ) ) {
 				foreach ( $matches AS $match ) {
 					$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `season` = '%s' WHERE `id` = '%d'", $season, $match->id) );
 				}
@@ -685,7 +686,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 				$season = $league->seasons[$key];
 
 				// Delete teams and matches if there are any
-				if ( $teams = $leaguemanager->getTeams("`league_id` = ".$league->id." AND `season` = ".$season['name']) ) {
+				if ( $teams = $leaguemanager->getTeams(array("league_id" => $league->id, "season" => $season['name'])) ) {
 					foreach ( $teams AS $team )
 						$this->delTeam($team->id);
 				}
@@ -1052,7 +1053,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 
 		if ( !$final ) {
 			// update Standings for each team
-			$teams = $leaguemanager->getTeams( "`league_id` = {$league->id} AND `season` = '".$season['name']."'" );
+			$teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name']) );
 			foreach ( $teams AS $team ) {
 				$this->saveStandings($team->id);
 			}
@@ -1063,7 +1064,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 			/*
 			 * Initialize finals if championship mode is activated and all matches have results
 			 */
-			$matches = $leaguemanager->getMatches("`league_id` = '".$league_id."' AND `season` = '".$season['name']."' AND `final` = '' AND `home_points` IS NULL AND `away_points` IS NULL");
+			$matches = $leaguemanager->getMatches( array("league_id" => $league_id, "season" => $season['name'], "final" => '', "home_points" => "null", "away_points" => "null") );
 			if ( !$matches && $league->mode == 'championship' ) {
 				global $championship;
 				$championship->proceed( false, $championship->getFinalKeys(1), $league_id );
@@ -1281,8 +1282,8 @@ class LeagueManagerAdminPanel extends LeagueManager
 			$ajax = false;
 		}
 
-		$matches = $leaguemanager->getMatches("`league_id` = {$league_id} AND `season` = '".$season."'");
-		$teams = $leaguemanager->getTeams("`league_id` = {$league_id} AND `season` = '".$season."'", "`id` ASC", 'ARRAY');
+		$matches = $leaguemanager->getMatches( array("league_id" => $league_id, "season" => $season) );
+		$teams = $leaguemanager->getTeams( array("league_id" => $league_id, "season" => $season, "orderby" => array("id" => "ASC")), 'ARRAY');
 
 		$out = '<select size="1" name="match_id" id="match_id" class="alignleft">';
 		$out .= '<option value="0">'.__('Choose Match', 'leaguemanager').'</option>';
@@ -1564,7 +1565,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 
 		$league = $this->league;
 
-		$teams = parent::getTeams( "league_id =".$this->league_id );
+		$teams = parent::getTeams( array("league_id" => $this->league_id) );
 
 		if ( $teams ) {
 			$contents = __('Season','leaguemanager')."\t".
@@ -1620,10 +1621,10 @@ class LeagueManagerAdminPanel extends LeagueManager
 	{
 		global $leaguemanager;
 
-		$matches = parent::getMatches( "league_id=".$this->league_id );
+		$matches = parent::getMatches( array("league_id" => $this->league_id) );
 		if ( $matches ) {
 	  	$league = $this->league;
-			$teams = parent::getTeams( "league_id=".$this->league_id, "`id` ASC", 'ARRAY' );
+			$teams = parent::getTeams( array("league_id" => $this->league_id, "orderby" => array("id" => "ASC")), 'ARRAY' );
 
 			// Build header
 			$contents =

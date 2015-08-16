@@ -98,9 +98,9 @@ class LeagueManagerShortcodes extends LeagueManager
 			$season = $season['name'];
 		}
 
-		$search = "`league_id` = '".$league->id."' AND `season` = '".$season."'";
-		if ( $group ) $search .= " AND `group` = '".$group."'";
-		$teams = $leaguemanager->getTeams( $search );
+		$team_args = array("league_id" => $league->id, "season" => $season);
+		if ( $group ) $team_args["group"] = $group;
+		$teams = $leaguemanager->getTeams( $team_args );
 		
 		if ( !empty($home) ) {
 			$teamlist = array();
@@ -260,11 +260,11 @@ class LeagueManagerShortcodes extends LeagueManager
 			}*/
 			
 			if ( !$league_id ) {
-    			$teams = $leaguemanager->getTeams( "`league_id` != '' AND `season` != ''", "`title` ASC", 'ARRAY' );
-    			$search = "`league_id` != '' AND `season` != '' AND `final` = ''";
+    			$teams = $leaguemanager->getTeams( array("league_id" => 'any', "season" => "any", "orderby" => array("title" => "ASC")), 'ARRAY' );
+    			$match_args = array("league_id" => 'any', "season" => 'any', "final" => '');
     		} else {
-    			$teams = $leaguemanager->getTeams( "`league_id` = ".$league_id." AND `season` = '".$season."'", "`title` ASC", 'ARRAY' );
-    			$search = "`league_id` = '".$league_id."' AND `season` = '".$season."' AND `final` = ''";
+    			$teams = $leaguemanager->getTeams( array("league_id" => $league_id, "season" => $season, "orderby" => array("title" => "ASC")), 'ARRAY' );
+				$match_args = array("league_id" => $league_id, "season" => $season, "final" => '');
     		}
 
 			// Standard is match day based with team dropdown
@@ -272,12 +272,18 @@ class LeagueManagerShortcodes extends LeagueManager
 				$team_id = !empty($team) ? $team : (int)$_GET['team_id'];
 
 			if ( !empty($team_id) ) {
-				$search .= " AND ( `home_team`= {$team_id} OR `away_team` = {$team_id} )";
+				$match_args['team_id'] = $team_id;
 			} elseif ( !empty($group) ) {
-				$search .= " AND `group` = '".$group."'";
+				$match_args['group'] = $group;
 			}
-			if ($match_day != "" && $match_day != -1 && empty($mode)) $search .= " AND `match_day` = '".$match_day."'";
+			if ($match_day != "" && $match_day != -1 && empty($mode)) $match_args['match_day'] = $match_day;
 			
+			$match_args['limit'] = $limit;
+			$match_args['time'] = $time;
+			$match_args['order'] = $order;
+			$match_args['match_date'] = $match_date;
+			
+			/*
 			if ( $time ) {
 				if ( $time == 'next' )
 					$search .= " AND DATEDIFF(NOW(), `date`) <= 0";
@@ -290,8 +296,9 @@ class LeagueManagerShortcodes extends LeagueManager
 				elseif ( $time == 'day' )
 					$search .= " AND DATEDIFF('". $match_date."', `date`) = 0";
 			}
-
-			$matches = $leaguemanager->getMatches( $search, $limit, $order );
+			*/
+			
+			$matches = $leaguemanager->getMatches( $match_args );
 
             foreach ( $matches AS $key => $row ) {
                 $matchdate[$key] = $row->date;
@@ -493,8 +500,9 @@ class LeagueManagerShortcodes extends LeagueManager
 			$data['num_matches'] = $final['num_matches'];
 			$data['colspan'] = ( $championship->getNumTeamsFirstRound()/2 >= 4 ) ? ceil(4/$final['num_matches']) : ceil(($championship->getNumTeamsFirstRound()/2)/$final['num_matches']);
 
-			$matches_raw = $leaguemanager->getMatches("`league_id` = '".$league->id."' AND `season` = '".$season."' AND `final` = '".$final['key']."'", false, "`id` ASC");
-			$teams = $leaguemanager->getTeams( "`league_id` = '".$league->id."' AND `season` = '".$season."'", "`id` ASC", 'ARRAY' );
+			$matches_raw = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season, "final" => $final['key'], "orderby" => array("id" => "ASC")) );
+			$team_args = array("league_id" => $league->id, "season" => $season, "orderby" => array("id" => "ASC"));
+			$teams = $leaguemanager->getTeams( $team_args, 'ARRAY' );
 			$teams2 = $championship->getFinalTeams($final, 'ARRAY');
 
 			$matches = array();
@@ -576,11 +584,9 @@ class LeagueManagerShortcodes extends LeagueManager
 			$season = $season['name'];
 		}
 
-		$search = "`league_id` = '".$league->id."' AND `season` = '".$season."'";
-		if ( $group ) $search .= " AND `group` = '".$group."'";
-		$teams = $leaguemanager->getTeams( $search );
-
-//		$teams = $leaguemanager->getTeams( "`league_id` = {$league_id} AND `season` = '".$season."'" );
+		$team_args = array("league_id" => $league->id, "season" => $season);
+		if ( $group ) $team_args["group"] = $group;
+		$teams = $leaguemanager->getTeams( $team_args );
 
 		if ( empty($template) && $this->checkTemplate('teams-'.$league->sport) )
 			$filename = 'teams-'.$league->sport;
@@ -614,7 +620,7 @@ class LeagueManagerShortcodes extends LeagueManager
 		$league = $leaguemanager->getLeague( $team->league_id );
 
 		// Get next match
-		$next_matches = $leaguemanager->getMatches("( `home_team` = {$team->id} OR `away_team` = {$team->id} ) AND DATEDIFF(NOW(), `date`) <= 0");
+		$next_matches = $leaguemanager->getMatches(array("team_id" => $team->id, "time" => "next"));
 		$next_match = isset($next_matches[0]) ? $next_matches[0] : false;
 		if ( $next_match ) {
 			if ( $next_match->home_team == $team->id ) {
@@ -627,7 +633,7 @@ class LeagueManagerShortcodes extends LeagueManager
 		}
 
 		// Get last match
-		$prev_matches = $leaguemanager->getMatches("( `home_team` = {$team->id} OR `away_team` = {$team->id} ) AND DATEDIFF(NOW(), `date`) > 0", 1, "`date` DESC");
+		$prev_matches = $leaguemanager->getMatches(array("team_id" => $team->id, "time" => "prev", "limit" => 1, "orderby" => array("date" => "DESC")));
 		$prev_match = $prev_matches[0];
 		if ( $prev_match ) {
 			if ( $prev_match->home_team == $team->id ) {
@@ -698,7 +704,8 @@ class LeagueManagerShortcodes extends LeagueManager
 			$season = $leaguemanager->getSeason($league);
 			$season = $season['name'];
 		}
-		$teams = $leaguemanager->getTeams( "`league_id` = '".$league->id."' AND `season` = '".$season."' AND `group` = '".$group."'" );
+		$team_args = array("league_id" => $league->id, "season" => $season, "group" => $group);
+		$teams = $leaguemanager->getTeams( $team_args );
 
 		if ( empty($template) && $this->checkTemplate('crosstable-'.$league->sport) )
 			$filename = 'crosstable-'.$league->sport;
@@ -795,14 +802,13 @@ class LeagueManagerShortcodes extends LeagueManager
 	{
 		global $wpdb, $leaguemanager;
 
-		//$match = $leaguemanager->getMatches("(`home_team` = $curr_team_id AND `away_team` = $opponent_id) OR (`home_team` = $opponent_id AND `away_team` = $curr_team_id)");
-		$match = $leaguemanager->getMatches("`home_team` = $curr_team_id AND `away_team` = $opponent_id");
+		$match = $leaguemanager->getMatches( array("home_team" => $curr_team_id, "away_team" => $opponent_id) );
 		if ($match) $match = $match[0];
 
  		if ( $match ) {
 			return $this->getScore($curr_team_id, $opponent_id, $match);
 		} else {
-			$match = $leaguemanager->getMatches("`home_team` = $opponent_id AND `away_team` = $curr_team_id");
+			$match = $leaguemanager->getMatches( array("home_team" => $opponent_id, "away_team" => $curr_team_id) );
 			if ($match) $match = $match[0];
 			return $this->getScore($curr_team_id, $opponent_id, $match);
 

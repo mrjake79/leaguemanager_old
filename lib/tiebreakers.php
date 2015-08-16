@@ -69,7 +69,7 @@ function headToHeadTwoTeams( $team, $teamKey, $team2, $team2Key )
     $team2_id = $team2->id;
 
     $team1Wins=$team2Wins=0;
-    $hthMatches = $leaguemanager->getMatches( "`home_team` = '".$team1_id."' or `away_team` = '".$team1_id."'" );
+    $hthMatches = $leaguemanager->getMatches( array("team_id" => $team1_id) );
     foreach ( $hthMatches AS $match ) {
         if ( $match->home_team==$team2_id ) {
             if ( $match->home_points > $match->away_points ) {
@@ -121,7 +121,7 @@ function winPercentage( $team, $teamKey, $team2, $team2Key )
     }
 
     $team1Wins=$team2Wins=0;
-    $hthMatches = $leaguemanager->getMatches( "`home_team` = '".$team1_id."' or `away_team` = '".$team1_id."'" );
+    $hthMatches = $leaguemanager->getMatches( array("team_id" => $team1_id) );
     foreach ( $hthMatches AS $match ) {
         if ( $match->home_team==$team2_id ) {
             if ( $match->home_points > $match->away_points ) {

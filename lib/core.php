@@ -4,7 +4,7 @@
  * 
  * @author 	Kolja Schleich
  * @package	LeagueManager
- * @copyright Copyright 2008-2015
+ * @copyright Copyright 2008
 */
 class LeagueManager
 {
@@ -488,7 +488,7 @@ class LeagueManager
 	{
 		global $wpdb;
 		
-		$league = $wpdb->get_results($wpdb->prepare("SELECT `title`, `id`, `seasons`, `settings` FROM {$wpdb->leaguemanager} WHERE `id` = '%d' OR `title` = '%d'", intval($league_id), intval($league_id)) );
+		$league = $wpdb->get_results($wpdb->prepare("SELECT `title`, `id`, `seasons`, `settings` FROM {$wpdb->leaguemanager} WHERE `id` = '%d' OR `title` = '%s'", intval($league_id), intval($league_id)) );
 		$league[] = new stdClass();
 		$league = $league[0];
 		$league->title = stripslashes($league->title);
@@ -509,16 +509,48 @@ class LeagueManager
 	/**
 	 * get teams from database
 	 *
-	 * @param string $search search string for WHERE clause.
+	 * @param array $args
 	 * @param string $output OBJECT | ARRAY
 	 * @return array database results
 	 */
-	function getTeams( $search, $orderby = false, $output = 'OBJECT' )
+	function getTeams( $args = array(), $output = 'OBJECT' )
 	{
 		global $wpdb;
 		
-		if ( !empty($search) ) $search = " WHERE $search";
-		if ( !$orderby ) $orderby = "`rank` ASC, `id` ASC";
+		$defaults = array( 'league_id' => false, 'season' => false, 'group' => false, 'rank' => false, 'orderby' => array("rank" => "ASC", "id" => "ASC"));
+		$args = array_merge($defaults, $args);
+		extract($args, EXTR_SKIP);
+		
+		$search_terms = array();
+		if ($league_id) {
+			if ($league_id == "any")
+				$search_terms[] = "`league_id` != ''";
+			else
+				$search_terms[] = $wpdb->prepare("`league_id` = '%d'", intval($league_id));
+		}
+		if ($season) {
+			if ($season == "any") 
+				$search_terms[] = "`season` != ''";
+			else
+				$search_terms[] = $wpdb->prepare("`season` = '%s'", htmlspecialchars($season));
+		}
+		if ($group) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars($group));
+		if ($rank) $search_terms[] = $wpdb->prepare("`rank` = '%s'", $rank);
+		
+		$search = "";
+		if (count($search_terms) > 0) {
+			$search = " WHERE ";
+			$search .= implode(" AND ", $search_terms);
+		}
+		
+		$orderby_string = ""; $i = 0;
+		foreach ($orderby AS $order => $direction) {
+			if ($direction != "ASC" || $direction != "DESC") $direction = "ASC";
+			$orderby_string .= "`".$order."` ".$direction;
+			if ($i < (count($orderby)-1)) $orderby_string .= ",";
+			$i++;
+		}
+		$orderby = $orderby_string;
 		
 		$teamlist = $wpdb->get_results( "SELECT `title`, `website`, `coach`, `stadium`, `logo`, `home`, `group`, `roster`, `points_plus`, `points_minus`, `points2_plus`, `points2_minus`, `add_points`, `done_matches`, `won_matches`, `draw_matches`, `lost_matches`, `diff`, `league_id`, `id`, `season`, `rank`, `status`, `custom` FROM {$wpdb->leaguemanager_teams} $search ORDER BY $orderby" );
 		$teams = array(); $i = 0;
@@ -699,11 +731,11 @@ class LeagueManager
 		$groups = !empty($league->groups) ? explode(";", $league->groups) : array( '' );
 
 		foreach ( $groups AS $group ) {
-			$search = "`league_id` = '".$league_id."' AND `season` = '".$season."'";
-			if ( !empty($group) ) $search .= " AND `group` = '".$group."'";
+			$team_args = array("league_id" => $league_id, "season" => $season);
+			if ( !empty($group) ) $team_args["group"] = $group;
 
 			$teams = $teamsTmp = array();
-			foreach ( $this->getTeams( $search ) AS $team ) {
+			foreach ( $this->getTeams( $team_args ) AS $team ) {
 				$team->diff = ( $team->diff > 0 ) ? '+'.$team->diff : $team->diff;
 				$team->points = array( 'plus' => $team->points_plus, 'minus' => $team->points_minus );
 				$team->points2 = array( 'plus' => $team->points2_plus, 'minus' => $team->points2_minus );
@@ -752,24 +784,93 @@ class LeagueManager
 	/**
 	 * gets matches from database
 	 * 
-	 * @param string $search (optional)
-	 * @param int $limit (optional)
-	 * @param string $order (optional)
+	 * @param array $args
 	 * @param string $output (optional)
 	 * @return array
 	 */
-	function getMatches( $search = false, $limit = false, $order = false, $output = 'OBJECT' )
+	function getMatches( $args, $output = 'OBJECT' )
 	{
 	 	global $wpdb;
 	
-		if ( !$order ) $order = "`date` ASC";
-
+		$defaults = array( 'league_id' => false, 'season' => false, 'group' => false, 'final' => false, 'match_day' => false, 'time' => false, 'home_only' => false, 'winner_id' => false, 'loser_id' => false, 'team_id' => false, 'home_team' => false, 'away_team' => false, 'home_points' => false, 'away_points' => false, 'limit' => false, 'orderby' => array("date" => "ASC"));
+		$args = array_merge($defaults, $args);
+		extract($args, EXTR_SKIP);
+		
+		$search_terms = array();
+		if ($league_id) {
+			if ($league_id == "any")
+				$search_terms[] = "`league_id` != ''";
+			else
+				$search_terms[] = $wpdb->prepare("`league_id` = '%d'", intval($league_id));
+		}
+		if ($season) {
+			if ($season == "any") 
+				$search_terms[] = "`season` != ''";
+			else
+				$search_terms[] = $wpdb->prepare("`season` = '%s'", htmlspecialchars($season));
+		}
+		if ($final != false) $search_terms[] = $wpdb->prepare("`final` = '%s'", htmlspecialchars($final));
+		if ($group != false) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars($group));
+		if ($team_id) {
+			$wpdb->prepare("(`home_team` = '%d' OR `away_team` = '%d')", $team_id, $team_id);
+		} else {
+			if ($home_team) $search_terms[] = $wpdb->prepare("`home_team` = '%d'", $home_team);
+			if ($away_team) $search_terms[] = $wpdb->prepare("`away_team` = '%d'", $away_team);
+		}
+		if ($match_day) $search_terms[] = $wpdb->prepare("`match_day` = '%d'", $match_day);
+		if ($home_points) {
+			if ($home_points == "null")
+				$search_terms[] = "`home_points` IS NULL";
+			elseif ($home_points == "not_null")
+				$search_terms[] = "`home_points` IS NOT NULL";
+		}
+		if ($away_points) {
+			if ($away_points == "null")
+				$search_terms[] = "`away_points` IS NULL";
+			elseif ($away_points == "not_null")
+				$search_terms[] = "`away_points` IS NOT NULL";
+		}
+		if ($winner_id)
+			$search_terms[] = $wpdb->prepare("`winner_id` = '%d'", $winner_id);
+		if ($loser_id)
+			$search_terms[] = $wpdb->prepare("`loser_id` = '%d'", $loser_id);
+		
+		if ( $time == 'next' )
+			$search_terms[] = "DATEDIFF(NOW(), `date`) <= 0";
+		elseif ( $time == 'prev' )
+			$search_terms[] = "DATEDIFF(NOW(), `date`) > 0";
+		elseif ( $time == 'prev1' )
+			$search_terms[] = "DATEDIFF(NOW(), `date`) > 0) AND (`winner_id` != 0) ";
+		elseif ( $time == 'today' )
+			$search_terms[] = "DATEDIFF(NOW(), `date`) = 0";
+		elseif ( $time == 'day' )
+			$search_terms[] = "DATEDIFF('". htmlspecialchars($match_date)."', `date`) = 0";		
+		
+		$search = "";
+		if (count($search_terms) > 0) {
+			$search = implode(" AND ", $search_terms);
+		}
+		
+		if ($home_only)
+			$search .= $this->buildHomeOnlyQuery($league_id);
+			
+		$orderby_string = ""; $i = 0;
+		foreach ($orderby AS $order => $direction) {
+			if ($direction != "ASC" || $direction != "DESC") $direction = "ASC";
+			$orderby_string .= "`".$order."` ".$direction;
+			if ($i < (count($orderby)-1)) $orderby_string .= ",";
+			$i++;
+		}
+		$order = $orderby_string;
+		
 		$sql = "SELECT `group`, `home_team`, `away_team`, DATE_FORMAT(`date`, '%Y-%m-%d %H:%i') AS date, DATE_FORMAT(`date`, '%e') AS day, DATE_FORMAT(`date`, '%c') AS month, DATE_FORMAT(`date`, '%Y') AS year, DATE_FORMAT(`date`, '%H') AS `hour`, DATE_FORMAT(`date`, '%i') AS `minutes`, `match_day`, `location`, `league_id`, `home_points`, `away_points`, `winner_id`, `loser_id`, `post_id`, `season`, `id`, `custom` FROM {$wpdb->leaguemanager_matches}";
-		if ( $search ) $sql .= " WHERE $search";
+		if ( $search != "") $sql .= " WHERE $search";
 		$sql .= " ORDER BY $order";
 		if ( $limit ) $sql .= " LIMIT 0,".intval($limit)."";
+		
 		$matches = $wpdb->get_results( $sql, $output );
 
+		//print_r($matches);
 		$i = 0;
 		foreach ( $matches AS $match ) {
 			$matches[$i]->location = stripslashes($match->location);
@@ -816,7 +917,7 @@ class LeagueManager
 	{
 		$match = $this->getMatch($match_id);
 		$league = $this->getLeague($match->league_id);
-		$teams = $this->getTeams("`league_id` = '".$match->league_id."' AND `season` = '".$match->season."'", false, 'ARRAY');
+		$teams = $this->getTeams( array("league_id" => $match->league_id, "season" => $match->season), 'ARRAY');
 
 		if (!isset($teams[$match->home_team]) || !isset($teams[$match->away_team]) || $match->home_team == $match->away_team) {
 			if (isset($match->title))

@@ -89,6 +89,7 @@ The LeagueManager icon is taken from the Fugue Icons of http://www.pinvoke.com/.
 * BUGFIX: fixed some possible security issues
 * BUGFIX: fixed several small issues
 * BUGFIX: fixed issues with match statistics
+* SECURITY: major change in retrieving teams (getTeams() in core.php) and matches (getMatches() in core.php) to avoid sql injections
 
 = 3.9.1.4 =
 * BUGFIX: ordering of teams by rank

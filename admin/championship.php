@@ -51,8 +51,8 @@ if ( isset($_POST['updateFinalResults']) ) {
 	<tbody id="the-list-finals" class="form-table">
 	<?php foreach ( $championship->getFinals() AS $final ) : $class = ( 'alternate' == $class ) ? '' : 'alternate'; ?>
 	<?php
-		if ( $matches = $leaguemanager->getMatches("`league_id` = '".$league->id."' AND `season` = '".$season['name']."' AND `final` = '".$final['key']."'", false, "`id` ASC") ) {
-			$teams = $leaguemanager->getTeams( "league_id = '".$league->id."' AND `season` = '".$season['name']."'", false, 'ARRAY' );
+		if ( $matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => $final['key'], "orderby" => array("id" => "ASC"))) ) {
+			$teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name']), 'ARRAY' );
 			$teams2 = $championship->getFinalTeams( $final, 'ARRAY' );
 		}
 	?>
@@ -151,9 +151,9 @@ if ( isset($_POST['updateFinalResults']) ) {
 
 	<?php $final = $championship->getFinals($finalkey); ?>
 	<!--<h3><?php echo $final['name'] ?></h3>-->
-	<?php $teams = $leaguemanager->getTeams( "league_id = '".$league->id."' AND `season` = '".$season['name']."'", false, 'ARRAY' ); ?>
+	<?php $teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name']), 'ARRAY' ); ?>
 	<?php $teams2 = $championship->getFinalTeams( $final, 'ARRAY' ); ?>
-	<?php $matches = $leaguemanager->getMatches("`league_id` = '".$league->id."' AND `final` = '".( !empty($final['key']) ? $final['key'] : '' )."'", false, "`id` ASC"); ?>
+	<?php $matches = $leaguemanager->getMatches( array("league_id" => $league->id, "final" => (!empty($final['key']) ? $final['key'] : '' ), "orderby" => array("id" => "ASC")) ); ?>
 
 	<form method="post" action="">
 	<input type="hidden" name="league_id" value="<?php echo $league->id ?>" />
@@ -214,15 +214,15 @@ if ( isset($_POST['updateFinalResults']) ) {
 		</form>
 	</div>
 
-	<?php $teams = $leaguemanager->getTeams( "`league_id` = '".$league->id."' AND `season` = '".$season['name']."' AND `group` = '".$group."'" ); ?>
+	<?php $teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name'], "group" => $group) ); ?>
 	<h3><?php _e( 'Table', 'leaguemanager' ) ?></h3>
 	<?php include('standings.php'); ?>
 	
-	<?php $matches = $leaguemanager->getMatches( "`league_id`= '".$league->id."' AND `season` = '".$season['name']."' AND `final` = '' AND `group` = '".$group."'" ); ?>
+	<?php $matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => '', "group" => $group) ); ?>
 	<h3><?php _e( 'Match Plan','leaguemanager' ) ?></h3>
 	<?php include('matches.php'); ?>
 
-	<?php $matches = $leaguemanager->getMatches( "`league_id`= '".$league->id."' AND `season` = '".$season['name']."' AND `final` = '' AND `group` = ''" ); ?>
+	<?php $matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => '', "group" => "") ); ?>
 	<?php if ( $matches ) : ?>
 	<h3><?php _e( 'Inter Group Matches', 'leaguemanager' ) ?></h3>
 	<?php include('matches.php'); ?>

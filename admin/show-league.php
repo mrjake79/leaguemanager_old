@@ -102,26 +102,25 @@ $cup = ( $league_mode == 'championship' ) ? true : false;
 
 $group = isset($_GET['group']) ? htmlspecialchars($_GET['group']) : '';
 
-$team_search = "`league_id` = ".$league->id." AND `season` = '".$season['name']."'";
-$team_list = $leaguemanager->getTeams( $team_search, "`id` ASC", 'ARRAY' );
+$team_list = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name'], "orderby" => array("id" => "ASC")), 'ARRAY' );
 $options = get_option('leaguemanager');
 
-$match_search = '`league_id` = "'.$league->id.'" AND `final` = ""';
-
+$match_args = array("league_id" => $league->id, "final" => "");
 if ( $season )
-	$match_search .= " AND `season` = '".$season['name']."'";
+	$match_args["season"] = $season['name'];
 if ( $group )
-	$match_search .= " AND `group` = '".$group."'";
+	$match_args["group"] = $group;
+
 if ( isset($_POST['doaction3'])) {
 	if ($_POST['match_day'] != -1) {
 		$matchDay = intval($_POST['match_day']);
 		$leaguemanager->setMatchDay($matchDay);
-		$match_search .= " AND `match_day` = '".$matchDay."'";
+		$match_args["match_day"] = $matchDay;
 	}
 } else {
 /*	$matchDay = $leaguemanager->getMatchDay('current');
 	$leaguemanager->setMatchDay($matchDay);
-	$match_search .= " AND `match_day` = '".$matchDay."'";
+	$match_args["match_day"] = $matchDay;
 */
 }
 
@@ -131,8 +130,8 @@ if ( empty($league->seasons)  ) {
 }
 
 if ( $league_mode != 'championship' ) {
-	$teams = $leaguemanager->getTeams( $team_search );
-	$matches = $leaguemanager->getMatches( $match_search );
+	$teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name']), 'OBJECT' );
+	$matches = $leaguemanager->getMatches( $match_args );
 }
 ?>
 <div class="wrap">

@@ -43,16 +43,15 @@ else :
 		$match_day = intval($_GET['match_day']);
 		$season = htmlspecialchars($_GET['season']);
 		
-		$search = "`league_id` = '".$league_id."'";
-		$search .= " AND `match_day` = '".$match_day."' AND `season` = '".$season."'";
+		$match_args = array("league_id" => $league_id, "match_day" => $match_day, "season" => $season);
 		if ( $cup ) {
-			$search .= " AND `group` = '".$group."'";
+			$match_args["group"] = $group;
 		}
 
 		$form_title = sprintf(__( 'Edit Matches &#8211; %d. Match Day', 'leaguemanager' ), $match_day);
 		$submit_title = __('Edit Matches', 'leaguemanager');
 
-		$matches = $leaguemanager->getMatches( $search, false, $order );
+		$matches = $leaguemanager->getMatches( $match_args );
 		$max_matches = count($matches);
 	} elseif ( isset($_GET['final']) ) {
 		global $championship;
@@ -79,8 +78,8 @@ else :
 			}
 		} else {
 			$form_title = $submit_title = sprintf(__( 'Edit Matches &#8211; %s', 'leaguemanager' ), $championship->getFinalname($finalkey));
-			$search = "`league_id` = '".$league_id."' AND `season` = '".$season['name']."' AND `final` = '".$finalkey."'";
-			$matches = $leaguemanager->getMatches( $search, false, $order );
+			$match_args = array("league_id" => $league_id, "season" => $season['name'], "final" => $finalkey);
+			$matches = $leaguemanager->getMatches( $match_args );
 		}
 	} else {
 		$mode = 'add';
@@ -126,18 +125,18 @@ else :
 
 	if ( $is_finals ) {
 		$teams = $championship->getFinalTeams($final);
+		$teamsHome = $teams;
 	} else {
-		$search = "`league_id` = '".$league->id."' AND `season`  = '".$season['name']."'";
-		$searchHome = '';
+		$team_args = array("league_id" => $league->id, "season" => $season['name'], "orderby" => array("title" => "ASC"));
+		$team_args_home = array("orderby" => array("title" => "ASC"));
 		if ( $cup ) {
-			$searchHome = $search;
-    		$search .= " AND `group` = '".$group."'";
+			$team_args_home = array_merge($team_args, $team_args_home);
+    		$team_args["group"] = $group;
 		}
 
-		$teamsHome = $leaguemanager->getTeams( $searchHome, "`title` ASC" );
-		$teams = $leaguemanager->getTeams( $search, "`title` ASC" );
+		$teamsHome = $leaguemanager->getTeams( $team_args_home );
+		$teams = $leaguemanager->getTeams( $team_args );
 	}
-	
 	?>
 
 <div class="wrap">

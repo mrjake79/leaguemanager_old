@@ -274,7 +274,7 @@ class LeagueManagerRacing extends LeagueManager
 		}
 		$league = $leaguemanager->getLeague($league_id);
 		$match = $leaguemanager->getMatch($match_id);
-		$teams = $leaguemanager->getTeams("`league_id` = {$league_id} AND `season` = '".$season."'");
+		$teams = $leaguemanager->getTeams( array("league_id" => $league_id, "season" => $season) );
 		$team_list = $teams;
 		$team_id = isset($_GET['team']) ? (int)$_GET['team'] : false;
 
@@ -403,7 +403,7 @@ class LeagueManagerRacing extends LeagueManager
 		$r = array();
 		$keys = array();
 		$points = array();
-		$matches = $leaguemanager->getMatches("`league_id` = '".$teams[0]->league_id."' AND `season` = '".$teams[0]->season."'");
+		$matches = $leaguemanager->getMatches( array("league_id" => $teams[0]->league_id, "season" => $teams[0]->season) );
 		foreach ($matches AS $match) {
 			if (isset($match->raceresult)) {
 				foreach ($match->raceresult AS $id => $result) {

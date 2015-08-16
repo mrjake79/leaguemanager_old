@@ -149,22 +149,22 @@ class LeagueManagerWidget extends WP_Widget
 		global $leaguemanager;
 
 		$match_limit = ( intval($instance['match_limit']) > 0 ) ? $instance['match_limit'] : false;			
-		if ( empty($instance['group']) ) {
-			$search = "`league_id` = '".$instance['league']."' AND `final` = '' AND `season` = '".$instance['season']."' AND TIMEDIFF(NOW(), `date`) <= 0";
-		} else {
-			$search = "`group` = '".$instance['group']."' AND `league_id` = '".$instance['league']."' AND `final` = '' AND `season` = '".$instance['season']."' AND TIMEDIFF(NOW(), `date`) <= 0";
+		$match_args = array("league_id" => $instance['league'], "final" => '', "season" => $instance['season'], "time" => "next");
+		if ( !empty($instance['group']) ) {
+			$match_args['group'] = $instance['group'];
 		}
 
 		if ( isset($instance['home_only']) && $instance['home_only'] == 1 )
-			$search .= $leaguemanager->buildHomeOnlyQuery($instance['league']);
+			$match_args['home_only'] = true;
+		
+		$match_args['limit'] = $match_limit;
 			
-		$matches = $leaguemanager->getMatches( $search, $match_limit );
+		$matches = $leaguemanager->getMatches( $match_args );
 		if ( $matches ) {
-			if ( empty($instance['group']) ) {
-				$teams = $leaguemanager->getTeams( "`league_id` = '".$instance['league']."' AND `season` = '".$instance['season']."'", "`id` ASC", 'ARRAY' );
-			} else {
-				$teams = $leaguemanager->getTeams( "`league_id` = '".$instance['league']."' AND `season` = '".$instance['season']."' AND `group` = '".$instance['group']."'", "`id` ASC", 'ARRAY' );
-			}
+			$team_args = array("league_id" => $instance['league'], "season" => $instance['season'], "orderby" => array("id" => "ASC"));
+			if ( !empty($instance['group']) ) $team_args["group"] = $instance['group'];
+			
+			$teams = $leaguemanager->getTeams( $team_args, 'ARRAY' );
 			
 			$curr = $this->getMatchIndex('next');
 			$match = $matches[$curr];
@@ -228,23 +228,24 @@ class LeagueManagerWidget extends WP_Widget
 		global $leaguemanager;
 
 		$match_limit = ( intval($instance['match_limit']) > 0 ) ? $instance['match_limit'] : false;			
-		if ( empty($instance['group']) ) {
-			$search = "`league_id` = '".$instance['league']."' AND `final` = '' AND `season` = '".$instance['season']."' AND TIMEDIFF(NOW(), `date`) > 0";
-		} else {
-			$search = "`group` = '".$instance['group']."' AND `league_id` = '".$instance['league']."' AND `final` = '' AND `season` = '".$instance['season']."' AND TIMEDIFF(NOW(), `date`) > 0";
+		$match_args = array("league_id" => $instance['league'], "final" => '', "season" => $instance['season'], "time" => "prev");
+		if ( !empty($instance['group']) ) {
+			$match_args['group'] = $instance['group'];
 		}
-		
+
 		if ( isset($instance['home_only']) && $instance['home_only'] == 1 )
-			$search .= $leaguemanager->buildHomeOnlyQuery($instance['league']);
+			$match_args['home_only'] = true;
+		
+		$match_args['limit'] = $match_limit;
+		$match_args['orderby'] = array("date" => "DESC", "id" => "DESC");
 			
-		$matches = $leaguemanager->getMatches( $search, $match_limit, '`date` DESC, `id` DESC' );
+		$matches = $leaguemanager->getMatches( $match_args );
 		if ( $matches ) {
-			if ( empty($instance['group']) ) {
-				$teams = $leaguemanager->getTeams( "`league_id` = '".$instance['league']."' AND `season` = '".$instance['season']."'", "`id` ASC", 'ARRAY' );
-			} else {
-				$teams = $leaguemanager->getTeams( "`league_id` = '".$instance['league']."' AND `season` = '".$instance['season']."' AND `group` = '".$instance['group']."'", "`id` ASC", 'ARRAY' );
-			}
-				
+			$team_args = array("league_id" => $instance['league'], "season" => $instance['season'], "orderby" => array("id" => "ASC"));
+			if ( !empty($instance['group']) ) $team_args["group"] = $instance['group'];
+			
+			$teams = $leaguemanager->getTeams( $team_args, 'ARRAY' );
+							
 			$curr = $this->getMatchIndex('prev');
 			$match = $matches[$curr];
 			$match_limit_js = ( $match_limit ) ? $match_limit : 'false';

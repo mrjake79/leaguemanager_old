@@ -115,13 +115,13 @@ class LeagueManagerBaseball extends LeagueManager
 		
 		$runs = array( 'for' => 0, 'against' => 0 );
 
-		$home = $leaguemanager->getMatches( "`home_team` = {$team_id}" );
+		$home = $leaguemanager->getMatches( array("home_team" => $team_id) );
 		foreach ( $home AS $match ) {
 			$runs['for'] += $match->runs['for'];
 			$runs['against'] += $match->runs['against'];
 		}
 
-		$away = $leaguemanager->getMatches( "`away_team` = {$team_id}" );
+		$away = $leaguemanager->getMatches( array("away_team" => $team_id) );
 		foreach ( $away AS $match ) {
 			$runs['for'] += $match->runs['against'];
 			$runs['against'] += $match->runs['for'];
@@ -164,12 +164,12 @@ class LeagueManagerBaseball extends LeagueManager
 		
 		$shutouts = 0;
 
-		$home = $leaguemanager->getMatches( "`home_team` = {$team_id}" );
+		$home = $leaguemanager->getMatches( array("home_team" => $team_id) );
 		foreach ( $home AS $match ) {
 			$shutouts += $match->shutouts['home'];
 		}
 
-		$away = $leaguemanager->getMatches( "`away_team` = {$team_id}" );
+		$away = $leaguemanager->getMatches( array("away_team" => $team_id) );
 		foreach ( $away AS $match ) {
 			$shutouts += $match->shutouts['away'];
 		}

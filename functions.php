@@ -215,15 +215,17 @@ function move_league_to_season( $league_id, $season, $new_league_id = false, $ol
 	global $leaguemanager, $wpdb;
 	if ( !$new_league_id ) $new_league_id = $league_id;
 	
-	$search = "`league_id` = '".$league_id."'";
-	if ( $old_season ) $search .= " AND `season` = '".$old_season."'";
-
-	if ( $teams = $leaguemanager->getTeams($search) ) {
+	$team_args = array("league_id" => $league_id);
+	if ( $old_season ) $team_args["season"] = $old_season;
+	
+	$match_args = $team_args;
+	
+	if ( $teams = $leaguemanager->getTeams($team_args) ) {
 		foreach ( $teams AS $team ) {
 			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_teams} SET `season` = '%d', `league_id` = '%d' WHERE `id` = '%d'", $season, $new_league_id, $team->id ) );
 		}
 	}
-	if ( $matches = $leaguemanager->getMatches($search) ) {
+	if ( $matches = $leaguemanager->getMatches($match_args) ) {
 		foreach ( $matches AS $match ) {
 			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `season` = '%d', `league_id` = '%d' WHERE `id` = '%d'", $season, $new_league_id, $match->id ) );
 		}

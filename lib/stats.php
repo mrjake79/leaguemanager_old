@@ -192,8 +192,7 @@ class LeagueManagerStats extends LeagueManager
 
 		$num = 0;
 
-		$search = ( $season ) ? "`season` = '".$season."'" : '';
-		if ( $matches = $leaguemanager->getMatches($search) ) {
+		if ( $matches = $leaguemanager->getMatches( array("season" => $season) ) ) {
 			foreach ( $matches AS $match ) {
 				if ( isset($match->{sanitize_title($statistics->name)}) ) {
 					foreach ( $match->{sanitize_title($statistics->name)} AS $stat ) {

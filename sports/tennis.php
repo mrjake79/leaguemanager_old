@@ -173,7 +173,7 @@ class LeagueManagerTennis extends LeagueManager
 		$league = $leaguemanager->getCurrentLeague();
 		$season = $leaguemanager->getSeason($league);
 
-		$matches = $leaguemanager->getMatches( "`league_id` = {$league->id} AND `season` = '".$season['name']."' AND `final` = '' AND `home_points` IS NOT NULL and `away_points` IS NOT NULL" );
+		$matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => '', "home_points" => "not_null", "away_points" => "not_null") );
 		foreach ( $matches AS $match ) {
 			if ( isset($match->home_partner) && isset($match->guest_partner) ) {
 				if ( $match->home_partner == $team_id || $match->guest_partner == $team_id )
@@ -197,7 +197,7 @@ class LeagueManagerTennis extends LeagueManager
 		$league = $leaguemanager->getCurrentLeague();
 		$season = $leaguemanager->getSeason($league);
 
-		$matches = $leaguemanager->getMatches( "`league_id` = {$league->id} AND `season` = '".$season['name']."' AND `final` = ''" );
+		$matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => '') );
 		foreach ( $matches AS $match ) {
 			if ( isset($match->home_partner) && isset($match->guest_partner) ) {
 				if ( $match->home_partner == $team_id && $match->winner_id == $match->home_team )
@@ -224,7 +224,7 @@ class LeagueManagerTennis extends LeagueManager
 		$league = $leaguemanager->getCurrentLeague();
 		$season = $leaguemanager->getSeason($league);
 
-		$matches = $leaguemanager->getMatches( "`league_id` = {$league->id} AND `season` = '".$season['name']."' AND `final` = '' AND `winner_id` = -1 AND `loser_id` = -1" );
+		$matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => '', "winner_id" => -1, "loser_id" => -1) );
 		foreach ( $matches AS $match ) {
 			if ( isset($match->home_partner) && isset($match->guest_partner) ) {
 				if ( $match->home_partner == $team_id || $match->guest_partner == $team_id )
@@ -249,7 +249,7 @@ class LeagueManagerTennis extends LeagueManager
 		$league = $leaguemanager->getCurrentLeague();
 		$season = $leaguemanager->getSeason($league);
 
-		$matches = $leaguemanager->getMatches( "`league_id` = {$league->id} AND `season` = '".$season['name']."' AND `final` = ''" );
+		$matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => '') );
 		foreach ( $matches AS $match ) {
 			if ( isset($match->home_partner) && isset($match->guest_partner) ) {
 				if ( $match->home_partner == $team_id && $match->winner_id == $match->away_team )
@@ -298,7 +298,7 @@ class LeagueManagerTennis extends LeagueManager
 		$league = $leaguemanager->getCurrentLeague();
 		$season = $leaguemanager->getSeason($league);
 
-		$matches = $leaguemanager->getMatches( "`league_id` = {$league->id} AND `season` = '".$season['name']."' AND `final` = ''" ); //( `home_team` = {$team_id} OR `away_team` = {$team_id} )" );
+		$matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => '') );
 		foreach ( $matches AS $match ) {
 			if ( $match->home_team == $team_id || $match->away_team == $team_id || ( isset($match->home_partner) && $match->home_partner == $team_id ) || ( isset($match->guest_partner) && $match->guest_partner == $team_id ) ) {
 				if (!isset($match->home_partner)) $match->home_partner = '';
