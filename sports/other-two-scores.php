@@ -79,7 +79,7 @@ class LeagueManagerTwoScores extends LeagueManager
 	 */
 	function displayStandingsHeader()
 	{
-		echo '<th class="num">'._x( 'Scores', 'leaguemanager' ).'</th><th>'.__( 'Diff', 'leaguemanager').'</th>';
+		echo '<th class="num">'.__( 'Scores', 'leaguemanager' ).'</th><th>'.__( 'Diff', 'leaguemanager').'</th>';
 	}
 
 

@@ -227,7 +227,7 @@ class LeagueManager
 		$teams = $wpdb->get_results($wpdb->prepare("SELECT `id` FROM {$wpdb->leaguemanager_teams} WHERE `league_id` = '%d' AND `home` = 1", intval($league_id)) );
 		if ( $teams ) {
 			foreach ( $teams AS $team )
-				$queries[] = "`home_team` = {$team->id} OR `away_team` = {$team->id}";
+				$queries[] = $wpdb->prepare("`home_team` = '%d' OR `away_team` = '%d'", $team->id, $team->id);
 		
 			$query = " AND (".implode(" OR ", $queries).")";
 			
@@ -531,10 +531,10 @@ class LeagueManager
 		if ($season) {
 			if ($season == "any") 
 				$search_terms[] = "`season` != ''";
-			else
+			elseif ($this->seasonExists($league_id, htmlspecialchars($season)))
 				$search_terms[] = $wpdb->prepare("`season` = '%s'", htmlspecialchars($season));
 		}
-		if ($group) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars($group));
+		if ($group && $this->groupExists($league_id, htmlspecialchars($group))) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars($group));
 		if ($rank) $search_terms[] = $wpdb->prepare("`rank` = '%s'", $rank);
 		
 		$search = "";
@@ -545,9 +545,11 @@ class LeagueManager
 		
 		$orderby_string = ""; $i = 0;
 		foreach ($orderby AS $order => $direction) {
-			if ($direction != "ASC" || $direction != "DESC") $direction = "ASC";
-			$orderby_string .= "`".$order."` ".$direction;
-			if ($i < (count($orderby)-1)) $orderby_string .= ",";
+			if (!in_array($direction, array("DESC", "ASC", "desc", "asc"))) $direction = "ASC";
+			if ($this->databaseColumnExists("teams", $order)) {
+				$orderby_string .= "`".$order."` ".$direction;
+				if ($i < (count($orderby)-1)) $orderby_string .= ",";
+			}
 			$i++;
 		}
 		$orderby = $orderby_string;
@@ -806,11 +808,11 @@ class LeagueManager
 		if ($season) {
 			if ($season == "any") 
 				$search_terms[] = "`season` != ''";
-			else
+			elseif ($this->seasonExists($league_id, htmlspecialchars($season)))
 				$search_terms[] = $wpdb->prepare("`season` = '%s'", htmlspecialchars($season));
 		}
-		if ($final != false) $search_terms[] = $wpdb->prepare("`final` = '%s'", htmlspecialchars($final));
-		if ($group != false) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars($group));
+		if ($final != false && $this->finalExists(htmlspecialchars($final))) $search_terms[] = $wpdb->prepare("`final` = '%s'", htmlspecialchars($final));
+		if ($group != false && $this->groupExists($league_id, htmlspecialchars($group))) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars($group));
 		if ($team_id) {
 			$wpdb->prepare("(`home_team` = '%d' OR `away_team` = '%d')", $team_id, $team_id);
 		} else {
@@ -856,9 +858,11 @@ class LeagueManager
 			
 		$orderby_string = ""; $i = 0;
 		foreach ($orderby AS $order => $direction) {
-			if ($direction != "ASC" || $direction != "DESC") $direction = "ASC";
-			$orderby_string .= "`".$order."` ".$direction;
-			if ($i < (count($orderby)-1)) $orderby_string .= ",";
+			if (!in_array($direction, array("DESC", "ASC", "desc", "asc"))) $direction = "ASC";
+			if ($this->databaseColumnExists("matches", $order)) {
+				$orderby_string .= "`".$order."` ".$direction;
+				if ($i < (count($orderby)-1)) $orderby_string .= ",";
+			}
 			$i++;
 		}
 		$order = $orderby_string;
@@ -1003,6 +1007,59 @@ class LeagueManager
 			$div_output .= "</ul>\n";
 		}
 		return $div_output;
+	}
+	
+	
+	/**
+	 * some security checks to prevent SQL injections
+	 *
+	 */
+	function seasonExists($league_id, $season)
+	{
+		$league = $this->getLeague($league_id);
+		if (in_array($season, array_keys($league->seasons)))
+			return true;
+		else
+			return false;
+	}
+	
+	function groupExists($league_id, $group)
+	{
+		$league = $this->getLeague($league_id);
+		if (isset($league->groups)) {
+			$groups = explode(";", $league->groups);
+			if (in_array($group, $groups))
+				return true;
+		}
+		return false;
+	}
+	
+	function finalExists($final)
+	{
+		global $championship;
+		$finals = $championship->getFinals();
+		if (in_array($final, array_keys($finals)))
+			return true;
+		else
+			return false;
+	}
+	
+	function databaseColumnExists($table, $column)
+	{
+		global $wpdb;
+		
+		if ($table == "teams")
+			$table = $wpdb->leaguemanager_teams;
+		elseif ($table == "matches")
+			$table = $wpdb->leaguemanager_matches;
+		else
+			return false;
+		
+		$num = $wpdb->query( $wpdb->prepare("SHOW COLUMNS FROM {$table} LIKE %s", $column) );
+		if ($num == 1)
+			return true;
+		else
+			return false;
 	}
 }
 ?>

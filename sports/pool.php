@@ -149,6 +149,9 @@ class LeagueManagerPool extends LeagueManager
 	 */
 	function displayStandingsColumns( $team, $rule )
 	{
+		if (!isset($team->forScore)) $team->forScore = '';
+		if (!isset($team->againstScore)) $team->againstScore = '';
+		
 		if ( is_admin() && $rule == 'manual' )
 			echo '<td><input type="text" size="2" name="custom['.$team->id.'][forScore]" value="'.$team->forScore.'" /></td><td><input type="text" size="2" name="custom['.$team->id.'][againstScore]" value="'.$team->againstScore.'" /></td>';
 		else
@@ -188,6 +191,9 @@ class LeagueManagerPool extends LeagueManager
 	 */
 	function displayMatchesColumns( $match )
 	{
+		if (!isset($match->forScore)) $match->forScore = '';
+		if (!isset($match->againstScore)) $match->againstScore = '';
+		
 		echo '<td><input class="points" type="text" size="2" id="forscore_'.$match->id.'" name="custom['.$match->id.'][forScore]" value="'.$match->forScore.'" /></td><td><input class="points" type="text" size="2" id="againstscore_'.$match->id.'" name="custom['.$match->id.'][againstScore]" value="'.$match->againstScore.'" /></td>';
 	}
 

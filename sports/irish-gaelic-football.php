@@ -75,6 +75,9 @@ class LeagueManagerGaelicFootball extends LeagueManager
 	 */
 	function displayMatchesColumns( $match )
 	{
+		if (!isset($match->num_goals)) $match->num_goals = array('home' => '', 'away' => '');
+		if (!isset($match->num_points)) $match->num_points = array('home' => '', 'away' => '');
+		
 		echo '<td><input class="points" type="text" size="2" id="num_goals_home_'.$match->id.'" name="custom['.$match->id.'][num_goals][home]" value="'.$match->num_goals['home'].'" /> : <input class="points" type="text" size="2" id="num_goals_away_'.$match->id.'" name="custom['.$match->id.'][num_goals][away]" value="'.$match->num_goals['away'].'" /></td>';
 		echo '<td><input class="points" type="text" size="2" id="num_points_home_'.$match->id.'" name="custom['.$match->id.'][num_points][home]" value="'.$match->num_points['home'].'" /> : <input class="points" type="text" size="2" id="num_points_away_'.$match->id.'" name="custom['.$match->id.'][num_points][away]" value="'.$match->num_points['away'].'" /></td>';
 	}

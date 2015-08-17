@@ -85,7 +85,7 @@ class LeagueManagerHandball extends LeagueManager
 	 */
 	function displayStandingsHeader()
 	{
-		echo '<th class="num">'._x( 'Goals', 'leaguemanager' ).'</th><th class="num">'.__( 'Diff', 'leaguemanager').'</th>';
+		echo '<th class="num">'.__( 'Goals', 'leaguemanager' ).'</th><th class="num">'.__( 'Diff', 'leaguemanager').'</th>';
 	}
 
 

@@ -83,7 +83,7 @@ class LeagueManagerGymnastics extends LeagueManager
 	 */
 	function displayStandingsHeader()
 	{
-		echo '<th class="num">'._c( 'AP|apparatus points', 'leaguemanager' ).'</th><th>'.__( 'Diff', 'leaguemanager').'</th>';
+		echo '<th class="num">'.__( 'AP', 'leaguemanager' ).'</th><th>'.__( 'Diff', 'leaguemanager').'</th>';
 	}
 
 
@@ -130,6 +130,9 @@ class LeagueManagerGymnastics extends LeagueManager
 	 */
 	function displayMatchesColumns( $match )
 	{
+		if (!isset($match->apparatus_points))
+			$match->apparatus_points = array('plus' => '', 'minus' => '');
+		
 		echo '<td><input class="points" type="text" size="2" id="apparatus_points_plus_'.$match->id.'" name="custom['.$match->id.'][apparatus_points][plus]" value="'.$match->apparatus_points['plus'].'" /> : <input class="points" type="text" size="2" id="apparatus_points_minus_'.$match->id.'" name="custom['.$match->id.'][apparatus_points][minus]" value="'.$match->apparatus_points['minus'].'" /></td>';
 	}
 
@@ -199,7 +202,8 @@ class LeagueManagerGymnastics extends LeagueManager
 		if ( count($home) > 0 ) {
 			foreach ( $home AS $match ) {
 				$custom = (array)maybe_unserialize($match->custom);
-
+				
+				if (!isset($custom['apparatus_points'])) $custom['apparatus_points'] = array('plus' => '', 'minus' => '');
 				$points['plus'] += intval($custom['apparatus_points']['plus']);
 				$points['minus'] += intval($custom['apparatus_points']['minus']);
 			}
@@ -208,6 +212,8 @@ class LeagueManagerGymnastics extends LeagueManager
 		if ( count($away) > 0 ) {
 			foreach ( $away AS $match ) {
 				$custom = (array)maybe_unserialize($match->custom);
+				
+				if (!isset($custom['apparatus_points'])) $custom['apparatus_points'] = array('plus' => '', 'minus' => '');
 				$points['plus'] += intval($custom['apparatus_points']['minus']);
 				$points['minus'] += intval($custom['apparatus_points']['plus']);
 			}

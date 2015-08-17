@@ -70,7 +70,7 @@ class LeagueManagerTabletennis extends LeagueManager
 	 */
 	function getPointRules( $rules )
 	{
-		$rules['tabletennis'] = array( 'forwin' => 0, 'fordraw' => 0, 'forloss' => 0 );
+		$rules['tabletennis'] = array( 'forwin' => 1, 'fordraw' => 0, 'forloss' => 0 );
 
 		return $rules;
 	}

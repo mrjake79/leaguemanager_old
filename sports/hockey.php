@@ -300,6 +300,8 @@ class LeagueManagerHockey extends LeagueManager
 	 */
 	function displayMatchesColumns( $match )
 	{
+		if (!isset($match->thirds)) $match->thirds = array(1 => array('plus' => '', 'minus' => ''), 2 => array('plus' => '', 'minus' => ''), 3 => array('plus' => '', 'minus' => ''));
+		
 		echo '<td>';
 		for ( $i = 1; $i <= 3; $i++ )
 			echo '<input class="points" type="text" size="2" id="thirds_plus_'.$i.'_'.$match->id.'" name="custom['.$match->id.'][thirds]['.$i.'][plus]" value="'.$match->thirds[$i]['plus'].'" /> : <input class="points" type="text" size="2" id="thirds_minus_'.$i.'_'.$match->id.'" name="custom['.$match->id.'][thirds]['.$i.'][minus]" value="'.$match->thirds[$i]['minus'].'" /><br />';

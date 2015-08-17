@@ -165,6 +165,9 @@ class LeagueManagerVolleyball extends LeagueManager
 		global $leaguemanager;
 		$league = $leaguemanager->getCurrentLeague();
 
+		if (!isset($team->sets)) $team->sets = array('won' => '', 'lost' => '');
+		if (!isset($team->ballpoints)) $team->ballpoints = array('plus' => '', 'minus' => '');
+		
 		if ( is_admin() && $rule == 'manual' )
 			echo '<td><input type="text" size="2" name="custom['.$team->id.'][sets][won]" value="'.$team->sets['won'].'" />:<input type="text" size="2" name="custom['.$team->id.'][sets][lost]" value="'.$team->sets['lost'].'" /></td><td><input type="text" size="2" name="custom['.$team->id.'][ballpoints][plus]" value="'.$team->ballpoints['plus'].'" />:<input type="text" size="2" name="custom['.$team->id.'][ballpoints][minus]" value="'.$team->ballpoints['minus'].'" /></td>';
 		else
@@ -180,6 +183,9 @@ class LeagueManagerVolleyball extends LeagueManager
 	 */
 	function editTeam( $team )
 	{
+		if (!isset($team->sets)) $team->sets = array('won' => '', 'lost' => '');
+		if (!isset($team->ballpoints)) $team->ballpoints = array('plus' => '', 'minus' => '');
+		
 		echo '<input type="hidden" name="custom[sets][won]" value="'.$team->sets['won'].'" /><input type="hidden" name="custom[sets][lost]" value="'.$team->sets['lost'].'" /><input type="hidden" name="custom[ballpoints][plus]" value="'.$team->ballpoints['plus'].'" /><input type="hidden" name="custom[ballpoints][minus]" value="'.$team->ballpoints['minus'].'" />';
 	}
 
@@ -204,7 +210,14 @@ class LeagueManagerVolleyball extends LeagueManager
 	 */
 	function displayMatchesColumns( $match )
 	{
+		if (!isset($match->sets)) {
+			$match->sets = array();
+		}
+		
 		for ( $i = 1; $i <= 5; $i++ ) {
+			if (!isset($match->sets[$i]['home'])) $match->sets[$i]['home'] = '';
+			if (!isset($match->sets[$i]['away'])) $match->sets[$i]['away'] = '';
+			
 			echo '<td><input class="points" type="text" size="2" id="set_'.$match->id.'_'.$i.'_home" name="custom['.$match->id.'][sets]['.$i.'][home]" value="'.$match->sets[$i]['home'].'" /> : <input class="points" type="text" size="2" id="set_'.$match->id.'_'.$i.'_away" name="custom['.$match->id.'][sets]['.$i.'][away]" value="'.$match->sets[$i]['away'].'" /></td>';
 		}
 	}
@@ -218,7 +231,7 @@ class LeagueManagerVolleyball extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t"._c( 'Sets', 'leaguemanager' )."\t\t\t\t";
+		$content .= "\t".__( 'Sets', 'leaguemanager' )."\t\t\t\t";
 		return $content;
 	}
 

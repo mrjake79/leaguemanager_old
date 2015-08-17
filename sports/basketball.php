@@ -129,7 +129,7 @@ class LeagueManagerBasketball extends LeagueManager
 	 */
 	function displayStandingsHeader()
 	{
-		echo '<th class="num">'._x( 'Baskets', 'leaguemanager' ).'</th><th class="num">'.__( 'Diff', 'leaguemanager').'</th>';
+		echo '<th class="num">'.__( 'Baskets', 'leaguemanager' ).'</th><th class="num">'.__( 'Diff', 'leaguemanager').'</th>';
 //		echo '<th class="num">'._x( 'Baskets', 'leaguemanager' ).'</th><th class="num">'.__( 'Diff', 'leaguemanager').'</th><th class="num">'.__( 'GA', 'leaguemanager').'</th><th class="num">'.__( 'WinPerc', 'leaguemanager').'</th>';
 	}
 
