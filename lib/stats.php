@@ -4,7 +4,7 @@
  *
  * @author 	Kolja Schleich
  * @package	LeagueManager
- * @copyright 	Copyright 2008-2009
+ * @copyright Copyright 2008
 */
 class LeagueManagerStats extends LeagueManager
 {
@@ -303,7 +303,7 @@ class LeagueManagerStats extends LeagueManager
 	function del( $id )
 	{
 		global $wpdb;
-		$wpdb->query( "DELETE FROM {$wpdb->leaguemanager_stats} WHERE `id` = {$id}" );
+		$wpdb->query( $wpdb->prepare("DELETE FROM {$wpdb->leaguemanager_stats} WHERE `id` = '%d'", $id) );
 	}
 
 
@@ -326,7 +326,7 @@ class LeagueManagerStats extends LeagueManager
 			$custom[$stat] = array_values($data);
 		}
 		$custom['hasStats'] = true;
-		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `custom` = '%s' WHERE `id` = '%s'", maybe_serialize($custom), $match_id ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `custom` = '%s' WHERE `id` = '%d'", maybe_serialize($custom), $match_id ) );
 
 		parent::setMessage(__('Saved Statstics', 'leaguemanager'));
 		parent::printMessage();

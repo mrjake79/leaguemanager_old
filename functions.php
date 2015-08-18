@@ -62,13 +62,13 @@ function leaguemanager_standings( $league_id, $args = array() ) {
 
 function get_latest_results($id_team, $limit = 5) {
      global $wpdb;
-     $latest_results = $wpdb->get_results("SELECT `id`, `date`, `home_points`, `away_points`, `home_team`, `away_team`, `custom`
+     $latest_results = $wpdb->get_results( $wpdb->prepare("SELECT `id`, `date`, `home_points`, `away_points`, `home_team`, `away_team`, `custom`
              FROM {$wpdb->leaguemanager_matches}
-             WHERE (home_team = $id_team OR away_team = $id_team)
+             WHERE (home_team = %d OR away_team = %d)
              AND (DATEDIFF(NOW(), `date`) >= 0)
              AND (home_points IS NOT NULL OR away_points IS NOT NULL)
              ORDER BY date DESC
-             LIMIT $limit");
+             LIMIT %d", $id_team, $id_team, $limit) );
 
 	$i = 0;
 	foreach ( $latest_results AS $match ) {
@@ -92,12 +92,12 @@ function get_latest_results($id_team, $limit = 5) {
 
 function get_next_match($id_team, $limit = 1) {
      global $wpdb;
-     $next_results = $wpdb->get_results("SELECT `id`, `date`, `home_team`, `away_team`
+     $next_results = $wpdb->get_results( $wpdb->prepare("SELECT `id`, `date`, `home_team`, `away_team`
              FROM {$wpdb->leaguemanager_matches}
-             WHERE (home_team = $id_team OR away_team = $id_team)
+             WHERE (home_team = %d OR away_team = %d)
              AND (DATEDIFF(NOW(), `date`) <= 0)
              ORDER BY date DESC
-             LIMIT $limit");
+             LIMIT %d", $id_team, $id_team, $limit) );
 
              return $next_results;
 }

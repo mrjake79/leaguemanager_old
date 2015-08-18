@@ -91,7 +91,8 @@ class LeagueManagerBasketball extends LeagueManager
 		$goals = array( 'plus' => 0, 'minus' => 0 );
 
 		$team_id = intval($team_id);
-		$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '".$team_id."'" );
+		//$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '%d'", $team_id) );
+		$matches = $leaguemanager->getMatches( array("home_team" => $team_id) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
@@ -104,7 +105,8 @@ class LeagueManagerBasketball extends LeagueManager
 			}
 		}
 
-		$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '".$team_id."'" );
+		//$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '%d'", $team_id) );
+		$matches = $leaguemanager->getMatches( array("away_team" => $team_id) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
@@ -130,7 +132,6 @@ class LeagueManagerBasketball extends LeagueManager
 	function displayStandingsHeader()
 	{
 		echo '<th class="num">'.__( 'Baskets', 'leaguemanager' ).'</th><th class="num">'.__( 'Diff', 'leaguemanager').'</th>';
-//		echo '<th class="num">'._x( 'Baskets', 'leaguemanager' ).'</th><th class="num">'.__( 'Diff', 'leaguemanager').'</th><th class="num">'.__( 'GA', 'leaguemanager').'</th><th class="num">'.__( 'WinPerc', 'leaguemanager').'</th>';
 	}
 
 
@@ -153,10 +154,7 @@ class LeagueManagerBasketball extends LeagueManager
 			printf($league->point_format2, $team->points2_plus, $team->points2_minus);
 
 		echo '</td>';
-
 		echo '<td class="num">'.$team->diff.'</td>';
-//		echo '<td class="num">'.(round((($team->points2_plus) > 0 ? (($team->points2_minus) > 0 ? ((($team->points2_plus)/($team->points2_minus))*1000) : 1000) : 0))).'</td>';
-//        echo '<td class="num">'.(round((($team->won_matches) > 0 ? (($team->done_matches) > 0 ? ((($team->won_matches)/($team->done_matches))*100) : 100) : 0))).'</td>';
 	}
 
 
@@ -246,6 +244,7 @@ class LeagueManagerBasketball extends LeagueManager
 	 */
 	function importMatches( $custom, $line, $match_id )
 	{
+		$match_id = intval($match_id);
 		$quarters = array( explode("-", $line[8]), explode("-", $line[9]), explode("-", $line[10]), explode("-", $line[11]) );
 		$overtime = explode("-", $line[12]);
 

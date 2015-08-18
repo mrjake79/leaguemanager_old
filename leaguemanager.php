@@ -202,6 +202,7 @@ class LeagueManagerLoader
 		}
 
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		// define bridge to ProjectManager
 		if ( file_exists(WP_PLUGIN_DIR . '/projectmanager/projectmanager.php') && is_plugin_active("projectmanager/projectmanager.php") ) {
 			$p = get_option('projectmanager');
 			if (version_compare($p['version'], '2.4.7', '>=')) {
@@ -211,6 +212,7 @@ class LeagueManagerLoader
 				$this->bridge = true;
 			}
 		}
+		
 		$lmShortcodes = new LeagueManagerShortcodes($this->bridge);
 	}
 

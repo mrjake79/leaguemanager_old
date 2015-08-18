@@ -516,6 +516,7 @@ class LeagueManagerTennis extends LeagueManager
 	 */
 	function importMatches( $custom, $line, $match_id )
 	{
+		$match_id = intval($match_id);
 		for( $x = 8; $x <= 10; $x++ ) {
 			$set = explode("-",$line[$x]);
 			$custom[$match_id]['sets'][] = array( 'player1' => $set[0], 'player2' => $set[1] );

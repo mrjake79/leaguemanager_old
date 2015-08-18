@@ -4,7 +4,7 @@
  * 
  * @author 	Kolja Schleich
  * @package	LeagueManager
- * @copyright 	Copyright 2008-2009
+ * @copyright Copyright 2008
 */
 
 class LeagueManagerBridge extends LeagueManager
@@ -41,7 +41,7 @@ class LeagueManagerBridge extends LeagueManager
 	 */
 	function setProjectID( $project_id )
 	{
-		$this->project_id = $project_id;
+		$this->project_id = intval($project_id);
 	}
 
 	
@@ -57,10 +57,10 @@ class LeagueManagerBridge extends LeagueManager
 
 		$cat_id = ( isset($roster['cat_id']) && $roster['cat_id'] != -1 ) ? $cat_id = $roster['cat_id'] : false;
 		if ( !empty($roster['id']) && isset($projectmanager) ) {
-			$projectmanager->init($roster['id']);
+			$projectmanager->init(intval($roster['id']));
 			$projectmanager->setCatID($cat_id);
 
-			$search = "`project_id` = {$roster['id']} ";
+			$search = "`project_id` = ".intval($roster['id']);
 			if ( $cat_id ) $search .= $projectmanager->getCategorySearchString($cat_id);
 
 			$datasets = $wpdb->get_results( "SELECT `id`, `name` FROM {$wpdb->projectmanager_dataset} WHERE $search" );

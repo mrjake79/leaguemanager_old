@@ -13,7 +13,7 @@ The following variables are usable:
 */
 ?>
 <?php if (isset($_GET['match']) ) : ?>
-	<?php leaguemanager_match($_GET['match']); ?>
+	<?php leaguemanager_match(intval($_GET['match'])); ?>
 <?php else : ?>
 
 <?php if ( ($league->show_match_day_selection || $league->show_team_selection) && $league->mode != 'championship' ) : ?>

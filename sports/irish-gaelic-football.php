@@ -124,6 +124,8 @@ class LeagueManagerGaelicFootball extends LeagueManager
 	 */
 	function importMatches( $custom, $line, $match_id )
 	{
+		$match_id = intval($match_id);
+		
 		$num_goals = explode("-", $line[8]);
 		$num_pints = explode("-", $line[9]);
 		$custom[$match_id]['num_goals'] = array( 'home' => $num_goals[0], 'away' => $num_goals[1] );
@@ -159,7 +161,7 @@ class LeagueManagerGaelicFootball extends LeagueManager
 		$winner = $admin->getMatchResult( $score['home'], $score['away'], $home_team, $away_team, 'winner' );
 		$loser =  $admin->getMatchResult( $score['home'], $score['away'], $home_team, $away_team, 'loser' );
 
-		$wpdb->query( "UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = ".$score['home'].", `away_points` = ".$score['away'].", `winner_id` = ".intval($winner).", `loser_id` = ".intval($loser)." WHERE `id` = {$match_id}" );
+		$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%d', `away_points` = '%d', `winner_id` = '%d', `loser_id` = '%d' WHERE `id` = '%d'", $score['home'], $score['away'], $winner, $loser, $match_id) );
 	}
 }
 

@@ -71,6 +71,7 @@ class LeagueManagerBaseball extends LeagueManager
 	 */
 	function rankTeams( $teams )
 	{
+		$won = $lost = array();
 		foreach ( $teams AS $key => $row ) {
 			$won[$key] = $row->won_matches;
 			$lost[$key] = $row->lost_matches;
@@ -145,7 +146,7 @@ class LeagueManagerBaseball extends LeagueManager
 		if ( $team->rank == 1 ) {
 			return 0;
 		} else {
-			$first = $wpdb->get_results( "SELECT `rank`, `won_matches`, `lost_matches` FROM {$wpdb->leaguemanager_teams} WHERE `rank` = 1 AND `league_id` = '".$team->league_id."' AND `season` = '".$team->season."'" );
+			$first = $wpdb->get_results( $wpdb->prepare("SELECT `rank`, `won_matches`, `lost_matches` FROM {$wpdb->leaguemanager_teams} WHERE `rank` = 1 AND `league_id` = '%d' AND `season` = '%s'", $team->league_id, $team->season) );
 			$gb = ( $first[0]->won_matches - $team->won_matches + $team->lost_matches - $first[0]->lost_matches ) / 2;
 			return round($gb, 3);
 		}
@@ -292,6 +293,7 @@ class LeagueManagerBaseball extends LeagueManager
 	 */
 	function importMatches( $custom, $line, $match_id )
 	{
+		$match_id = intval($match_id);
 		$shutouts = explode("-", $line[10]);
 
 		$custom[$match_id]['runs'] = array( 'for' => $line[8], 'against' => $line[9] );

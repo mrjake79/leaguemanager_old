@@ -14,23 +14,23 @@ else :
 	<h3><?php _e( 'Color Scheme', 'leaguemanager' ) ?></h3>
 	<table class='form-table'>
 	<tr valign='top'>
-		<th scope='row'><label for='color_headers'><?php _e( 'Table Headers', 'leaguemanager' ) ?></label></th><td><input type='text' name='color_headers' id='color_headers' value='<?php echo ( isset($options['colors']['headers']) ? ($options['colors']['headers']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["colors"].color_headers,"pick_color_headers"); return false;' id='pick_color_headers'>&#160;&#160;&#160;</a></td>
+		<th scope='row'><label for='color_headers'><?php _e( 'Table Headers', 'leaguemanager' ) ?></label></th><td><input type='text' name='color_headers' id='color_headers' value='<?php echo ( isset($options['colors']['headers']) ? ($options['colors']['headers']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["settings"].color_headers,"pick_color_headers"); return false;' id='pick_color_headers'>&#160;&#160;&#160;</a></td>
 	</tr>
 	<tr valign='top'>
 		<th scope='row'><label for='color_rows'><?php _e( 'Table Rows', 'leaguemanager' ) ?></label></th>
 		<td>
-			<p class='table_rows'><input type='text' name='color_rows_alt' id='color_rows_alt' value='<?php echo (isset($options['colors']['rows']['alternate']) ? ($options['colors']['rows']['alternate']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["colors"].color_rows_alt,"pick_color_rows_alt"); return false;' id='pick_color_rows_alt'>&#160;&#160;&#160;</a></p>
-			<p class='table_rows'><input type='text' name='color_rows' id='color_rows' value='<?php echo ( isset($options['colors']['rows']['main']) ? ($options['colors']['rows']['main']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["colors"].color_rows,"pick_color_rows"); return false;' id='pick_color_rows'>&#160;&#160;&#160;</a></p>
+			<p class='table_rows'><input type='text' name='color_rows_alt' id='color_rows_alt' value='<?php echo (isset($options['colors']['rows']['alternate']) ? ($options['colors']['rows']['alternate']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["settings"].color_rows_alt,"pick_color_rows_alt"); return false;' id='pick_color_rows_alt'>&#160;&#160;&#160;</a></p>
+			<p class='table_rows'><input type='text' name='color_rows' id='color_rows' value='<?php echo ( isset($options['colors']['rows']['main']) ? ($options['colors']['rows']['main']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["settings"].color_rows,"pick_color_rows"); return false;' id='pick_color_rows'>&#160;&#160;&#160;</a></p>
 		</td>
 	</tr>
 	<tr valign='top'>
-		<th scope='row'><label for='color_rows_ascend'><?php _e( 'Teams Ascend', 'leaguemanager' ) ?></label></th><td><input type='text' name='color_rows_ascend' id='color_rows_ascend' value='<?php echo ( isset($options['colors']['rows']['ascend']) ? ($options['colors']['rows']['ascend']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["colors"].color_rows_ascend,"pick_color_rows_ascend"); return false;' id='pick_color_rows_ascend'>&#160;&#160;&#160;</a></td>
+		<th scope='row'><label for='color_rows_ascend'><?php _e( 'Teams Ascend', 'leaguemanager' ) ?></label></th><td><input type='text' name='color_rows_ascend' id='color_rows_ascend' value='<?php echo ( isset($options['colors']['rows']['ascend']) ? ($options['colors']['rows']['ascend']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["settings"].color_rows_ascend,"pick_color_rows_ascend"); return false;' id='pick_color_rows_ascend'>&#160;&#160;&#160;</a></td>
 	</tr>
 	<tr valign='top'>
-		<th scope='row'><label for='color_rows_descend'><?php _e( 'Teams Descend', 'leaguemanager' ) ?></label></th><td><input type='text' name='color_rows_descend' id='color_rows_descend' value='<?php echo ( isset($options['colors']['rows']['descend']) ? ($options['colors']['rows']['descend']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["colors"].color_rows_descend,"pick_color_rows_descend"); return false;' id='pick_color_rows_descend'>&#160;&#160;&#160;</a></td>
+		<th scope='row'><label for='color_rows_descend'><?php _e( 'Teams Descend', 'leaguemanager' ) ?></label></th><td><input type='text' name='color_rows_descend' id='color_rows_descend' value='<?php echo ( isset($options['colors']['rows']['descend']) ? ($options['colors']['rows']['descend']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["settings"].color_rows_descend,"pick_color_rows_descend"); return false;' id='pick_color_rows_descend'>&#160;&#160;&#160;</a></td>
 	</tr>
 	<tr valign='top'>
-		<th scope='row'><label for='color_rows_relegation'><?php _e( 'Teams Relegation', 'leaguemanager' ) ?></label></th><td><input type='text' name='color_rows_relegation' id='color_rows_relegation' value='<?php echo ( isset($options['colors']['rows']['relegation']) ? ($options['colors']['rows']['relegation']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["colors"].color_rows_relegation,"pick_color_rows_relegation"); return false;' id='pick_color_rows_relegation'>&#160;&#160;&#160;</a></td>
+		<th scope='row'><label for='color_rows_relegation'><?php _e( 'Teams Relegation', 'leaguemanager' ) ?></label></th><td><input type='text' name='color_rows_relegation' id='color_rows_relegation' value='<?php echo ( isset($options['colors']['rows']['relegation']) ? ($options['colors']['rows']['relegation']) : '' ) ?>' size='10' /><a href='#' class='colorpicker' onClick='cp.select(document.forms["settings"].color_rows_relegation,"pick_color_rows_relegation"); return false;' id='pick_color_rows_relegation'>&#160;&#160;&#160;</a></td>
 	</tr>
 	</table>
 	

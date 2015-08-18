@@ -163,6 +163,7 @@ class LeagueManagerRacing extends LeagueManager
 	 */
 	function importMatches( $custom, $line, $match_id )
 	{
+		$match_id = intval($match_id);
 		$custom[$match_id]['racetype'] = $line[8];
 		return $custom;
 	}
@@ -368,11 +369,11 @@ class LeagueManagerRacing extends LeagueManager
 
 		$data = isset($custom['raceresult']) ? $custom['raceresult'] : array();
 		while ( list($id) = each($racer) ) {
-			$data[$id]['name'] = $racer_name[$id];
+			$data[$id]['name'] = htmlspecialchars($racer_name[$id]);
 			$data[$id]['category'] = $category[$id];
-			$data[$id]['time'] = $time[$id];
-			$data[$id]['points'] = $points[$id];
-			$data[$id]['info'] = $info[$id];
+			$data[$id]['time'] = htmlspecialchars($time[$id]);
+			$data[$id]['points'] = intval($points[$id]);
+			$data[$id]['info'] = htmlspecialchars($info[$id]);
 		}
 
 		$custom['raceresult'] = $data;
@@ -381,6 +382,7 @@ class LeagueManagerRacing extends LeagueManager
 		$leaguemanager->setMessage( __( 'Race Results Saved', 'leaguemanager' ) );
 		return true;
 	}
+	
 	
 	/**
 	 * get racing results for one racer

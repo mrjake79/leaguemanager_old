@@ -93,7 +93,7 @@ class LeagueManagerVolleyball extends LeagueManager
 	{
 		global $wpdb, $leaguemanager;
 
-		$team = $wpdb->get_results( "SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = {$team_id}" );
+		$team = $wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d'", $team_id) );
 		$custom = maybe_unserialize($team->custom);
 		$custom = $this->getStandingsData($team_id, $custom);
 
@@ -267,6 +267,7 @@ class LeagueManagerVolleyball extends LeagueManager
 	 */
 	function importMatches( $custom, $line, $match_id )
 	{
+		$match_id = intval($match_id);
 		for( $x = 8; $x <= 12; $x++ ) {
 			$set = explode(":",$line[$x]);
 			$custom[$match_id]['sets'][] = array( 'home' => $set[0], 'away' => $set[1] );

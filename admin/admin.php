@@ -4,7 +4,7 @@
 *
 * @author 	Kolja Schleich
 * @package	LeagueManager
-* @copyright 	Copyright 2014
+* @copyright Copyright 2014
 */
 
 class LeagueManagerAdminPanel extends LeagueManager
@@ -1319,9 +1319,9 @@ class LeagueManagerAdminPanel extends LeagueManager
 			$match_ID = (int) $_POST['match_id'];
 			$curr_match_ID = (int) $_POST['curr_match_id'];
 			if ( $curr_match_ID != $match_ID ) {
-				$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `post_id` = '%d' wHERE `id` = '%d'", $post_ID, $match_ID ) );
+				$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `post_id` = '%d' WHERE `id` = '%d'", $post_ID, $match_ID ) );
 				if ( $curr_match_ID != 0 )
-					$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `post_id` = 0 wHERE `id` = '%d'", $curr_match_ID ) );
+					$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `post_id` = 0 WHERE `id` = '%d'", $curr_match_ID ) );
 			}
 		}
 	}
@@ -1353,6 +1353,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 	{
 		global $leaguemanager;
 
+		$league_id = intval($league_id);
 		if ( $file['size'] > 0 ) {
 			/*
 			* Upload CSV file to image directory, temporarily

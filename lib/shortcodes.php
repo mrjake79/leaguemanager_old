@@ -4,7 +4,7 @@
 *
 * @author 	Kolja Schleich
 * @package	LeagueManager
-* @copyright 	Copyright 2008-2009
+* @copyright Copyright 2008
 */
 
 class LeagueManagerShortcodes extends LeagueManager
@@ -91,7 +91,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			'home' => 0
 		), $atts ));
 
-		$search = !empty($league_name) ? $league_name : $league_id;
+		$search = !empty($league_name) ? $league_name : intval($league_id);
 		$league = $leaguemanager->getLeague( $search );
 		if (!$season) {
 			$season = $leaguemanager->getSeason( $league );
@@ -217,7 +217,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			'show_match_day_selection' => ''
 		), $atts ));
 		
-		$search = !empty($league_name) ? $league_name : $league_id;
+		$search = !empty($league_name) ? $league_name : intval($league_id);
 		$league = $leaguemanager->getLeague( $search );
 		$league_id = $this->league_id = $league->id;
 		$leaguemanager->setLeagueId($league_id);
@@ -402,7 +402,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			'template' => '',
 		), $atts ));
 
-		$match = $leaguemanager->getMatch($id);
+		$match = $leaguemanager->getMatch(intval($id));
 		$league = $leaguemanager->getLeague($match->league_id);
 		$home = $leaguemanager->getTeam($match->home_team);
 		$away = $leaguemanager->getTeam($match->away_team);
@@ -479,7 +479,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			'season' => false,
 		), $atts ));
 
-		$search = !empty($league_name) ? $league_name : $league_id;
+		$search = !empty($league_name) ? $league_name : intval($league_id);
 		$league = $leaguemanager->getLeague( $search );
 		if ( !$season ) {
 			$season = $leaguemanager->getSeason($league);
@@ -578,7 +578,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			'group' => false
 		), $atts ));
 
-		$league = $leaguemanager->getLeague($league_id);
+		$league = $leaguemanager->getLeague(intval($league_id));
 		if (empty($season)) {
 			$season = $leaguemanager->getSeason($league);
 			$season = $season['name'];
@@ -616,7 +616,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			'echo' => 0,
 		), $atts ));
 
-		$team = $leaguemanager->getTeam( $id );
+		$team = $leaguemanager->getTeam( intval($id) );
 		$league = $leaguemanager->getLeague( $team->league_id );
 
 		// Get next match
@@ -698,7 +698,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			'season' => false
 		), $atts ));
 
-		$search = !empty($league_name) ? $league_name : $league_id;
+		$search = !empty($league_name) ? $league_name : intval($league_id);
 		$league = $leaguemanager->getLeague( $search );
 		if (empty($season)) {
 			$season = $leaguemanager->getSeason($league);
@@ -839,15 +839,16 @@ class LeagueManagerShortcodes extends LeagueManager
 				$points = array( 'home' => $match->home_points, 'away' => $match->away_points );
 			}
 		}
-			// unplayed match
-			if ( !$match || (NULL == $match->home_points && NULL == $match->away_points) )
-				$out = "<td class='num'>-:-</td>";
-			// match at home
-			elseif ( $curr_team_id == $match->home_team )
-				$out = "<td class='num'>".sprintf("%s:%s", $points['home'], $points['away'])."</td>";
-			// match away
-			elseif ( $opponent_id == $match->home_team )
-				$out = "<td class='num'>".sprintf("%s:%s", $points['away'], $points['home'])."</td>";
+		
+		// unplayed match
+		if ( !$match || (NULL == $match->home_points && NULL == $match->away_points) )
+			$out = "<td class='num'>-:-</td>";
+		// match at home
+		elseif ( $curr_team_id == $match->home_team )
+			$out = "<td class='num'>".sprintf("%s:%s", $points['home'], $points['away'])."</td>";
+		// match away
+		elseif ( $opponent_id == $match->home_team )
+			$out = "<td class='num'>".sprintf("%s:%s", $points['away'], $points['home'])."</td>";
 		
 		return $out;
 	}
@@ -893,7 +894,7 @@ class LeagueManagerShortcodes extends LeagueManager
 	function checkTemplate( $template )
 	{
 		if ( file_exists( get_stylesheet_directory() . "/leaguemanager/$template.php")) {
-			include(get_stylesheet_directory() . "/leaguemanager/$template.php");
+			return true; //include(get_stylesheet_directory() . "/leaguemanager/$template.php");
 		} elseif  ( file_exists( get_template_directory() . "/leaguemanager/$template.php")) {
 			return true;
 		} elseif ( file_exists(LEAGUEMANAGER_PATH . "/templates/".$template.".php") ) {

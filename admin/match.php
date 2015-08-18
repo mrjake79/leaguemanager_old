@@ -89,9 +89,9 @@ else :
 		global $wpdb;
 
 		// Get max match day
-		$search = "`league_id` = '".$league->id."' AND `season`  = '".$season['name']."'";
+		$search = $wpdb->prepare("`league_id` = '%d' AND `season`  = '%s'", $league->id, $season['name']);
 		if ( $cup ) {
-    		$search .= " AND `group` = '".$group."'";
+    		$search .= $wpdb->prepare(" AND `group` = '%s'", $group);
 		}
 
         $maxMatchDay = $wpdb->get_var( "SELECT MAX(match_day) FROM {$wpdb->leaguemanager_matches} WHERE  ".$search."" );

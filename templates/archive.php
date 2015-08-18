@@ -31,11 +31,10 @@ $archive = true;
 	</form>
 </div>
 
-
 <?php if ( isset($_GET['team']) ) : ?>
-	<?php leaguemanager_team($_GET['team']); ?>
+	<?php leaguemanager_team(intval($_GET['team'])); ?>
 <?php elseif ( isset($_GET['match']) ) : ?>
-	<?php leaguemanager_match($_GET['match']); ?>
+	<?php leaguemanager_match(intval($_GET['match'])); ?>
 <?php else : ?>
 	<?php $league = $leaguemanager->getLeague($league_id); ?>
 	<?php if ( $league->mode == 'championship' ) : ?>
@@ -45,7 +44,6 @@ $archive = true;
 		<h4><?php _e('Standings', 'leaguemanager') ?></h4>
 		<?php leaguemanager_standings( $league->id, array( 'season' => $league->season ) ) ?>
 
-
 		<!-- Match Overview -->
 		<h4><?php _e('Matches', 'leaguemanager') ?></h4>
 		<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'archive' => $archive) ) ?>
@@ -54,5 +52,4 @@ $archive = true;
 		<h4><?php _e('Crosstable', 'leaguemanager') ?></h4>
 		<?php leaguemanager_crosstable( $league->id, array('season' => $league->season) ) ?>
 	<?php endif; ?>
-
 <?php endif; ?>

@@ -4,7 +4,7 @@
  *
  * @author 	Kolja Schleich, LaMonte Forthun
  * @package	LeagueManager
- * @copyright 	Copyright 2008-2014
+ * @copyright Copyright 2008
 */
 class LeagueManagerChampionship extends LeagueManager
 {
@@ -84,10 +84,12 @@ class LeagueManagerChampionship extends LeagueManager
 	 */
 	function initialize( $league_id ) {
 		global $leaguemanager;
+		
+		$league_id = intval($league_id);
 		$league = $leaguemanager->getLeague( $league_id );
 
 		if ( isset($league->mode) && $league->mode == 'championship' ) {
-			$this->league = $leaguemanager->getLeague($league_id);
+			$this->league = $league;//$leaguemanager->getLeague($league_id);
 			$groups = ( isset($league->groups) ? $league->groups : '');
 			$this->groups = explode(";", $groups);
 			$num_groups = (isset($this->groups) ? count($this->groups) : 0 );

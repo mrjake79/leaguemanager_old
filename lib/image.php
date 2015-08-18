@@ -5,7 +5,7 @@
 * 
 * @author 	Kolja Schleich
 * @package	LeagueManager
-* @copyright 	Copyright 2008-2009
+* @copyright Copyright 2008
 */
 
 class LeagueManagerImage extends LeagueManager

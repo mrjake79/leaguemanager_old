@@ -11,7 +11,7 @@ The following variables are usable:
 */
 ?>
 <?php if ( isset($_GET['team']) && !$widget ) : ?>
-	<?php global $lmShortcodes; $lmShortcodes->showTeam( array('id' => $_GET['team'], 'echo' => 1) ) ?>
+	<?php global $lmShortcodes; $lmShortcodes->showTeam( array('id' => intval($_GET['team']), 'echo' => 1) ) ?>
 <?php else : ?>
 
 <?php if ( $teams ) : ?>

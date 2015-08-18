@@ -91,7 +91,7 @@ class LeagueManagerPool extends LeagueManager
 	{
 		global $wpdb;
 
-		$team = $wpdb->get_results( "SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = {$team_id}" );
+		$team = $wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d'", $team_id) );
 		$custom = maybe_unserialize($team->custom);
 
 		$custom['forScore'] = $this->getScore($team_id, 'for');
@@ -239,6 +239,8 @@ class LeagueManagerPool extends LeagueManager
 	 */
 	function importMatches( $custom, $line, $match_id )
 	{
+		$match_id = intval($match_id);
+		
 		$custom[$match_id]['forScore'] = $line[8];
 		$custom[$match_id]['againstScore'] = $line[9];
 		return $custom;

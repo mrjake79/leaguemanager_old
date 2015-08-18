@@ -129,7 +129,8 @@ class LeagueManagerHockey extends LeagueManager
 
 		$goals = array( 'plus' => 0, 'minus' => 0 );
 
-		$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '".$team_id."'" );
+		//$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '".$team_id."'" );
+		$matches = $leaguemanager->getMatches( array("home_team" => $team_id) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
@@ -146,7 +147,8 @@ class LeagueManagerHockey extends LeagueManager
 			}
 		}
 
-		$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '".$team_id."'" );
+		//$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '".$team_id."'" );
+		$matches = $leaguemanager->getMatches( array("away_team" => $team_id) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
@@ -214,7 +216,7 @@ class LeagueManagerHockey extends LeagueManager
 	function getNumWonMatchesOvertime( $team_id )
 	{
 		global $wpdb;
-		$matches = $wpdb->get_results( "SELECT `custom` FROM {$wpdb->leaguemanager_matches} WHERE `winner_id` = '".$team_id."'" );
+		$matches = $wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_matches} WHERE `winner_id` = '%d'", $team_id) );
 		$num = 0;
 		foreach ( $matches AS $match ) {
 			$custom = maybe_unserialize($match->custom);
@@ -234,7 +236,7 @@ class LeagueManagerHockey extends LeagueManager
 	function getNumLostMatchesOvertime( $team_id )
 	{
 		global $wpdb;
-		$matches = $wpdb->get_results( "SELECT `custom` FROM {$wpdb->leaguemanager_matches} WHERE `loser_id` = '".$team_id."'" );
+		$matches = $wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_matches} WHERE `loser_id` = '%d'", $team_id) );
 		$num = 0;
 		foreach ( $matches AS $match ) {
 			$custom = maybe_unserialize($match->custom);
@@ -360,6 +362,8 @@ class LeagueManagerHockey extends LeagueManager
 	 */
 	function importMatches( $custom, $line, $match_id )
 	{
+		$match_id = intval($match_id);
+		
 		$thirds = array( explode("-", $line[8]), explode("-", $line[9]), explode("-", $line[10]) );
 		$overtime = explode("-", $line[11]);
 		$penalty = explode("-", $line[12]);

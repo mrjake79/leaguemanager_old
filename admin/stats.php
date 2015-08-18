@@ -7,9 +7,9 @@ global $lmStats, $lmAJAX;
 
 if ( isset($_POST['add_stats']) ) {
 	if ( empty($_POST['stats_id']) ) {
-		$lmStats->add($_POST['stat_name'], $_POST['fields'], $_POST['league_id']);
+		$lmStats->add(htmlspecialchars($_POST['stat_name']), $_POST['fields'], $_POST['league_id']);
 	} else {
-		$lmStats->edit($_POST['stat_name'], $_POST['fields'], $_POST['stats_id']);
+		$lmStats->edit(htmlspecialchars($_POST['stat_name']), $_POST['fields'], $_POST['stats_id']);
 	}
 	$leaguemanager->printMessage();
 } elseif ( isset($_POST['doaction']) ) {

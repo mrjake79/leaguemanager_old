@@ -18,8 +18,11 @@ The following variables are usable:
 	<?php if ( $match->score == '0:0' ) : ?>
 	<p class="matchdate"><?php echo $match->date." ".$match->start_time." ".$match->location ?></p>
 	<?php else : ?>
-	<p class="score"><span class="home_logo"><img src="<?php echo $match->homeLogo ?>" alt="" />
-</span><?php echo $match->score ?><span class="away_logo"><img src="<?php echo $match->awayLogo ?>" alt="" /></span></p>
+	<p class="score">
+		<span class="home_logo"><img src="<?php echo $match->homeLogo ?>" alt="" /></span>
+		<?php echo $match->score ?>
+		<span class="away_logo"><img src="<?php echo $match->awayLogo ?>" alt="" /></span>
+	</p>
 	<?php endif; ?>
 	
 	<br style="clear: both;" />
