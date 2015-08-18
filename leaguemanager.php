@@ -50,7 +50,7 @@ class LeagueManagerLoader
 
 
 	/**
-	 * check if bridge is active
+	 * check if bridge to projectmanager is active
 	 *
 	 * @var boolean
 	 */
@@ -87,8 +87,16 @@ class LeagueManagerLoader
 			register_uninstall_hook(__FILE__, array('LeagueManagerLoader', 'uninstall'));
 
 		add_action( 'widgets_init', array(&$this, 'registerWidget') );
+		
+		add_action('wp_enqueue_scripts', array(&$this, 'loadStyles'), 1 );
+		add_action('wp_enqueue_scripts', array(&$this, 'loadScripts') );
+		
+		// Add TinyMCE Button
+		add_action( 'init', array(&$this, 'addTinyMCEButton') );
+		add_filter( 'tiny_mce_version', array(&$this, 'changeTinyMCEVersion') );
+		
 		// Start this plugin once all other plugins are fully loaded
-		add_action( 'plugins_loaded', array(&$this, 'initialize') );
+		//add_action( 'plugins_loaded', array(&$this, 'initialize') );
 
 		$leaguemanager = new LeagueManager( $this->bridge );
 		$championship = new LeagueManagerChampionship();
@@ -111,9 +119,6 @@ class LeagueManagerLoader
 	 */
 	function initialize()
 	{
-		// Add the script and style files
-		add_action('wp_head', array(&$this, 'loadScripts') );
-		add_action('wp_print_styles', array(&$this, 'loadStyles'), 1 );
 		// Add TinyMCE Button
 		add_action( 'init', array(&$this, 'addTinyMCEButton') );
 		add_filter( 'tiny_mce_version', array(&$this, 'changeTinyMCEVersion') );
@@ -294,7 +299,7 @@ class LeagueManagerLoader
 	function loadScripts()
 	{
 		wp_register_script( 'leaguemanager', LEAGUEMANAGER_URL.'/leaguemanager.js', array('jquery', 'sack', 'thickbox'), LEAGUEMANAGER_VERSION );
-		wp_print_scripts('leaguemanager');
+		wp_enqueue_script('leaguemanager');
 		?>
 		<script type="text/javascript">
 		//<![CDATA[

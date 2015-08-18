@@ -19,8 +19,9 @@ class LeagueManagerAdminPanel extends LeagueManager
 	{
 		require_once( ABSPATH . 'wp-admin/includes/template.php' );
 
-		add_action('admin_print_scripts', array(&$this, 'loadScripts') );
-		add_action('admin_print_styles', array(&$this, 'loadStyles') );
+		add_action('admin_enqueue_scripts', array(&$this, 'loadScripts') );
+		add_action('admin_enqueue_scripts', array(&$this, 'loadStyles') );
+		
 		add_action('wp_dashboard_setup', array( $this, 'register_admin_widgets'));
 		add_action( 'admin_menu', array(&$this, 'menu') );
 
@@ -221,8 +222,8 @@ class LeagueManagerAdminPanel extends LeagueManager
 	 */
 	function loadScriptsPage()
 	{
-		wp_register_script( 'leaguemanager_functions', LEAGUEMANAGER_URL.'/admin/js/functions.js', array( 'thickbox', 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-tabs' ), LEAGUEMANAGER_VERSION );
-		wp_enqueue_script('leaguemanager_functions');
+		wp_register_script( 'leaguemanager-functions', LEAGUEMANAGER_URL.'/admin/js/functions.js', array( 'thickbox', 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-tabs' ), LEAGUEMANAGER_VERSION );
+		wp_enqueue_script('leaguemanager-functions');
 		wp_enqueue_script('jquery-ui-core');
 		wp_enqueue_script('jquery-ui-tabs');
 		wp_enqueue_script('jquery-ui-datepicker');
@@ -231,10 +232,10 @@ class LeagueManagerAdminPanel extends LeagueManager
 	}
 	function loadScripts()
 	{
-		wp_register_script( 'leaguemanager_functions', LEAGUEMANAGER_URL.'/admin/js/functions.js', array( 'thickbox', 'jquery', 'jquery-ui-datepicker', 'jquery-ui-tabs' ), LEAGUEMANAGER_VERSION );
-		wp_enqueue_script('leaguemanager_functions');
-		wp_register_script( 'leaguemanager_ajax', LEAGUEMANAGER_URL.'/admin/js/ajax.js', array('sack'), LEAGUEMANAGER_VERSION );
-		wp_enqueue_script('leaguemanager_ajax');
+		wp_register_script( 'leaguemanager-functions', LEAGUEMANAGER_URL.'/admin/js/functions.js', array( 'thickbox', 'jquery', 'jquery-ui-datepicker', 'jquery-ui-tabs' ), LEAGUEMANAGER_VERSION );
+		wp_enqueue_script('leaguemanager-functions');
+		wp_register_script( 'leaguemanager-ajax', LEAGUEMANAGER_URL.'/admin/js/ajax.js', array('sack'), LEAGUEMANAGER_VERSION );
+		wp_enqueue_script('leaguemanager-ajax');
 
 		?>
 		<script type='text/javascript'>
@@ -261,8 +262,8 @@ class LeagueManagerAdminPanel extends LeagueManager
 	 */
 	function loadStyles()
 	{
-		wp_register_style('leaguemanager_css', LEAGUEMANAGER_URL . "/style.css", false, '1.0', 'screen');
-		wp_enqueue_style('leaguemanager_css');
+		wp_register_style('leaguemanager', LEAGUEMANAGER_URL . "/style.css", false, '1.0', 'screen');
+		wp_enqueue_style('leaguemanager');
 		wp_register_style('jquery_ui_css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css', false, '1.0', 'screen');
 		wp_enqueue_style('jquery_ui_css');
 		wp_enqueue_style('thickbox');

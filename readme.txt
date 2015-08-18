@@ -86,6 +86,7 @@ The LeagueManager icon is taken from the Fugue Icons of http://www.pinvoke.com/.
 = 3.9.1.5 =
 * SECURITY: major change in retrieving teams (getTeams() in core.php) and matches (getMatches() in core.php) to avoid sql injections
 * BUGFIX: add stripslashes
+* BUGFIX: correctly load stylesheet and javascript scripts
 * BUGFIX: limit the number of matches to add to 50 (to avoid problems with memory limit)
 * BUGFIX: fixed some possible security issues
 * BUGFIX: fixed several small issues
