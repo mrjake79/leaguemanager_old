@@ -535,7 +535,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 				$points['minus'] += $match->home_points;
 			}
 		} else {
-			extract( $rule );
+			extract( (array)$rule );
 			$home = $this->getMatches( array("home_team" => $team_id) );
 			foreach ( $home AS $match ) {
 				$team_points += $match->home_points;
