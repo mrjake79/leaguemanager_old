@@ -282,7 +282,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			$match_args['time'] = $time;
 			$match_args['order'] = $order;
 			$match_args['match_date'] = $match_date;
-			
+
 			/*
 			if ( $time ) {
 				if ( $time == 'next' )

@@ -83,6 +83,10 @@ The LeagueManager icon is taken from the Fugue Icons of http://www.pinvoke.com/.
 * TO-DO - Updating the translation code to remove the deprecated code has broken some translations due to a change in how WordPress handles multiple options. The translations files need some attention, so do the sport files...
 * Coming soon - Players, pagination for leagues, teams, matches, and players. New admin dashboard. New sport files.
 
+= 3.9.1.6 =
+* BUGFIX: fixed team selection in matches template
+* BUGFIX: fixed getting league by name
+
 = 3.9.1.5 =
 * SECURITY: major change in retrieving teams (getTeams() in core.php) and matches (getMatches() in core.php) to avoid sql injections
 * SECURITY: fixed multiple possible sql injection vulnerabilities

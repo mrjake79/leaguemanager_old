@@ -488,7 +488,7 @@ class LeagueManager
 	{
 		global $wpdb;
 		
-		$league = $wpdb->get_results($wpdb->prepare("SELECT `title`, `id`, `seasons`, `settings` FROM {$wpdb->leaguemanager} WHERE `id` = '%d' OR `title` = '%s'", intval($league_id), intval($league_id)) );
+		$league = $wpdb->get_results($wpdb->prepare("SELECT `title`, `id`, `seasons`, `settings` FROM {$wpdb->leaguemanager} WHERE `id` = '%d' OR `title` = '%s'", intval($league_id), $league_id) );
 		$league[] = new stdClass();
 		$league = $league[0];
 		$league->title = stripslashes($league->title);
@@ -814,7 +814,7 @@ class LeagueManager
 		if ($final != false && $this->finalExists(htmlspecialchars($final))) $search_terms[] = $wpdb->prepare("`final` = '%s'", htmlspecialchars($final));
 		if ($group != false && $this->groupExists($league_id, htmlspecialchars($group))) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars($group));
 		if ($team_id) {
-			$wpdb->prepare("(`home_team` = '%d' OR `away_team` = '%d')", $team_id, $team_id);
+			$search_terms[] = $wpdb->prepare("(`home_team` = '%d' OR `away_team` = '%d')", $team_id, $team_id);
 		} else {
 			if ($home_team) $search_terms[] = $wpdb->prepare("`home_team` = '%s", $home_team);
 			if ($away_team) $search_terms[] = $wpdb->prepare("`away_team` = '%s'", $away_team);
