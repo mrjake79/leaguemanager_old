@@ -4,538 +4,1543 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: LeagueManager 3.5.6\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/leaguemanager\n"
-"POT-Creation-Date: \n"
+"Project-Id-Version: LeagueManager 3.9.1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-03 12:31+0100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLEP <GLEP@GLEP.BE>\n"
-"Language-Team: Gonzague Lepine <gonzague@lepine.be>\n"
+"Last-Translator: Luc Capronnier <lcapronnier@yahoo.com>\n"
+"Language-Team: Gonzague Lepine, L Capronnier <gonzague@lepine.be, "
+"lcapronnier@yahoo.com>\n"
+"Language: French\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Language: French\n"
-"X-Poedit-Country: BELGIUM\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"_ex:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;"
+"esc_html_x:1,2c\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: admin/admin.php:24
-msgid "Match-Report"
-msgstr "Résumé"
+#: leaguemanager.php:305 admin/admin.php:243 admin/seasons.php:68
+#: admin/stats.php:149 admin/stats.php:190
+msgid "Edit"
+msgstr "Modifier"
 
-#: admin/admin.php:50
-#: admin/admin.php:52
-#: admin/export.php:16
-#: admin/import.php:29
-#: admin/index.php:37
-#: admin/index.php:75
-#: admin/tinymce/window.php:54
-#: admin/tinymce/window.php:89
-#: admin/tinymce/window.php:150
-#: admin/tinymce/window.php:195
-#: admin/upgrade.php:471
-#: lib/widget.php:31
-#: lib/widget.php:306
-#: view/archive-tennis.php:19
-#: view/archive.php:19
-msgid "League"
-msgstr "Compétition"
+#: leaguemanager.php:306 admin/admin.php:243
+msgid "Post"
+msgstr "Article"
 
-#: admin/admin.php:54
-#: admin/championchip.php:20
-#: admin/index.php:13
-#: admin/match.php:59
-#: admin/seasons.php:36
-#: admin/settings.php:38
-#: admin/show-league.php:90
-#: admin/stats.php:59
-#: admin/team.php:27
-#: admin/tinymce/window.php:27
-#: sports/racing.php:280
-msgid "Leaguemanager"
-msgstr "Gestionnaire de League"
+#: leaguemanager.php:307 admin/admin.php:243
+msgid "Save"
+msgstr "Enregistrer"
 
-#: admin/admin.php:54
+#: leaguemanager.php:308 admin/admin.php:243 admin/stats.php:93
+#: admin/team.php:48 admin/team.php:60 admin/tinymce/window.php:244
+#: lib/stats.php:413
+msgid "Cancel"
+msgstr "Annuler"
+
+#: leaguemanager.php:309 admin/admin.php:243
+msgid "Please wait..."
+msgstr "Merci d'attendre ..."
+
+#: leaguemanager.php:310
+msgid "Page Revisions"
+msgstr "Versions de la page"
+
+#: leaguemanager.php:311
+msgid "Insert time"
+msgstr "Ajouter le temps "
+
+#: leaguemanager.php:312 admin/export.php:12
+msgid "Options"
+msgstr "Options"
+
+#: leaguemanager.php:313 admin/admin.php:243 admin/index.php:27
+#: admin/matches.php:26 admin/seasons.php:48 admin/standings.php:10
+#: admin/stats.php:101 admin/stats.php:129 lib/stats.php:352 lib/stats.php:418
+msgid "Delete"
+msgstr "Supprimer"
+
+#: admin/admin.php:52 admin/admin.php:53 admin/admin.php:60 admin/admin.php:61
+#: admin/admin.php:68 admin/championship.php:27 admin/match.php:140
+#: admin/seasons.php:36 admin/show-league.php:139 admin/stats.php:59
+#: admin/team.php:28 sports/racing.php:286
+msgid "LeagueManager"
+msgstr "LeagueManager"
+
+#: admin/admin.php:68
 msgid "Overview"
 msgstr "Présentation"
 
-#: admin/admin.php:55
-#: admin/admin.php:164
+#: admin/admin.php:69 admin/admin.php:209
 msgid "Settings"
 msgstr "Paramètres"
 
-#: admin/admin.php:56
+#: admin/admin.php:71
 msgid "Import"
 msgstr "Importer"
 
-#: admin/admin.php:57
+#: admin/admin.php:72
 msgid "Export"
 msgstr "Exporter"
 
-#: admin/admin.php:58
+#: admin/admin.php:73
 msgid "Documentation"
 msgstr "Documentation"
 
-#: admin/admin.php:77
+#: admin/admin.php:83
+msgid "Match-Report"
+msgstr "Résummé du match"
+
+#: admin/admin.php:96
+msgid "LeagueManager Latest Support News"
+msgstr "Dernières nouvelles du support de LeagueManager"
+
+#: admin/admin.php:122
 msgid "Preferences"
 msgstr "Préférences"
 
-#: admin/admin.php:78
-#: admin/index.php:38
-#: admin/seasons.php:36
+#: admin/admin.php:123 admin/index.php:38 admin/seasons.php:36
 #: admin/seasons.php:40
 msgid "Seasons"
 msgstr "Saisons "
 
-#: admin/admin.php:79
-#: admin/team.php:15
+#: admin/admin.php:124 admin/team.php:16
 msgid "Add Team"
 msgstr "Ajouter une équipe"
 
-#: admin/admin.php:80
-#: admin/match.php:41
+#: admin/admin.php:125 admin/championship.php:139 admin/match.php:103
+#: admin/match.php:106
 msgid "Add Matches"
-msgstr "Ajouter des matches"
+msgstr "Ajouter des matchs"
 
-#: admin/admin.php:188
-#: admin/settings.php:74
-msgid "Order: Forwin, Fordraw, Forloss"
-msgstr "Points pour une victoire, un nul, une défaite"
+#: admin/admin.php:243 admin/settings.php:78
+msgid "Order: win, win overtime, tie, loss, loss overtime"
+msgstr ""
+"Ordre : victoire, victoire après le temps réplementaire, nul, défaite, "
+"défaite après le temps réglementaire"
 
-#: admin/admin.php:188
-#: admin/seasons.php:68
-#: admin/stats.php:145
-#: admin/stats.php:184
-#: leaguemanager.php:299
-msgid "Edit"
-msgstr "Editer"
-
-#: admin/admin.php:188
-#: leaguemanager.php:299
-msgid "Post"
-msgstr "Ajouter"
-
-#: admin/admin.php:188
-#: leaguemanager.php:299
-msgid "Save"
-msgstr "Sauvegarder"
-
-#: admin/admin.php:188
-#: admin/stats.php:91
-#: admin/team.php:46
-#: admin/team.php:58
-#: admin/tinymce/window.php:225
-#: leaguemanager.php:299
-#: lib/stats.php:412
-msgid "Cancel"
-msgstr "Annuler"
-
-#: admin/admin.php:188
-#: leaguemanager.php:299
-msgid "Please wait..."
-msgstr "Attendre ..."
-
-#: admin/admin.php:188
-#: admin/index.php:27
-#: admin/seasons.php:48
-#: admin/show-league.php:126
-#: admin/show-league.php:264
-#: admin/stats.php:98
-#: admin/stats.php:126
-#: leaguemanager.php:299
-#: lib/stats.php:351
-#: lib/stats.php:417
-msgid "Delete"
-msgstr "Supprimer"
-
-#: admin/admin.php:188
-#: lib/core.php:810
+#: admin/admin.php:243 lib/core.php:860
 msgid "Yellow"
 msgstr "Jaune"
 
-#: admin/admin.php:188
-#: lib/core.php:810
+#: admin/admin.php:243 lib/core.php:860
 msgid "Red"
 msgstr "Rouge"
 
-#: admin/admin.php:188
-#: lib/core.php:810
+#: admin/admin.php:243 lib/core.php:860
 msgid "Yellow/Red"
 msgstr "Jaune/Rouge"
 
-#: admin/admin.php:188
-#: admin/stats.php:91
-#: admin/team.php:46
-#: admin/team.php:58
-#: admin/tinymce/window.php:229
-#: lib/stats.php:412
+#: admin/admin.php:243 admin/stats.php:93 admin/team.php:48 admin/team.php:60
+#: admin/tinymce/window.php:248 lib/stats.php:413
 msgid "Insert"
 msgstr "Ajouter"
 
-#: admin/admin.php:188
-#: admin/stats.php:94
-#: lib/stats.php:413
+#: admin/admin.php:243 admin/stats.php:96 lib/stats.php:414
 msgid "Insert Player"
 msgstr "Ajouter un joueur"
 
-#: admin/admin.php:188
-#: admin/stats.php:94
-#: lib/stats.php:413
+#: admin/admin.php:243 admin/stats.php:96 lib/stats.php:414
 msgid "Add Player from Team Roster"
-msgstr "Ajouter un joueur de la composition d'équipe"
+msgstr "Ajouter un joueur du tableau d'équipe"
 
-#: admin/admin.php:242
+#: admin/admin.php:305 admin/documentation.php:43 admin/documentation.php:102
+#: admin/documentation.php:217 admin/documentation.php:269
+#: admin/documentation.php:300 admin/documentation.php:338
+#: admin/documentation.php:369 admin/documentation.php:414
 msgid "Default"
-msgstr "Default"
+msgstr "Défaut"
 
-#: admin/admin.php:287
+#: admin/admin.php:351
 msgid "Update Standings Manually"
 msgstr "Mettre à jour le classement manuellement"
 
-#: admin/admin.php:287
-#: admin/documentation.php:19
+#: admin/admin.php:351 admin/documentation.php:525
 msgid "One-Point-Rule"
 msgstr "Règle : 1 point"
 
-#: admin/admin.php:287
+#: admin/admin.php:351
 msgid "Two-Point-Rule"
 msgstr "Règle : 2 points"
 
-#: admin/admin.php:287
+#: admin/admin.php:351
 msgid "Three-Point-Rule"
 msgstr "Règle : 3 points"
 
-#: admin/admin.php:287
+#: admin/admin.php:351 admin/admin.php:1631 admin/championship.php:169
+#: admin/matches.php:52 templates/championship.php:67
+#: templates/matches-by_matchday.php:25 templates/matches-gymnastics.php:57
+#: templates/matches-irish-gaelic-football.php:57
+#: templates/matches-tennis.php:58 templates/matches-volleyball.php:57
+#: templates/matches.php:55
+msgid "Score"
+msgstr "Score"
+
+#: admin/admin.php:351 admin/documentation.php:534
 msgid "User defined"
 msgstr "Définis par l'utilisateur"
 
-#: admin/admin.php:477
+#: admin/admin.php:575
 msgid "League added"
 msgstr "Compétition ajoutée"
 
-#: admin/admin.php:494
-#: admin/admin.php:1014
+#: admin/admin.php:592 admin/admin.php:1158
 msgid "Settings saved"
-msgstr "Paramètres sauvegardés"
+msgstr "Paramètres enregistrés"
 
-#: admin/admin.php:551
+#: admin/admin.php:666
 #, php-format
 msgid "Season <strong>%s</strong> added"
 msgstr "Saison <strong>%s</strong> ajoutée"
 
-#: admin/admin.php:631
+#: admin/admin.php:753
 msgid "Team added"
 msgstr "Equipe ajoutée "
 
-#: admin/admin.php:692
+#: admin/admin.php:815
 msgid "Team updated"
-msgstr "Equipe mise-à-jour "
+msgstr "Equipe mise à jour "
 
-#: admin/admin.php:773
-msgid "Logo exists and is not uploaded. Set the overwrite option if you want to replace it."
-msgstr "Ce logo existe et n'a pas été transféré. Réglez l'option de remplacement, si vous souhaitez le remplacer."
+#: admin/admin.php:899
+msgid ""
+"Logo exists and is not uploaded. Set the overwrite option if you want to "
+"replace it."
+msgstr ""
+"Ce logo existe et n'a pas été transféré. Réglez l'option de remplacement, si "
+"vous souhaitez le remplacer."
 
-#: admin/admin.php:783
-#: admin/admin.php:1213
+#: admin/admin.php:909 admin/admin.php:1359
 #, php-format
 msgid "The uploaded file could not be moved to %s."
 msgstr "Le fichier téléchargé ne peut être déplacé vers %s."
 
-#: admin/admin.php:788
+#: admin/admin.php:914
 msgid "The file type is not supported."
 msgstr "Ce type de fichier n'est pas supporté."
 
-#: admin/admin.php:928
-msgid "Updated League Results"
-msgstr "Mettre à jour les résultats de la compétition"
+#: admin/admin.php:1072
+msgid "Updated Results"
+msgstr "Mettre à jour les résultats "
 
-#: admin/admin.php:1050
+#: admin/admin.php:1118 admin/match.php:167
+msgid "Day"
+msgstr "Jour"
+
+#: admin/admin.php:1125
+msgid "Month"
+msgstr "Mois"
+
+#: admin/admin.php:1132
+msgid "Year"
+msgstr "Année"
+
+#: admin/admin.php:1195
 msgid "Choose League"
-msgstr "Choisir compétition"
+msgstr "Choisir une compétition"
 
-#: admin/admin.php:1094
+#: admin/admin.php:1239
 msgid "Choose Season"
-msgstr "Choisir saison"
+msgstr "Choisir une saison"
 
-#: admin/admin.php:1138
+#: admin/admin.php:1283
 msgid "Choose Match"
-msgstr "Choisir match"
+msgstr "Choisir un match"
 
-#: admin/admin.php:1217
+#: admin/admin.php:1363
 msgid "The uploaded file seems to be empty"
 msgstr "Le fichier téléchargé semble être vide"
 
-#: admin/admin.php:1271
+#: admin/admin.php:1417
 #, php-format
 msgid "%d Teams imported"
 msgstr "%d équipes importées"
 
-#: admin/admin.php:1328
+#: admin/admin.php:1475
 #, php-format
 msgid "%d Matches imported"
-msgstr "%d matches importés"
+msgstr "%d matchs importés"
 
-#: admin/admin.php:1391
-#: admin/admin.php:1421
-#: admin/seasons.php:56
-#: admin/seasons.php:86
-#: admin/show-league.php:99
-#: admin/upgrade.php:481
-#: lib/widget.php:313
-#: view/archive-tennis.php:25
-#: view/archive.php:25
+#: admin/admin.php:1563 admin/admin.php:1624 admin/seasons.php:56
+#: admin/seasons.php:86 admin/show-league.php:150 admin/upgrade.php:495
+#: lib/widget.php:342 templates/archive-tennis.php:24 templates/archive.php:25
 msgid "Season"
 msgstr "Saison"
 
-#: admin/admin.php:1391
-#: admin/team.php:35
-#: admin/tinymce/window.php:45
-#: admin/tinymce/window.php:171
-#: view/standings-compact.php:27
-#: view/standings-extend.php:28
-#: view/teams.php:23
+#: admin/admin.php:1564 admin/team.php:37 admin/tinymce/window.php:45
+#: admin/tinymce/window.php:172 templates/standings-compact.php:27
+#: templates/standings-extend.php:28 templates/standings-last5.php:28
+#: templates/standings-nolink.php:28
+#: templates/standings-racing-individual.php:28 templates/teams.php:27
 msgid "Team"
 msgstr "Equipe"
 
-#: admin/admin.php:1391
-#: admin/team.php:78
-#: view/team.php:29
-#: view/teams.php:28
+#: admin/admin.php:1565 admin/team.php:80 templates/team.php:34
+#: templates/teams.php:32
 msgid "Website"
 msgstr "Site Internet"
 
-#: admin/admin.php:1391
-#: admin/team.php:81
-#: view/team.php:28
-#: view/teams.php:24
+#: admin/admin.php:1566 admin/team.php:83 templates/team.php:33
+#: templates/teams.php:28
 msgid "Coach"
 msgstr "Entraineur"
 
-#: admin/admin.php:1391
-#: admin/team.php:84
+#: admin/admin.php:1567 admin/team.php:86
+msgid "Stadium"
+msgstr "Lieu de compétition"
+
+#: admin/admin.php:1568 admin/team.php:111
 msgid "Home Team"
-msgstr "Equipe favorite"
+msgstr "Equipe locale"
 
-#: admin/admin.php:1391
-#: admin/show-league.php:141
-#: view/standings-compact.php:29
-#: view/standings-extend.php:30
-msgid "Pld"
-msgstr "J"
+#: admin/admin.php:1569 admin/admin.php:1630 admin/matches.php:48
+#: admin/standings.php:24 admin/team.php:115 lib/widget.php:343
+msgid "Group"
+msgstr "Groupe"
 
-#: admin/admin.php:1391
-#: admin/show-league.php:142
-#: view/standings-extend.php:33
-#: view/teams.php:25
+#: admin/admin.php:1570 admin/standings.php:50 admin/team.php:56
+#: templates/standings-compact.php:49 templates/standings-extend.php:53
+#: templates/standings-last5.php:54 templates/standings-nolink.php:53
+#: templates/standings-racing-individual.php:39 templates/team.php:25
+msgid "Logo"
+msgstr "Logo"
+
+#: admin/admin.php:1571
+msgid "Pld|Played"
+msgstr "J|Jouer"
+
+#: admin/admin.php:1572
 msgid "W|Won"
-msgstr "V|Victoire"
+msgstr "G|Gagner"
 
-#: admin/admin.php:1391
-#: admin/show-league.php:143
-#: view/standings-extend.php:36
-#: view/teams.php:26
+#: admin/admin.php:1573
 msgid "T|Tie"
 msgstr "N|Nul"
 
-#: admin/admin.php:1391
-#: admin/show-league.php:144
-#: view/standings-extend.php:39
-#: view/teams.php:27
+#: admin/admin.php:1574
 msgid "L|Lost"
 msgstr "D|Défaite"
 
-#: admin/admin.php:1391
+#: admin/admin.php:1575
 msgid "Points2"
 msgstr "Points2"
 
-#: admin/admin.php:1391
-#: sports/basketball.php:138
-#: sports/gymnastics.php:86
-#: sports/handball.php:88
-#: sports/hockey.php:256
-#: sports/other-two-scores.php:82
-#: sports/soccer.php:88
+#: admin/admin.php:1576 sports/basketball.php:131 sports/gymnastics.php:86
+#: sports/handball.php:88 sports/hockey.php:256 sports/other-two-scores.php:82
+#: sports/soccer.php:88 sports/us-football.php:126
 msgid "Diff"
 msgstr "Dif"
 
-#: admin/admin.php:1391
-#: admin/show-league.php:146
-#: view/standings-compact.php:31
-#: view/standings-extend.php:42
+#: admin/admin.php:1577 admin/standings.php:30
+#: templates/standings-compact.php:37 templates/standings-extend.php:42
+#: templates/standings-last5.php:42 templates/standings-nolink.php:42
+#: templates/standings-racing-individual.php:29
 msgid "Pts"
 msgstr "Pts"
 
-#: admin/admin.php:1421
-#: admin/match.php:71
-#: admin/match.php:106
-#: admin/show-league.php:285
-#: sports/racing.php:195
-#: view/matches-racing.php:39
+#: admin/admin.php:1623 admin/championship.php:165 admin/match.php:164
+#: admin/matches.php:47 sports/racing.php:199 templates/championship.php:63
+#: templates/matches-racing.php:52
 msgid "Date"
 msgstr "Date"
 
-#: admin/admin.php:1421
-#: admin/match.php:76
-#: sports/racing.php:196
+#: admin/admin.php:1625 sports/racing.php:200
 msgid "Match Day"
 msgstr "Journée de compétition"
 
-#: admin/admin.php:1421
-#: admin/match.php:108
+#: admin/admin.php:1626 admin/match.php:169
 msgid "Home"
-msgstr "Equipe visitée "
+msgstr "Domicile"
 
-#: admin/admin.php:1421
-#: admin/match.php:109
+#: admin/admin.php:1627 admin/match.php:170
 msgid "Guest"
 msgstr "Equipe visiteuse "
 
-#: admin/admin.php:1421
-#: admin/match.php:110
-#: admin/show-league.php:288
-#: sports/racing.php:198
+#: admin/admin.php:1628 admin/championship.php:167 admin/documentation.php:553
+#: admin/documentation.php:660 admin/match.php:171 admin/matches.php:50
+#: sports/racing.php:202 templates/championship.php:65
 msgid "Location"
 msgstr "Localisation"
 
-#: admin/admin.php:1421
-#: admin/match.php:111
-#: admin/show-league.php:289
-#: sports/racing.php:200
+#: admin/admin.php:1629 admin/championship.php:168 admin/match.php:172
+#: admin/matches.php:51 sports/racing.php:204 templates/championship.php:66
 msgid "Begin"
 msgstr "Début"
 
-#: admin/admin.php:1421
-#: admin/show-league.php:290
-#: view/matches-gymnastics.php:45
-#: view/matches-irish-gaelic-football.php:45
-#: view/matches-tennis.php:46
-#: view/matches-volleyball.php:44
-#: view/matches.php:46
-msgid "Score"
-msgstr "Score"
+#: admin/championship.php:17
+msgid "It seems the previous round is not over yet."
+msgstr "Il semble que le tour préccédent n'est pas encore terminé."
 
-#: admin/championchip.php:20
-#: admin/championchip.php:21
-msgid "Championchip Finals"
-msgstr "Tour Final"
+#: admin/championship.php:27
+msgid "Championship Finals"
+msgstr "Finales du championnat"
 
-#: admin/championchip.php:29
+#: admin/championship.php:36 admin/championship.php:210
+#: templates/championship.php:91
+#, php-format
+msgid "Group %s"
+msgstr "Groupe %s"
+
+#: admin/championship.php:39 admin/championship.php:129
+#: admin/championship.php:213 admin/show-league.php:156
+#: templates/archive-tennis.php:29 templates/archive.php:30
+#: templates/matches-gymnastics.php:45
+#: templates/matches-irish-gaelic-football.php:45
+#: templates/matches-racing.php:40 templates/matches-tennis.php:46
+#: templates/matches-volleyball.php:45 templates/matches.php:44
+msgid "Show"
+msgstr "Voir "
+
+#: admin/championship.php:43 templates/championship.php:15
+msgid "Final Results"
+msgstr "Résultats finaux"
+
+#: admin/championship.php:48 templates/championship.php:19
 msgid "Round"
 msgstr "Tour"
 
-#: admin/championchip.php:30
-#: admin/export.php:32
-#: admin/import.php:45
-#: admin/index.php:40
-#: admin/tinymce/window.php:42
-#: lib/widget.php:315
-#: view/archive-tennis.php:40
-#: view/archive.php:41
-#: view/team.php:24
+#: admin/championship.php:49 admin/export.php:31 admin/import.php:45
+#: admin/index.php:40 admin/tinymce/window.php:42 lib/widget.php:344
+#: templates/archive-tennis.php:39 templates/archive.php:50
+#: templates/championship.php:20 templates/team.php:29
 msgid "Matches"
-msgstr "Matches"
+msgstr "Matchs"
 
-#: admin/championchip.php:68
-msgid "Save Finals Results"
-msgstr "Sauvegarder le résultat final"
+#: admin/championship.php:89 lib/shortcodes.php:516 lib/shortcodes.php:645
+#: lib/widget.php:280
+msgctxt "leaguemanager"
+msgid "o.P."
+msgstr "o.P."
 
-#: admin/championchip.php:71
-msgid "Add Final Matches"
-msgstr "Ajouter des matches"
+#: admin/championship.php:91 lib/shortcodes.php:350 lib/shortcodes.php:428
+msgctxt "leaguemanager"
+msgid "(AET)"
+msgstr "(AET)"
 
-#: admin/documentation.php:3
-#: admin/export.php:3
-#: admin/import.php:3
-#: admin/match.php:3
-#: admin/seasons.php:3
-#: admin/settings.php:3
-#: admin/stats.php:3
-#: admin/team.php:6
+#: admin/championship.php:116
+#, php-format
+msgid "Finals &#8211; %s"
+msgstr "Finales &#8211; %s"
+
+#: admin/championship.php:138 admin/seasons.php:58 admin/stats.php:140
+msgid "Actions"
+msgstr "Actions"
+
+#: admin/championship.php:140 admin/match.php:52 admin/matches.php:15
+msgid "Edit Matches"
+msgstr "Modifier les matchs"
+
+#: admin/championship.php:148
+msgid "Go"
+msgstr "Aller"
+
+#: admin/championship.php:164 templates/championship.php:62
+msgid "#"
+msgstr "#"
+
+#: admin/championship.php:166 admin/matches.php:49 admin/tinymce/window.php:43
+#: admin/tinymce/window.php:121 templates/championship.php:64
+#: templates/matches-by_matchday.php:24 templates/matches-gymnastics.php:56
+#: templates/matches-irish-gaelic-football.php:56
+#: templates/matches-tennis.php:57 templates/matches-volleyball.php:56
+#: templates/matches.php:54
+msgid "Match"
+msgstr "Match"
+
+#: admin/championship.php:198
+msgid "Save Results"
+msgstr "Enregistrer les résultats"
+
+#: admin/championship.php:201
+#, php-format
+msgid "Preliminary Rounds &#8211; Group %s"
+msgstr "Tours préliminaires &#8211; Groupe %s"
+
+#: admin/championship.php:218 admin/show-league.php:174 admin/standings.php:15
+#: admin/tinymce/window.php:40 lib/widget.php:130 lib/widget.php:357
+msgid "Table"
+msgstr "Classement"
+
+#: admin/championship.php:222 admin/matches.php:42 admin/show-league.php:178
+#: templates/championship.php:95 templates/matches-by_matchday.php:22
+#: templates/matches-gymnastics.php:54
+#: templates/matches-irish-gaelic-football.php:54
+#: templates/matches-tennis.php:55 templates/matches-volleyball.php:54
+#: templates/matches.php:52
+msgid "Match Plan"
+msgstr "Calendrier"
+
+#: admin/championship.php:227 templates/championship.php:100
+msgid "Inter Group Matches"
+msgstr "Matchs entre groupes"
+
+#: admin/documentation.php:3 admin/export.php:3 admin/import.php:3
+#: admin/match.php:3 admin/seasons.php:3 admin/settings-global.php:4
+#: admin/settings.php:3 admin/stats.php:3 admin/team.php:6
 msgid "You do not have sufficient permissions to access this page."
-msgstr "Vous ne disposez pas des autorisations nécessaires pour accéder à cette page."
+msgstr ""
+"Vous ne disposez pas des autorisations nécessaires pour accéder à cette page."
 
 #: admin/documentation.php:9
 msgid "LeagueManager Documentation"
 msgstr "Documentation LeagueManager "
 
 #: admin/documentation.php:11
-#: admin/settings.php:49
-msgid "Sport"
-msgstr "Type de sport"
+msgid "Content"
+msgstr "Contenu"
 
-#: admin/documentation.php:12
-msgid "The sport type is important to enable certain rules. Gymnastics leagues have apparatus points which other leagues don't, Soccer has Halftime results, while Hocky is played in Thirds and Basketball in Quarters."
-msgstr "Le sport est important afin de déterminer le type de règles. Les compétitions de gymnastique ont des systèmes alors que d'autres n'en ont pas. Choisissez Ball Game si vous voulez gérer une ligue de football ou similaire. Cela va activer les buts et insertion des résultats à mi-temps. En outre, le classement des équipes est différent, à savoir en premier lieu par des points et en second lieu par la différence de buts. Le Hockey et le Basketball ont comme caractéristiques qu'ils sont joués par tiers-temps et quart-temps."
+#: admin/documentation.php:13 admin/documentation.php:32
+msgid "Shortcodes"
+msgstr "Codes courts"
 
-#: admin/documentation.php:16
-msgid "Point Rules"
-msgstr "Règles de points "
+#: admin/documentation.php:14 admin/documentation.php:445
+msgid "Templates"
+msgstr "Modèles"
 
-#: admin/documentation.php:17
-msgid "The second important option is the point rule, which automatically sets the number of points teams get for won matches, draw matches or lost matches. Some league types have specific rules. See the sections below for details."
-msgstr "La deuxième option importante est la règle des points. Elle définit automatiquement le nombre de points attribué aux équipes pour une victoire, un nul ou une défaite. Certains types de compétition ont des règles spécifiques. Voir les sections ci-dessous pour plus de détails."
+#: admin/documentation.php:15 admin/documentation.php:498
+msgid "Template Tags"
+msgstr "Modèle de mot-clé"
 
-#: admin/documentation.php:20
-msgid "The One-Point-Rule simply counts the number of won matches. This point system is used, e.g. in the MLB, NBA and NFL."
-msgstr "La Règle 1 Point consiste simplement à compter le nombre de matchs gagnés. Ce système est utilisé, par exemple, dans la MLB, NBA et NFL."
+#: admin/documentation.php:16 admin/documentation.php:516
+msgid "League Settings"
+msgstr "Paramètres de la compétition"
 
-#: admin/documentation.php:22
-msgid "Two-Point-Rule and Three-Point-Rule"
-msgstr "Régle: 2 Points & 3 Points"
-
-#: admin/documentation.php:23
-msgid "The Two- and Three-Point-Rules are the most common ones. Teams get two or three points for won matches respectively and one point for draw."
-msgstr "Les règles 2 Points et 3 Points sont les plus communes. Les équipes obtiennent 2 ou 3 points par match gagné et 1 pour par match nul."
-
-#: admin/documentation.php:28
+#: admin/documentation.php:17 admin/documentation.php:544
 msgid "Customization"
 msgstr "Personnalisation"
 
-#: admin/documentation.php:29
-msgid "The Plugin is built iin a modular way with several Wordpress hooks to make customization as easy as possible. I here provide a list of available hooks with a short description."
-msgstr "Le plugin est construit de manière modulaire avec plusieurs hooks Wordpress pour faire la personnalisation aussi facile que possible. Ci-joint une liste de hooks disponibles avec une courte description."
+#: admin/documentation.php:19
+msgid "Howto"
+msgstr "Comment faire"
 
-#: admin/documentation.php:31
+#: admin/documentation.php:21 admin/documentation.php:750
+#: lib/championship.php:205
+msgid "Championship"
+msgstr "Championnat"
+
+#: admin/documentation.php:22 admin/documentation.php:753 admin/team.php:132
+#: lib/stats.php:341 templates/team.php:60
+msgid "Team Roster"
+msgstr "Composition d'équipe"
+
+#: admin/documentation.php:23 admin/documentation.php:757 admin/stats.php:59
+#: lib/stats.php:158
+msgid "Match Statistics"
+msgstr "Statistiques du match"
+
+#: admin/documentation.php:27 admin/documentation.php:763
+msgid "Setup Racing Sports"
+msgstr "Configurer des sports de course"
+
+#: admin/documentation.php:31 admin/documentation.php:444
+#: admin/documentation.php:498 admin/documentation.php:515
+#: admin/documentation.php:543 admin/documentation.php:746
+#: admin/documentation.php:762
+msgid "Top"
+msgstr "Haut"
+
+#: admin/documentation.php:35
+msgid "The standings table of a league is displayed with"
+msgstr "Les résultats de la compétition sont affichés avec"
+
+#: admin/documentation.php:40 admin/documentation.php:99
+#: admin/documentation.php:214 admin/documentation.php:266
+#: admin/documentation.php:297 admin/documentation.php:335
+#: admin/documentation.php:366 admin/documentation.php:411
+msgid "Parameter"
+msgstr "Paramètre"
+
+#: admin/documentation.php:41 admin/documentation.php:100
+#: admin/documentation.php:215 admin/documentation.php:267
+#: admin/documentation.php:298 admin/documentation.php:336
+#: admin/documentation.php:367 admin/documentation.php:412
+#: admin/documentation.php:453 admin/documentation.php:552
+#: admin/documentation.php:659 sports/racing.php:95 sports/racing.php:205
+msgid "Description"
+msgstr "Description"
+
+#: admin/documentation.php:42 admin/documentation.php:101
+#: admin/documentation.php:216 admin/documentation.php:268
+#: admin/documentation.php:299 admin/documentation.php:337
+#: admin/documentation.php:368 admin/documentation.php:413
+msgid "Possible Values"
+msgstr "Valeurs possibles"
+
+#: admin/documentation.php:44 admin/documentation.php:103
+#: admin/documentation.php:218 admin/documentation.php:270
+#: admin/documentation.php:301 admin/documentation.php:339
+#: admin/documentation.php:370 admin/documentation.php:415
+msgid "Optional"
+msgstr "Optionnel"
+
+#: admin/documentation.php:50 admin/documentation.php:109
+#: admin/documentation.php:224 admin/documentation.php:307
+#: admin/documentation.php:376 admin/documentation.php:421
+msgid "ID of League"
+msgstr "ID de la compétition"
+
+#: admin/documentation.php:53 admin/documentation.php:112
+#: admin/documentation.php:227 admin/documentation.php:279
+#: admin/documentation.php:310 admin/documentation.php:348
+#: admin/documentation.php:379 admin/documentation.php:424
+msgid "No"
+msgstr "Non"
+
+#: admin/documentation.php:57 admin/documentation.php:116
+#: admin/documentation.php:231 admin/documentation.php:383
+#: admin/documentation.php:428
+msgid ""
+"get league by name instead of ID (cannot be used together with attribute "
+"league_id)"
+msgstr ""
+"trouver la compétition par le nom et non pas par son ID (ne peut pas être "
+"utlisé avec l'attribut league_id)"
+
+#: admin/documentation.php:60 admin/documentation.php:67
+#: admin/documentation.php:74 admin/documentation.php:81
+#: admin/documentation.php:88 admin/documentation.php:119
+#: admin/documentation.php:126 admin/documentation.php:133
+#: admin/documentation.php:140 admin/documentation.php:147
+#: admin/documentation.php:154 admin/documentation.php:161
+#: admin/documentation.php:168 admin/documentation.php:175
+#: admin/documentation.php:182 admin/documentation.php:189
+#: admin/documentation.php:196 admin/documentation.php:203
+#: admin/documentation.php:234 admin/documentation.php:241
+#: admin/documentation.php:248 admin/documentation.php:255
+#: admin/documentation.php:286 admin/documentation.php:317
+#: admin/documentation.php:324 admin/documentation.php:355
+#: admin/documentation.php:386 admin/documentation.php:393
+#: admin/documentation.php:400 admin/documentation.php:431
+#: admin/documentation.php:438
+msgid "Yes"
+msgstr "Oui"
+
+#: admin/documentation.php:64 admin/documentation.php:123
+#: admin/documentation.php:238 admin/documentation.php:314
+#: admin/documentation.php:390
+msgid "display standings of specific season (default is last season)"
+msgstr ""
+"afficher les résultats d'une saison (par défaut on affiche la dernière "
+"saison)"
+
+#: admin/documentation.php:71
+msgid "toggle dislay of Team Logos"
+msgstr "permet l'affichage des logos des équipes"
+
+#: admin/documentation.php:78 admin/documentation.php:137
+#: admin/documentation.php:252 admin/documentation.php:283
+#: admin/documentation.php:321 admin/documentation.php:352
+#: admin/documentation.php:397 admin/documentation.php:435
+msgid "specifies template to use"
+msgstr "définir le modèle à utiliser"
+
+#: admin/documentation.php:79
+msgid ""
+"name of template file without extension, whereas the name has to be "
+"standings-X"
+msgstr ""
+"nom du fichier du modèle sans l'extension, le nom doit être au format "
+"standings-X"
+
+#: admin/documentation.php:85
+msgid "specific group"
+msgstr "groupe défini"
+
+#: admin/documentation.php:94
+msgid "The matches table of a league is displayed with"
+msgstr "Les résultats des matchs d'une compétition sont affichés avec"
+
+#: admin/documentation.php:130
+msgid "display only matche of given Team ID"
+msgstr "affiche seulement les matchs de l'équipe définie par son ID"
+
+#: admin/documentation.php:138
+msgid ""
+"name of template file without extension, whereas the name has to be matches-X"
+msgstr ""
+"nom du fichier du modèle sans l'extension, le nom doit être au format "
+"matches-X"
+
+#: admin/documentation.php:144
+msgid "control which matches to display"
+msgstr "contrôle quels matchs doivent être affichés"
+
+#: admin/documentation.php:151
+msgid "If true match day will always start at 1 otherwise at current match day"
+msgstr ""
+"Si cocher la journée de matchs affichée sera toujours la première sinon la "
+"journée courante sera prise"
+
+#: admin/documentation.php:158
+msgid ""
+"Only works with Racing. Display race results for given racer. Can be either "
+"ID or name, but ID is recommended."
+msgstr ""
+"Fonctionne seulement avec les courses. Affiche les résultats de la course "
+"pour un concurent. Le filtre peut se faire avec l'ID ou le nom, mais "
+"l'utilisation de l'ID est recommandé."
+
+#: admin/documentation.php:165
+msgid ""
+"MySQL order string. Change ordering of matches, e.g. order=\"date DESC\" "
+"sorts matches descending by date"
+msgstr ""
+"Ordre de tri des chaines de MySQL.Modifie l'ordre des matchs, par exemple "
+"order=\"date DESC\" triera les matchs par date descendante."
+
+#: admin/documentation.php:172
+msgid ""
+"display matches of given match day. Alternatively use <em>next</em>, "
+"<em>last</em> or <em>current/latest</em>"
+msgstr ""
+"afficher les matchs d'une jour de compétition. Sinon utiliser <em>suivant</"
+"em>, <em>dernier</em> ou <em>actuel/dernier</em>"
+
+#: admin/documentation.php:179
+msgid "get matches of specific group"
+msgstr "trouver les matchs d'un groupe"
+
+#: admin/documentation.php:186
+msgid "use this to get either upcoming (next) or previous (prev) matches"
+msgstr ""
+"utiliser cette option pour avoir les prochains (next) ou les préccédents "
+"(prev) matchs"
+
+#: admin/documentation.php:193
+msgid "force showing or hiding dropdown for match days"
+msgstr "forcer l'affichage ou cacher la liste déroulante des jours de matchs"
+
+#: admin/documentation.php:200
+msgid "force showing or hiding dropdown for teams"
+msgstr "forcer l'affichage ou cacher la liste déroulante des équipes"
+
+#: admin/documentation.php:209
+msgid "The crosstable of a league is displayed with"
+msgstr "Le tableau croisé pour une compétition est affiché avec "
+
+#: admin/documentation.php:245
+msgid ""
+"embed table in page or display a link to open it in a thickbox popup window"
+msgstr ""
+"mettre le tableau dans la page ou bien afficher un lien qui ouvrira une "
+"petite fenêtre"
+
+#: admin/documentation.php:246
+msgid "<em>embed</em> or <em>popup</em>"
+msgstr "<em>dans la page</em> ou <em>fenêtre</em>"
+
+#: admin/documentation.php:253
+msgid ""
+"name of template file without extension, whereas the name has to be "
+"crosstable-X"
+msgstr ""
+"nom du fichier du modèle sans l'extension, le nom doit être au format "
+"crosstable-X"
+
+#: admin/documentation.php:261
+msgid "A single match is displayed with"
+msgstr "Un match est affiché avec"
+
+#: admin/documentation.php:276
+msgid "ID of match"
+msgstr "ID du match"
+
+#: admin/documentation.php:284
+msgid ""
+"name of template file without extension, whereas the name has to be match-X"
+msgstr ""
+"nom du fichier du modèle sans l'extension, le nom doit être au format match-X"
+
+#: admin/documentation.php:292
+msgid "A teams list of a league is displayed with"
+msgstr "Une liste des équipes d'une compétition est affichée avec"
+
+#: admin/documentation.php:322
+msgid ""
+"name of template file without extension, whereas the name has to be teams-X"
+msgstr ""
+"nom du fichier du modèle sans l'extension, le nom doit être au format teams-X"
+
+#: admin/documentation.php:330
+msgid "A single team is displayed with"
+msgstr "Une équipe est affichée avec"
+
+#: admin/documentation.php:345
+msgid "ID of team"
+msgstr "Id de l'équipe"
+
+#: admin/documentation.php:353
+msgid ""
+"name of template file without extension, whereas the name has to be team-X"
+msgstr ""
+"nom du fichier du modèle sans l'extension, le nom doit être au format team-X"
+
+#: admin/documentation.php:361
+msgid "A championship league is displayed with"
+msgstr "Le championnat d'une compétition est affiché avec"
+
+#: admin/documentation.php:398
+msgid ""
+"name of template file without extension, whereas the name has to be "
+"championship-X"
+msgstr ""
+"nom du fichier du modèle sans l'extension, le nom doit être au format "
+"championship-X"
+
+#: admin/documentation.php:406
+msgid "An archive of a league is displayed with"
+msgstr "Une archive d'une compétition est affichée avec"
+
+#: admin/documentation.php:436
+msgid ""
+"name of template file without extension, whereas the name has to be "
+"leaguearchive-X"
+msgstr ""
+"nom du fichier du modèle sans l'extension, le nom doit être au format "
+"leaguearchive-X"
+
+#: admin/documentation.php:446
+msgid ""
+"Templates are special files that are used to display plugin data in the "
+"website frontend. They reside in the following directory"
+msgstr ""
+"Les modèles sont des fichiers spéciaux qui sont utilisés pour afficher les "
+"données de l'extension dans la partie utilisateur du site. Ils sont situés "
+"dans ce répertoire"
+
+#: admin/documentation.php:448
+msgid "The following table lists all available default templates"
+msgstr "Le tableau ci-dessous affiche tous les modèles par défaut"
+
+#: admin/documentation.php:452
+msgid "Template"
+msgstr "Modèle"
+
+#: admin/documentation.php:459
+msgid "Display an archive of LeagueManager."
+msgstr "Afficher une archive de LeagueManager."
+
+#: admin/documentation.php:463
+msgid "Championship display"
+msgstr "Affichage du championnat"
+
+#: admin/documentation.php:467 admin/tinymce/window.php:41
+#: templates/archive.php:54 templates/crosstable.php:20
+#: templates/crosstable.php:47
+msgid "Crosstable"
+msgstr "Tableau croisé"
+
+#: admin/documentation.php:471
+msgid ""
+"Matches output. There exist multiple templates in the format matches-X.php. "
+"You can also design custom templates in this form and load them with the "
+"attribute template=X in the shortcode. If X is the sport type, this template "
+"is loaded automatically without the template attribute"
+msgstr ""
+"Plusieurs matchs. Il existe plusieurs modèles au format matches-X.php.Vous "
+"pouvez aussi définir vos propres modèles dans ce formulaire et les prendre "
+"en compte avec l'attribut template=X dans le code court. Si X correspond au "
+"type du sport, alors ce modèle est pris automatiquement sans avoir besoin de "
+"mettre l'attribut template."
+
+#: admin/documentation.php:475
+msgid ""
+"Individual match. There exist multiple templates in the format match-X.php. "
+"You can also design custom templates in this form and load them with the "
+"attribute template=X in the shortcode"
+msgstr ""
+"Un seul match. Il existe plusieurs modèles au format match-X.php.Vous pouvez "
+"aussi définir vos propres modèles dans ce formulaire et les prendre en "
+"compte avec l'attribut template=X dans le code court. Si X correspond au "
+"type du sport, alors ce modèle est pris automatiquement sans avoir besoin de "
+"mettre l'attribut template."
+
+#: admin/documentation.php:479
+msgid "List of teams"
+msgstr "Liste des équipes"
+
+#: admin/documentation.php:483
+msgid "Individual team"
+msgstr "Affichage d'une équipe"
+
+#: admin/documentation.php:487
+msgid ""
+"Standings table. There exist multiple templates in the format standings-X."
+"php. You can also design custom templates in this form and load them with "
+"the attribute template=X in the shortcode"
+msgstr ""
+"Tableau des classements. Il existe plusieurs modèles au format standinds-X."
+"php.Vous pouvez aussi définir vos propres modèles dans ce formulaire et les "
+"prendre en compte avec l'attribut template=X dans le code court.Si X "
+"correspond au type du sport, alors ce modèle est pris automatiquement sans "
+"avoir besoin de mettre l'attribut template."
+
+#: admin/documentation.php:491
+msgid "Customization of template files"
+msgstr "Personalisation des fichiers modèles"
+
+#: admin/documentation.php:492
+msgid "If you want to modify existing templates copy it to"
+msgstr "Si vous souhaitez modifier un modèle existant, copier le dans"
+
+#: admin/documentation.php:494
+msgid ""
+"The plugin will then first look in your theme directory. Further it is "
+"possible to design own templates, e.g. multiple standings templates. Assume "
+"you create a template called <strong>standings-sample1.php</strong>. To load "
+"this template use the following code."
+msgstr ""
+"L'extension recherche en premier dans le répertoire de votre thème. Il est "
+"possible de créer plusieurs modèles pour le même affichage, ex plusieurs "
+"modèles de tableau de classement. Si vous avez créé un modèle qui porte le "
+"nom <strong>standings-sample1.php</strong>, vous pouvez utiliser ce modèle "
+"avec le code court suivant :"
+
+#: admin/documentation.php:499
+msgid ""
+"Template Tags are functions that can be used in your Wordpress Theme to "
+"display the plugin data. Here is a brief listing of available tags. For "
+"details see file functions.php"
+msgstr ""
+"Les fonctions sur les modèles peuvent être utilisées dans votre thème "
+"Wordpress pour afficher les données de cette extension.Vous trouverez ci-"
+"dessous une liste de ces fonctions. Pour plus de détails, voir le fichier "
+"functions.php."
+
+#: admin/documentation.php:501
+msgid "display standings of given league with $league_id"
+msgstr "affiché les classement d'une compétition avec $league_id"
+
+#: admin/documentation.php:502
+msgid "display crosstable of given league with $league_id"
+msgstr "affiché le tableau croisé pour une compétition avec $league_id"
+
+#: admin/documentation.php:503
+msgid "display matches of given league with $league_id"
+msgstr "affiché les matchs pour une compétition avec $league_id"
+
+#: admin/documentation.php:504
+msgid "display match with given $match_id"
+msgstr "affiche le match correspondant au $match_id"
+
+#: admin/documentation.php:505
+msgid "display teams of given league with $league_id"
+msgstr "affiche les équipes correpondant à la compétition $league_id"
+
+#: admin/documentation.php:506
+msgid "display team with given $team_id"
+msgstr "affiche l'équipe correspondant à $team_id"
+
+#: admin/documentation.php:507
+msgid "display championship"
+msgstr "Afficher le championnat"
+
+#: admin/documentation.php:508
+msgid ""
+"Display widget. <em>$number</em> is the widget number and <em>$instance</em> "
+"is an assoziative array of widget settings. See lib/widget.php function "
+"widget for details."
+msgstr ""
+"Affiche le widget. <em>$number</em> est le numéro du widget et <em>"
+"$instance</em> est un tableau associatif avec les paramètres du widget. Voir "
+"le fichier lib/widget.php pour les détails sur le widget."
+
+#: admin/documentation.php:509
+msgid ""
+"display box of next matches. <em>$number</em> is the widget number and <em>"
+"$instance</em> is an assoziative array of widget settings. See lib/widget."
+"php function widget for details."
+msgstr ""
+"affiche dans une boites les prochains matchs. <em>$number</em> est le numéro "
+"du widget et <em>$instance</em>est un tableau associatif avec les paramètres "
+"du widget. Voir le fichier lib/widget.php pour les détails sur le widget."
+
+#: admin/documentation.php:510
+msgid ""
+"display box of previous matches. <em>$number</em> is the widget number and "
+"<em>$instance</em> is an assoziative array of widget settings. See lib/"
+"widget.php function widget for details."
+msgstr ""
+"Affiche une boite des matchs antérieurs. <em>$number</em> est le numéro du "
+"widget et <em>$instance</em> est un tableau associatif avec les paramètres "
+"du widget. Voir le fichier lib/widget.php pour les détails sur le widget."
+
+#: admin/documentation.php:512
+msgid ""
+"The variable <em>$args</em> is always an assoziative array of additional "
+"arguments with keys being the same as the shortcode attributes."
+msgstr ""
+"La variable <em>$args</em> est toujours un tableau associatif avec les "
+"arguments complémentaires dont les clés ont les même valeurs que les "
+"attributs du code court."
+
+#: admin/documentation.php:518 admin/settings.php:51
+msgid "Sport"
+msgstr "Sport"
+
+#: admin/documentation.php:519
+msgid ""
+"The sport type is important to enable certain rules. Gymnastics leagues have "
+"apparatus points which other leagues don't, Soccer has Halftime results, "
+"while Hocky is played in Thirds and Basketball in Quarters."
+msgstr ""
+"Le type de sport est important afin de déterminer le type de règles. Les "
+"compétitions de gymnastique ont des systèmes alors que d'autres n'en ont "
+"pas. Choisissez Ball Game si vous voulez gérer une ligue de football ou "
+"similaire. Cela va activer les buts et insertion des résultats à mi-temps. "
+"En outre, le classement des équipes est différent, à savoir en premier lieu "
+"par des points et en second lieu par la différence de buts. Le Hockey et le "
+"Basketball ont comme caractéristiques qu'ils sont joués par tiers-temps et "
+"quart-temps."
+
+#: admin/documentation.php:522
+msgid "Point Rules"
+msgstr "Règles de points "
+
+#: admin/documentation.php:523
+msgid ""
+"The second important option is the point rule, which automatically sets the "
+"number of points teams get for won matches, draw matches or lost matches. "
+"Some league types have specific rules. See the sections below for details."
+msgstr ""
+"La deuxième option importante est la règle des points. Elle définit "
+"automatiquement le nombre de points attribué aux équipes pour une victoire, "
+"un nul ou une défaite. Certains types de compétition ont des règles "
+"spécifiques. Voir les sections ci-dessous pour plus de détails."
+
+#: admin/documentation.php:526
+msgid ""
+"The One-Point-Rule simply counts the number of won matches. This point "
+"system is used, e.g. in the MLB, NBA and NFL."
+msgstr ""
+"La Règle 1 Point consiste simplement à compter le nombre de matchs gagnés. "
+"Ce système est utilisé, par exemple, dans la MLB, NBA et NFL."
+
+#: admin/documentation.php:528
+msgid "Two-Point-Rule and Three-Point-Rule"
+msgstr "Régle: 2 Points & 3 Points"
+
+#: admin/documentation.php:529
+msgid ""
+"The Two- and Three-Point-Rules are the most common ones. Teams get two or "
+"three points for won matches respectively and one point for draw."
+msgstr ""
+"Les règles 2 Points et 3 Points sont les plus communes. Les équipes "
+"obtiennent 2 ou 3 points par match gagné et 1 pour un match nul."
+
+#: admin/documentation.php:531
+msgid "<em>Score</em> Point-Rule"
+msgstr "<em>Score</em> règles pour les points"
+
+#: admin/documentation.php:532
+msgid "Teams get one point for each goal scored during a game."
+msgstr "Les équipes gagnent un point pour chaque but marqué durant un match."
+
+#: admin/documentation.php:535
+msgid ""
+"User defined points for won, tie and lost matches. Overtime win/loss points "
+"does not work with all sport types!"
+msgstr ""
+"Définition des points pour les victoires, les nuls et les défaites. Les "
+"points en cas de victoire/défaite après dépassement du temps réglementaire "
+"ne sont pas pris en compte par tous les sports!"
+
+#: admin/documentation.php:539 admin/settings.php:85
+msgid "Point Format"
+msgstr "Format des points "
+
+#: admin/documentation.php:540
+#, php-format
+msgid ""
+"The point format controls how the points are displayed. Most sports would "
+"choose some %d variation which treats the points as integer. Only if a user "
+"defined point rule with half points is used, a %f variation has to be used "
+"to display the points as floating number."
+msgstr ""
+"Le format des points permet de définir comment les points sont affichés. La "
+"pluspart des sports utilisent une variation à base de %d qui manipule les "
+"points comme des entiers. Si une règle de points manipule des demi-points, "
+"alors il faut se baser sur une variation de %f qui manipule les points comme "
+"des nombres décimaux."
+
+#: admin/documentation.php:545
+msgid ""
+"The Plugin is built in a modular way with several Wordpress hooks to make "
+"customization as easy as possible. The filters are needed to implement rules "
+"for new sport types. I here provide a list of available hooks with a short "
+"description. For examples on usage see sports files in the sports "
+"subdirectory or lib/stats.php."
+msgstr ""
+"Le plugin est construit de manière modulaire avec plusieurs hooks Wordpress "
+"pour rendre la personnalisation aussi facile que possible. Les filtres sont "
+"nécessaires pour définir les règles de nouveaux types de sport. Ci-joint une "
+"liste des hooks disponibles avec une courte description. Pour des exemples "
+"sur leur utilisation, consultez les fichiers sur les sports dans le "
+"répertoire sport ou lib/stats.php."
+
+#: admin/documentation.php:547
 msgid "List of Wordpress Filters"
 msgstr "Liste des filtres Wordpress"
 
-#: admin/documentation.php:35
-msgid "Can be used to add a new sport type to the settings selection menu."
-msgstr "Peut être utilisé pour ajouter un nouveau type de sport aux réglages du menu de sélection."
+#: admin/documentation.php:551 admin/matches.php:38 sports/racing.php:303
+msgid "Filter"
+msgstr "Filtre"
 
-#: admin/documentation.php:48
-msgid "Change Team Ranking based on sport specific rules. The sport type needs to be appended so its only called, when this type is active. I will use the example sport type <em>sport</em> from above."
-msgstr "Changer le classement des équipes en fonction des règles spécifiques au sport. Le type de sport doit être ajoutée afin que son nom, lorsque ce type est actif. Je vais utiliser le type de sport par exemple <em>sport</em> d'en haut."
+#: admin/documentation.php:554 admin/documentation.php:661
+msgid "Comments"
+msgstr "Commentaires"
 
-#: admin/export.php:8
+#: admin/documentation.php:560
+msgid "add a new sport type to the settings selection menu"
+msgstr ""
+"Peut être utilisé pour ajouter un nouveau type de sport aux réglages du menu "
+"de sélection."
+
+#: admin/documentation.php:566
+msgid "Change Team Ranking based on sport specific rules"
+msgstr ""
+"Modifier le classement de l'équipe à partir de règles spécifiques au sport"
+
+#: admin/documentation.php:572
+msgid "manipulate card types (yellow, red, yellow-red)"
+msgstr "manipuler les types de carton (jaune, rouge, jaune-rouge)"
+
+#: admin/documentation.php:578
+msgid "manipulate league menu based on current sport type and mode"
+msgstr "manipuler le menu compétition en fonction du type de sport et du mode"
+
+#: admin/documentation.php:584
+msgid "manipulate available modes"
+msgstr "manipuler les différents modes"
+
+#: admin/documentation.php:590
+msgid "manipulate List of available point rules"
+msgstr "manipuler la liste des règles d'attribution des points"
+
+#: admin/documentation.php:596
+msgid "manipulate point rules"
+msgstr "manipuler les règles de points"
+
+#: admin/documentation.php:601
+msgid "manipulate available point formats"
+msgstr "manipuler les formats disponibles pour les points"
+
+#: admin/documentation.php:607
+msgid "calculate secondary points for team based on current sport type"
+msgstr ""
+"calculer les points secondaires pour l'équipe en fonction du type de sport"
+
+#: admin/documentation.php:609
+msgid ""
+"input naming structure name=\"custom[$team_id][points2][plus]\" and name="
+"\"custom[$team_id][points2][minus]\" for manual saving of standing table."
+msgstr ""
+"la défintion de la saisie est name=\"custom[$team_id][points2][plus]\" et "
+"name=\"custom[$team_id][points2][minus]\" pour l'enregistrement manuel du "
+"tableau des résultats."
+
+#: admin/documentation.php:613
+msgid "manipulate team points based on current sport rules"
+msgstr "manipulé les points de l'équipe en fonction des règles du sport"
+
+#: admin/documentation.php:619
+msgid "filter custom data for team"
+msgstr "filtré les données personalisées pour une équipe"
+
+#: admin/documentation.php:625
+msgid "filter custom data for match"
+msgstr "filtre de données personalisé pour un match"
+
+#: admin/documentation.php:631
+msgid "append custom header data for team export"
+msgstr "ajouté des entêtes personalisées pour l'export des équipes"
+
+#: admin/documentation.php:637
+msgid "append custom data for team export"
+msgstr "ajouté des données personalisées pour l'export des équipes"
+
+#: admin/documentation.php:643
+msgid "append custom header data for match export"
+msgstr "ajouté des entêtes personalisées pour l'export des matchs"
+
+#: admin/documentation.php:649
+msgid "append custom data for match export"
+msgstr "ajouté des données personalisées pour l'export des matchs"
+
+#: admin/documentation.php:654
+msgid "List of Wordpress Actions"
+msgstr "Liste des actions Wordpress"
+
+#: admin/documentation.php:658
+msgid "Action"
+msgstr "Action"
+
+#: admin/documentation.php:667
+msgid "called when standings are saved for each team in automatic mode"
+msgstr ""
+"appelé quand les classements sont enregistrés pour chaque équipe en mode "
+"automatique"
+
+#: admin/documentation.php:673
+msgid "called when results for each match are saved"
+msgstr "appelé quand les résultats pour chaque match sont enregistrés"
+
+#: admin/documentation.php:679
+msgid "add additional columns to standings table header"
+msgstr ""
+"ajouter des colonnes supplémentaires dans l'entête du tableau de classement"
+
+#: admin/documentation.php:685
+msgid "add additional columns to standings table"
+msgstr "ajouter des colonnes supplémentaires dans le tableau de classement"
+
+#: admin/documentation.php:687
+msgid ""
+"input naming structure name=\"custom[$team_id][points2][plus]\" and name="
+"\"custom[$team_id][points2][minus]\" for secondary points. Otherwise name="
+"\"custom[<em>name</em>]\". Access via <em>$team->name</em>.</td> "
+msgstr ""
+"la définition de la saisie est name=\"custom[$team_id][points2][plus]\" et "
+"name=\"custom[$team_id][points2][minus]\" pour les points secondaires, sinon "
+"name=\"custom[<em>name</em>]\". L'accès aux valeurs est <em>$team->name</em>."
+"</td>"
+
+#: admin/documentation.php:691
+msgid "add additional columns to match table header"
+msgstr ""
+"ajouter des colonnes supplémentaires dans l'entête du tableau des matchs"
+
+#: admin/documentation.php:697
+msgid "add additional columns to match table table"
+msgstr "ajouter des colonnes supplémentaires dans le tableau des matchs"
+
+#: admin/documentation.php:699
+msgid ""
+"input naming structure name=\"custom[$match_id][<em>name</em>]\". Access via "
+"<em>$match->name</em>"
+msgstr ""
+"la défintion de la saisie est name=\"custom[$match_id][<em>name</em>]\". "
+"L'accès aux valeurs est <em>$match->name</em>"
+
+#: admin/documentation.php:703
+msgid "substitute match edit form with custom form"
+msgstr ""
+"remplacer le formulaire de modification d'un match par un formulaire "
+"personalisé"
+
+#: admin/documentation.php:709
+msgid "add custom settings for league dependent on chosen sport or league mode"
+msgstr ""
+"ajouté des paramètres personalisés pour une compétition en fonction du sport "
+"et du mode choisi"
+
+#: admin/documentation.php:711
+msgid ""
+"name structure of input fields is name=\"settings[<em>name</em>]\". access "
+"of values is <em>$league->name</em>"
+msgstr ""
+"la définition de la saisie est name=\"settings[<em>name</em>]\". L'accès aux "
+"valeurs est <em>$league->name</em>"
+
+#: admin/documentation.php:715
+msgid ""
+"add custom fields for team; used to add hidden input fields based on sport "
+"type"
+msgstr ""
+"ajouter des champs personalisés à l'équipe. Il est habituel d'ajouter des "
+"champs cachés en fonction du type de sport."
+
+#: admin/documentation.php:717
+msgid ""
+"input name structure is name=\"custom[<em>name</em>]\". access of values is "
+"<em>$team->name</em>"
+msgstr ""
+"la défintion de la saisie est name=\"custom[<em>name</em>]\". L'accès aux "
+"valeurs est <em>$team->name</em>"
+
+#: admin/documentation.php:721
+msgid "add documentation on specific sport type"
+msgstr "ajouter de la documentation sur un type de sport"
+
+#: admin/documentation.php:727
+msgid "add documentation on point rules"
+msgstr "ajouter de la documentation sur les règles des points"
+
+#: admin/documentation.php:733
+msgid "call next or previous match, respectiveley"
+msgstr ""
+"appelé le prochain (next) ou le précédent (previous) match respectivement"
+
+#: admin/documentation.php:735
+msgid ""
+"remove action before hooking own function by remove_all_actions"
+"(\"leaguemanager_widget_next_match\") or remove_all_action"
+"(\"leaguemanager_widget_prev_match\")"
+msgstr ""
+"supprimer l'action avant de mettre en place sa propre action en utilisant "
+"remove_all_actions(\"leaguemanager_widget_next_match\") ou remove_all_action"
+"(\"leaguemanager_widget_prev_match\")"
+
+#: admin/documentation.php:739
+msgid "display infopage of single team"
+msgstr "afficher la page d'information d'une équipe"
+
+#: admin/documentation.php:747
+msgid "HowTo"
+msgstr "Comment faire"
+
+#: admin/documentation.php:748
+#, php-format
+msgid ""
+"The main page of LeagueManager shows an <a href=\"%s\" class=\"thickbox"
+"\">overview of leagues</a> in the database together with a few statistics on "
+"number of seasons, teams and matches. At the beginning it is necessary to "
+"add at least one season for which the number of match days is also "
+"specified. Furthermore the <a href=\"%s\" class=\"thickbox\">league "
+"preferences</a> need to be set. One can choose from numerous sport types, "
+"which implement different extensions, point rules, point formats, team "
+"ranking and different other options. Afterwards <a href=\"%s\" class="
+"\"thickbox\">teams</a> and <a href=\"%s\" class=\"thickbox\">matches</a> can "
+"be added to database. Data from LeagueManager can be inserted in a page or "
+"post using the cup <a href=\"%s\" class=\"thickbox\">TinyMCE Button</a> or "
+"directly shortcodes introduced above. Furthermore matches and standings can "
+"be displayed in the sidebar with a <a href=\"%s\" class=\"thickbox\">widget</"
+"a>. A page or post can be also marked as <a href=\"%s\" class=\"thickbox"
+"\">match report</a> with easy-to-use dropdown menus from which the match can "
+"be selected."
+msgstr ""
+"La page principale de LeagueManager affiche <a href=\"%s\" class=\"thickbox"
+"\">une synthèse des compétitions</a> se trouvant dans la base de données "
+"avec des informations sur le nombre de saisons, d'équipes et de matchs. Au "
+"démarrage il est nécessaire d'ajouter au moins une saison avec le nombre de "
+"journée pour les matchs. Après il faut définir <a href=\"%s\" class="
+"\"thickbox\">les paramètres</a> de la compétition. Vous pouvez choisir parmi "
+"de nombreux types de sports, qui mettent en place différentes possibilités, "
+"les règles des points, le format d'affichage des points, le classement des "
+"équipes et autres paramètres. Ensuite <a href=\"%s\" class=\"thickbox\">les "
+"équipes</a> et <a href=\"%s\" class=\"thickbox\">les matchs</a> peuvent être "
+"ajoutés dans la base de données. Les informations de LeagueManager peuvent "
+"être affichées dans une page ou un article <a href=\"%s\" class=\"thickbox"
+"\">avec le bouton de l'éditeur visuel</a> ou directement en utlisant les "
+"codes courts. Enfin les matchs et les classements peuvent peuvent être "
+"affichés dans les barres latérales avec <a href=\"%s\" class=\"thickbox\">le "
+"widget</a>. Une page ou un article peut être marqué comme <a href=\"%s\" "
+"class=\"thickbox\">résummés des matchs</a> avec des menus déroulants "
+"permettant de choisir un match."
+
+#: admin/documentation.php:751
+#, php-format
+msgid ""
+"The Championship mode is designed for soccer championships and may not work "
+"with other types. When changing the league mode, additional preferences "
+"could appear after saving. For championship mode two new settings will "
+"appear. <em>Groups</em> defines the group names which are available. "
+"<em>Teams Advance</em> is the number of teams which advance from the "
+"preliminary round to the final rounds. The number of final rounds is "
+"automatically calculated from the number of groups and the number of "
+"advancing teams. In championship mode, each team has be assigned to a group. "
+"The <a href=\"%s\" class=\"thickbox\">preliminary rounds</a> are displayed "
+"on the bottom of the league overview page. Before adding matches a group "
+"needs to be selected, either from the group dropdown on the top of the page "
+"or in the preliminary section. <a href=\"%s\" class=\"thickbox\">Final round "
+"matches</a> are added by using the <em>Actions</em> dropdown in the Finals "
+"section. Final round matches are added in a symbolic way before the "
+"championship starts. The plugin will automatically advance from the "
+"preliminary rounds to the final rounds as soon as all preliminary round "
+"matches in all groups are finished (have results). This is also the case for "
+"advancing from one final round to the next."
+msgstr ""
+"Le mode championnat est conçu pour les championnats de football et ne "
+"fonctionnera pas forcément avec les autres sports. Lorsque l'on change le "
+"mode de la compétition, des paramètres additionnels peuvent apparaitre après "
+"l'enregistrement. Pour le mode championat deux nouveaux paramètres sont "
+"disponibles. <em>Groupes</em> défini les noms des groupes qui sont "
+"disponibles. <em>Nombre d'équipes pour le prochain tour</em> correspond au "
+"nombre d'équipes qui passent du tour préliminaire aux tours finaux. Le "
+"nombre de tours finaux est automatiquement calculé à partir du nombre de "
+"groupes et du nombre d'équipes qualifiées. Dans le mode championat, chaque "
+"équipe doit être dans un groupe. Le <a href=\"%s\" class=\"thickbox\">tour "
+"préliminaire</a> est affiché en bas de la page de synthèse de la "
+"compétition. Avant d'ajouter des matchs, le groupe doit être sélectionné, "
+"soit par la liste déroulante en haut de la page, soit dans l'affichage du "
+"tour préliminaire. <a href=\"%s\" class=\"thickbox\">. Les matchs pour les "
+"finales</a> sont ajoutés en utilisant la liste déroulante <em>Actions</em> "
+"dans la partie des finales. Les matchs pour les tours finaux sont ajoutés de "
+"manière symbolique avant que le championat ne démarre. LeagueManager fera "
+"les tours finaux dès que l'ensemble des matchs du tour préliminaire pour "
+"tous les groupes seront joués et surtout que les résultats seront saisis. "
+"C'est aussi le cas pour avancer dans la phase finale."
+
+#: admin/documentation.php:754
+#, php-format
+msgid ""
+"LeagueManager itself cannot manage team rosters, but has to be done together "
+"with the plugin <a href=\"%s\" target=\"_blank\">ProjectManager</a>. This "
+"plugin is specifically designed for team rosters. It allows the easy "
+"generation of custom input forms through the administration panel. Further "
+"datasets can be grouped into different categories using the wordpress "
+"category system. A template system allows a high degree of customization for "
+"displaying datasets in the output. It comes with two default templates to "
+"display datasets in a table list or show them as photo gallery, which is "
+"especially useful for team roster."
+msgstr ""
+"LeagueManager ne peut pas seul gérer la composition des équipes, mais peut "
+"le faire en liaison avec l'extension <a href=\"%s\" target=\"_blank"
+"\">ProjectManager</a>. Cette extension est spécialement conçue pour gérer "
+"les compositions d'équipes. Elle permet la création simple de champs de "
+"saisie au travers de l'interface d'administration. Ensuite les jeux de "
+"données peuvent être regroupés en différentes catégories avec le système "
+"proposés par Wordpress. Un système de modèles permet d'offrir une très "
+"grande souplesse dans l'affichage des informations aux utilisateurs. "
+"L'extension est installée avec deux modèles par défaut qui permettent "
+"l'afficher les informations dans un tableau et l'autre sous la forme d'une "
+"gallerie photo, ce qui est particulièrement utile pour la gestion de la "
+"composition d'une équipe."
+
+#: admin/documentation.php:755
+#, php-format
+msgid ""
+"A project in ProjectManager can then be used as team roster and <a href=\"%s"
+"\" class=\"thickbox\">linked to a specific team</a> in the team edit page. "
+"The team roster will be displayed in a list on an individual team page, e.g. "
+"by using the shortcode [team id=ID]."
+msgstr ""
+"Un projet dans ProjectManager peut ensuite être utlisé comme gestionnaire "
+"d'équipe et <a href=\"%s\" class=\"thickbox\">lié à une équipe</a> dans la "
+"page de gestion des équipes. La composition de l'équipe sera affichée dans "
+"une liste sur la page de description de l'équipe, par exemple avec le code "
+"court [team id=ID]."
+
+#: admin/documentation.php:758
+#, php-format
+msgid ""
+"Match Statistics do not depend on ProjectManager and a team roster, but the "
+"combination makes it much more powerful and I recommend the combination. "
+"LeagueManager has a simple, but flexible match statistics module, which "
+"works similar to the formfields in ProjectManager. The first step is to "
+"activate match statistics in the league preferences and then <a href=\"%s\" "
+"class=\"thickbox\">add statistics a field</a>, e.g. Goals, by clicking on "
+"the Match Statistics link in the top menu on the league overview page. Each "
+"statistics needs a name and can have any number of fields, which are added "
+"dynamically. Each field can be either <em>text</em> or <em>roster</em>. "
+"Choose roster for a field which holds a player name, also if you do not use "
+"a team roster now, as it is more flexible."
+msgstr ""
+"Les statistiques sur les matchs ne dépendent pas de ProjectManager et d'une "
+"équipe, mais la combinaison des deux les rend plus puissant et c'est "
+"recommandé. LeagueManager a un module simple et flexible pour les "
+"statistiques des matchs, qui marche d'une façon similaire aux champs des "
+"formulaires dans ProjectManager. La première étape est d'activé les "
+"statistiques sur les matchs dans les paramètres de la compétition et ensuite "
+"<a href=\"%s\" class=\"thickbox\">d'ajouter des champs statistiques</a>, par "
+"exemple les buts, en cliquant sur le lien des statistiques des matchs dans "
+"le menu en haut sur la page de synthèse de la compétition. Chaque "
+"statistique doit avoir un nom et peut avoir autant de champs que nécessaire, "
+"qui sont ajoutés dynamiquement. Chaque champ peut-être soit <em>du texte</"
+"em> ou <em>un tableau</em>. Choisissez tableau pour un champ qui contient le "
+"nom d'un joueur, même si vous mettez pas en place une gestion d'équipe car "
+"cela est plus simple."
+
+#: admin/documentation.php:759
+#, php-format
+msgid ""
+"After having set up the statistics fields you can return to the league "
+"overview page and <a href=\"%s\" class=\"thickbox\">add statistics for each "
+"match</a> by clicking the link in the matches table. Each field which was "
+"defined as roster will have a button next to the input field. Clicking on "
+"the button opens a popup window with a selection of players which are taken "
+"from ProjectManager. The statistics will be shown with each individual "
+"match, e.g. by using the shortcode [match id=ID]."
+msgstr ""
+"Après avoir défini les champs pour les statistiques, vous pouvez retourner à "
+"la page de synthèse de la compétition et <a href=\"%s\" class=\"thickbox"
+"\">ajouter des statistiques pour chaque match</a> en cliquant le lien dans "
+"le tableau des matchs. Chaque champ qui a été défini comme données aura un "
+"bouton à côté du champ. En cliquant sur le bouton, une fenêtre s'ouvrira "
+"avec une sélection des joueurs trouvés dans ProjectManager. Les statistiques "
+"seront affichées pour chaque match, par exemple en utilisant le code court "
+"[match id=ID]."
+
+#: admin/documentation.php:760
+#, php-format
+msgid ""
+"Each Statistics field will automatically create <a href=\"%s\" class="
+"\"thickbox\">another formfield type in ProjectManager</a>. In this way match "
+"statistics from LeagueManager can be displayed in each player profile in "
+"ProjectManager. Any statistics which only counts the number of entries, e.g. "
+"Goals, Assists, Cards will be automatically calculated. "
+msgstr ""
+"Chaque champ de statistique créera automatiquement <a href=\"%s\" class="
+"\"thickbox\">un autre type de champ dans ProjectManager</a>. De cette "
+"manière les statistiques des matchs de LeagueManager peuvent être affichées "
+"dans chaque profile des joueurs dans ProjectManager. Toutes les statistiques "
+"qui comptent seulement des occurences (ex buts, matchs jouée, cartons) "
+"seront calculées automatiquement."
+
+#: admin/documentation.php:764
+#, php-format
+msgid ""
+"Racing mode has a special setup and strictly requires my other plugin %s to "
+"manage individual racer. After installing the plugin ProjectManager setup "
+"different cateogies for each racing team and setup individual profiles for "
+"each racer (Name is enough). Having setup the profiles for individual racer, "
+"add teams in LeagueManager and choose as team roster the respective project "
+"and category. Then add matches as normal only that for each racing event an "
+"individual title is used. The results are not required, I think, but the "
+"table for each team needs to be updated manually. By clicking on the results "
+"page you can insert results for each individual racer."
+msgstr ""
+"Le modèle pour les courses a un paramétrage spécifique et nécessite mon "
+"autre extension %s pour gérer les coureurs. Après l'installation du plugin "
+"ProjectManager paramétrer différentes catégories pour chaque équipe puis "
+"définisser les athlètes (le nom est suffisant). Ayant définis les athlètes, "
+"ajouter les équipes dans LeagueManager puis choisisser comme  tableau le "
+"projet et la catégorie. Ajouter ensuite des matchs comme habituellement sauf "
+"que pour chaque course, un titre est défini. Les résultats ne sont pas "
+"nécessaires, je pense, mais la table de chaque équipe doit être mise à jour "
+"manuellement. En cliquant sur la page de résultats, vous pouvez définir le "
+"résultat de chaque coureur."
+
+#: admin/export.php:7
 msgid "LeagueManager Export"
 msgstr "LeagueManager Exporter"
 
-#: admin/export.php:9
+#: admin/export.php:8
 msgid "Here you can export teams and matches for a specific league."
-msgstr "Ici, vous pouvez exporter les équipes et les matches pour une ligue."
+msgstr "Ici, vous pouvez exporter les équipes et les matchs pour une ligue."
 
-#: admin/export.php:10
-msgid "Once you&#8217;ve saved the download file, you can use the Import function on another WordPress blog to import this blog."
-msgstr "Une fois que vous avez sauvegardé le fichier téléchargé, vous pouvez utiliser la fonction d'importation sur un autre blog WordPress pour importer ce blog."
+#: admin/export.php:9
+msgid ""
+"Once you&#8217;ve saved the download file, you can use the Import function "
+"on another WordPress blog to import this blog."
+msgstr ""
+"Une fois que vous avez enregistré le fichier téléchargé, vous pouvez "
+"utiliser la fonction d'importation sur un autre blog WordPress pour importer "
+"ce blog."
 
-#: admin/export.php:13
-#: leaguemanager.php:299
-msgid "Options"
-msgstr "Options"
+#: admin/export.php:15 admin/import.php:29 admin/index.php:37
+#: admin/index.php:75 admin/upgrade.php:485 admin/tinymce/window.php:55
+#: admin/tinymce/window.php:90 admin/tinymce/window.php:151
+#: admin/tinymce/window.php:195 admin/tinymce/window.php:223
+#: lib/widget.php:335 templates/archive-tennis.php:18 templates/archive.php:19
+msgid "League"
+msgstr "Compétition"
 
-#: admin/export.php:28
-#: admin/import.php:41
+#: admin/export.php:27 admin/import.php:41
 msgid "Data"
 msgstr "Données"
 
-#: admin/export.php:31
-#: admin/import.php:44
-#: admin/index.php:39
-#: admin/tinymce/window.php:44
-#: view/teams.php:20
+#: admin/export.php:30 admin/import.php:44 admin/index.php:39
+#: admin/tinymce/window.php:44 templates/teams.php:23
 msgid "Teams"
 msgstr "Equipes"
 
-#: admin/export.php:37
+#: admin/export.php:36
 msgid "Download File"
 msgstr "Télécharger fichier"
 
@@ -561,56 +1566,83 @@ msgstr "Pour le délimiteur Tabulation, utilisez TAB comme délimiteur"
 
 #: admin/import.php:51
 msgid "Upload file and import"
-msgstr "Télécharger fichier et importer"
+msgstr "Télécharger le fichier et importer"
 
-#: admin/index.php:26
-#: admin/seasons.php:47
-#: admin/show-league.php:125
-#: admin/show-league.php:263
-#: admin/stats.php:125
+#: admin/index.php:13 admin/settings.php:40 admin/tinymce/window.php:27
+msgid "Leaguemanager"
+msgstr "Leaguemanager"
+
+#: admin/index.php:26 admin/matches.php:25 admin/seasons.php:47
+#: admin/standings.php:9 admin/stats.php:128
 msgid "Bulk Actions"
 msgstr "Actions groupées"
 
-#: admin/index.php:29
-#: admin/seasons.php:50
-#: admin/show-league.php:128
-#: admin/show-league.php:266
-#: admin/stats.php:128
+#: admin/index.php:29 admin/matches.php:28 admin/seasons.php:50
+#: admin/standings.php:12 admin/stats.php:131
 msgid "Apply"
 msgstr "Appliquer"
 
-#: admin/index.php:72
-#: admin/index.php:78
+#: admin/index.php:72 admin/index.php:78
 msgid "Add League"
 msgstr "Ajouter une compétition"
 
-#: admin/match.php:13
+#: admin/match.php:26
 msgid "Edit Match"
-msgstr "Editer un match"
+msgstr "Modifier un match"
 
-#: admin/match.php:33
+#: admin/match.php:51
 #, php-format
 msgid "Edit Matches &#8211; %d. Match Day"
-msgstr "Editer les matches &#8211; %d. journée"
+msgstr "Modifier les matchs &#8211; %d. journée"
 
-#: admin/match.php:34
-#: admin/show-league.php:254
-msgid "Edit Matches"
-msgstr "Editer les matches"
+#: admin/match.php:73
+#, php-format
+msgid "Add Matches &#8211; %s"
+msgstr "Ajouter des matchs &#8211; %s"
 
-#: admin/match.php:87
-#: admin/show-league.php:140
-#: admin/show-league.php:286
-#: admin/team.php:88
-msgid "Group"
-msgstr "Groupe"
+#: admin/match.php:80
+#, php-format
+msgid "Edit Matches &#8211; %s"
+msgstr "Modifier les matchs &#8211; %s"
 
-#: admin/match.php:100
-msgid "Note: Matches with different Home and Guest Teams will be added to the database."
-msgstr "Note: Seuls les matches avec des équipes visitées et visiteuses différentes sont ajoutées à la base de donnée."
+#: admin/match.php:102
+#, php-format
+msgid "Add Matches - Group %s"
+msgstr "Ajouter des matchs - Groupe %s"
 
-#: admin/seasons.php:15
-#: admin/upgrade.php:458
+#: admin/match.php:158
+msgid ""
+"Note: Matches with different Home and Guest Teams will be added to the "
+"database."
+msgstr ""
+"Note : Seuls les matchs avec des équipes visitées et visiteuses différentes "
+"sont ajoutées à la base de donnée."
+
+#: admin/matches.php:12 admin/matches.php:35
+#: templates/matches-gymnastics.php:32
+#: templates/matches-irish-gaelic-football.php:32
+#: templates/matches-racing.php:36 templates/matches-tennis.php:33
+#: templates/matches-volleyball.php:32 templates/matches.php:31
+#, php-format
+msgid "%d. Match Day"
+msgstr "%d. journée de compétition"
+
+#: admin/matches.php:33 templates/matches-gymnastics.php:30
+#: templates/matches-irish-gaelic-football.php:30
+#: templates/matches-racing.php:34 templates/matches-tennis.php:31
+#: templates/matches-volleyball.php:30 templates/matches.php:29
+msgid "Show all Matches"
+msgstr "Voir tous les matchs "
+
+#: admin/matches.php:46 admin/standings.php:19
+msgid "ID"
+msgstr "ID"
+
+#: admin/matches.php:90
+msgid "Update Results"
+msgstr "Mise à jour des résultats "
+
+#: admin/seasons.php:15 admin/upgrade.php:472
 msgid "Season was empty"
 msgstr "La saison est vide"
 
@@ -618,29 +1650,24 @@ msgstr "La saison est vide"
 msgid "Match Days"
 msgstr "Journées de compétition"
 
-#: admin/seasons.php:58
-#: admin/stats.php:137
-msgid "Actions"
-msgstr "Actions"
-
-#: admin/seasons.php:78
-#: admin/seasons.php:108
+#: admin/seasons.php:78 admin/seasons.php:108
 msgid "Edit Season"
-msgstr "Editer une saison"
+msgstr "Modifier une saison"
 
 #: admin/seasons.php:78
 msgid "Add new Season"
 msgstr "Ajouter une nouvelle saison"
 
-#: admin/seasons.php:80
-#: admin/stats.php:156
-#: admin/stats.php:184
+#: admin/seasons.php:80 admin/stats.php:160 admin/stats.php:190
 msgid "Add New"
 msgstr "Nouveau"
 
 #: admin/seasons.php:88
-msgid "Usually 4-digit year, e.g. 2008. Can also be any kind of string, e.g. 0809"
-msgstr "La saison peut être indiquée dans le format 2010 mais les autres associations (de type 0910) fonctionnent également"
+msgid ""
+"Usually 4-digit year, e.g. 2008. Can also be any kind of string, e.g. 0809"
+msgstr ""
+"La saison peut être indiquée dans le format 2010 mais les autres formats (de "
+"type 0910) fonctionnent également"
 
 #: admin/seasons.php:92
 msgid "Number of Match Days"
@@ -651,100 +1678,107 @@ msgid "No Teams"
 msgstr "Pas d'équipe"
 
 #: admin/seasons.php:101
-msgid "Check this to not automatically get teams from database and add them to the season"
-msgstr "Cocher afin de ne pas ajouter automatiquement les équipes de la base de données de la saison précédente."
+msgid ""
+"Check this to not automatically get teams from database and add them to the "
+"season"
+msgstr ""
+"Cocher afin de ne pas ajouter automatiquement les équipes de la base de "
+"données de la saison précédente."
 
 #: admin/seasons.php:108
 msgid "Add Season"
 msgstr "Ajouter une saison"
 
-#: admin/settings-global.php:5
+#: admin/settings-global.php:13
 msgid "Leaguemanager Global Settings"
 msgstr "Paramètres généraux de LeagueManager"
 
-#: admin/settings-global.php:6
+#: admin/settings-global.php:14
 msgid "Color Scheme"
-msgstr "Système de colorisation"
+msgstr "Système de couleurs"
 
-#: admin/settings-global.php:9
+#: admin/settings-global.php:17
 msgid "Table Headers"
 msgstr "Entêtes du tableau"
 
-#: admin/settings-global.php:12
+#: admin/settings-global.php:20
 msgid "Table Rows"
 msgstr "Lignes du tableau"
 
-#: admin/settings-global.php:21
-#: admin/settings.php:157
-msgid "Save Preferences"
-msgstr "Sauvegarder les préférences"
+#: admin/settings-global.php:27 admin/settings.php:151
+msgid "Teams Ascend"
+msgstr "Equipes promues"
 
-#: admin/settings.php:38
-#: admin/settings.php:40
+#: admin/settings-global.php:30 admin/settings.php:155
+msgid "Teams Descend"
+msgstr "Equipes reléguées"
+
+#: admin/settings-global.php:33 admin/settings.php:159
+msgid "Teams Relegation"
+msgstr "Equipes en barrage"
+
+#: admin/settings-global.php:38 admin/settings.php:169
+msgid "Save Preferences"
+msgstr "Enregistrer les préférences"
+
+#: admin/settings.php:40 admin/settings.php:42
 msgid "League Preferences"
 msgstr "Préférences de la compétition"
 
-#: admin/settings.php:46
+#: admin/settings.php:48
 msgid "Title"
 msgstr "Nom de la compétition"
 
-#: admin/settings.php:56
+#: admin/settings.php:58
 #, php-format
 msgid "Check the <a href='%s'>Documentation</a> for details"
-msgstr "Pour les détails sur le type de sport, voir la <a href='%s'>Documentation</a>. "
+msgstr ""
+"Pour les détails sur le type de sport, voir la <a href='%s'>Documentation</"
+"a>. "
 
-#: admin/settings.php:60
+#: admin/settings.php:62
 msgid "Point Rule"
 msgstr "Système de points "
 
-#: admin/settings.php:67
+#: admin/settings.php:69
 #, php-format
 msgid "For details on point rules see the <a href='%s'>Documentation</a>"
-msgstr "Pour les détails sur le système de points, voir la <a href='%s'>Documentation</a>."
-
-#: admin/settings.php:81
-msgid "Point Format"
-msgstr "Format des points "
-
-#: admin/settings.php:93
-msgid "Point formats for primary and seconday points (e.g. Goals)"
-msgstr "Format de points pour les points principaux et secondaires (p.e. les buts))"
+msgstr ""
+"Pour les détails sur le système de points, voir la <a "
+"href='%s'>Documentation</a>."
 
 #: admin/settings.php:97
-msgid "Team Ranking"
-msgstr "Classement"
+msgid "Point formats for primary and seconday points (e.g. Goals)"
+msgstr ""
+"Format des points pour les points principaux et secondaires (p.e. les buts))"
 
-#: admin/settings.php:100
+#: admin/settings.php:101
+msgid "Team Ranking"
+msgstr "Classement des équipes"
+
+#: admin/settings.php:104
 msgid "Automatic"
 msgstr "Automatique"
 
-#: admin/settings.php:101
+#: admin/settings.php:105
 msgid "Manual"
 msgstr "Manuel"
 
-#: admin/settings.php:103
+#: admin/settings.php:107
 msgid "Team Ranking via Drag & Drop probably will only work in Firefox"
 msgstr "Le classement via Drag & Drop ne fonctionne qu'avec Firefox"
 
-#: admin/settings.php:107
+#: admin/settings.php:111
 msgid "Mode"
 msgstr "Type de compétition"
 
-#: admin/settings.php:117
-msgid "Upload Directory"
-msgstr "Répertoire par défaut"
-
 #: admin/settings.php:121
+msgid "Upload Directory"
+msgstr "Répertoire de téléchargement"
+
+#: admin/settings.php:125
 msgid "Default Match Start Time"
-msgstr "Heure standard de début du match"
-
-#: admin/settings.php:138
-msgid "Groups"
-msgstr "Groupes"
-
-#: admin/settings.php:139
-msgid "Separate Groups by semicolon ;"
-msgstr "Séparer les groupes par une virgule ;"
+msgstr "Heure par défaut de début du match"
 
 #: admin/settings.php:142
 msgid "Standings Table Display"
@@ -752,293 +1786,302 @@ msgstr "Tableau d'affichage"
 
 #: admin/settings.php:144
 msgid "Played Games"
-msgstr "Matches joués"
+msgstr "Matchs joués"
 
 #: admin/settings.php:145
 msgid "Won Games"
-msgstr "Matches gagnés"
+msgstr "Matchs gagnés"
 
 #: admin/settings.php:146
-msgid " Tie Games"
-msgstr " Matches nuls"
+msgid "Tie Games"
+msgstr "Matchs nuls"
 
 #: admin/settings.php:147
 msgid "Lost Games"
-msgstr "Matches perdus"
+msgstr "Matchs perdus"
+
+#: admin/settings.php:152
+msgid "Number of Teams that ascend into higher league"
+msgstr "Nombre d'équipes qui montent dans la division supérieure"
+
+#: admin/settings.php:156
+msgid "Number of Teams that descend into lower league"
+msgstr "Nombre d'équipes qui descendent dans la division inférieure"
+
+#: admin/settings.php:160
+msgid "Number of Teams that need to go into relegation"
+msgstr "Nombre d'équipes qui doivent aller en barrage"
 
 #: admin/show-league.php:34
 #, php-format
 msgid "%d Match added"
 msgid_plural "%d Matches added"
 msgstr[0] "%d match ajouté "
-msgstr[1] "%d matches ajoutés "
+msgstr[1] "%d matchs ajoutés "
 
-#: admin/show-league.php:43
+#: admin/show-league.php:53
 #, php-format
 msgid "%d Match updated"
 msgid_plural "%d Matches updated"
 msgstr[0] "%d match mis à jour"
-msgstr[1] "%d matches mis à jour"
+msgstr[1] "%d matchs mis à jour"
 
-#: admin/show-league.php:52
+#: admin/show-league.php:63
 msgid "Standings Table updated"
 msgstr "Classement mis à jour "
 
-#: admin/show-league.php:85
+#: admin/show-league.php:91
+msgid "Team ranking saved"
+msgstr "Classement des équipes enregistré"
+
+#: admin/show-league.php:129
 msgid "You need to add at least one season"
 msgstr "Vous devez ajouter au minimum une saison"
 
-#: admin/show-league.php:105
-#: view/archive-tennis.php:30
-#: view/archive.php:30
-#: view/matches-gymnastics.php:34
-#: view/matches-irish-gaelic-football.php:34
-#: view/matches-racing.php:28
-#: view/matches-tennis.php:35
-#: view/matches-volleyball.php:33
-#: view/matches.php:34
-msgid "Show"
-msgstr "Voir "
+#: admin/standings.php:20 templates/team.php:28
+msgid "Rank"
+msgstr "Position"
 
-#: admin/show-league.php:117
-#: admin/show-league.php:131
-#: admin/tinymce/window.php:40
-#: lib/widget.php:116
-#: lib/widget.php:328
-msgid "Table"
-msgstr "Classement"
-
-#: admin/show-league.php:135
-#: admin/show-league.php:284
-msgid "ID"
-msgstr "ID"
-
-#: admin/show-league.php:139
-#: view/crosstable.php:22
+#: admin/standings.php:23 templates/crosstable.php:22
 msgid "Club"
 msgstr "Equipe"
 
-#: admin/show-league.php:147
+#: admin/standings.php:25 templates/standings-compact.php:29
+#: templates/standings-extend.php:30 templates/standings-last5.php:30
+#: templates/standings-nolink.php:30
+msgid "Pld"
+msgstr "J"
+
+#: admin/standings.php:26 templates/teams.php:29
+msgctxt "leaguemanager"
+msgid "W"
+msgstr "G"
+
+#: admin/standings.php:27 templates/teams.php:30
+msgctxt "leaguemanager"
+msgid "T"
+msgstr "N"
+
+#: admin/standings.php:28 templates/teams.php:31
+msgctxt "leaguemanager"
+msgid "L"
+msgstr "D"
+
+#: admin/standings.php:31
 msgid "+/- Points"
 msgstr "+/- Points"
 
-#: admin/show-league.php:161
-#: admin/team.php:54
-#: view/standings-compact.php:43
-#: view/standings-extend.php:53
-#: view/team.php:20
-msgid "Logo"
-msgstr "Logo"
-
-#: admin/show-league.php:235
+#: admin/standings.php:120
 msgid "Save Standings"
-msgstr "Sauver classement"
+msgstr "Enregistrer le classement"
 
-#: admin/show-league.php:239
-#: admin/show-league.php:280
-#: view/matches-gymnastics.php:42
-#: view/matches-irish-gaelic-football.php:42
-#: view/matches-tennis.php:43
-#: view/matches-volleyball.php:41
-#: view/matches.php:43
-msgid "Match Plan"
-msgstr "Calendrier"
-
-#: admin/show-league.php:251
-#: admin/show-league.php:273
-#: view/matches-gymnastics.php:24
-#: view/matches-irish-gaelic-football.php:24
-#: view/matches-racing.php:25
-#: view/matches-tennis.php:25
-#: view/matches-volleyball.php:23
-#: view/matches.php:24
-#, php-format
-msgid "%d. Match Day"
-msgstr "%d. journée de compétition"
-
-#: admin/show-league.php:271
-#: view/matches-racing.php:23
-msgid "Show all Matches"
-msgstr "Voir tous les matches "
-
-#: admin/show-league.php:276
-#: sports/racing.php:296
-msgid "Filter"
-msgstr "Filtre"
-
-#: admin/show-league.php:287
-#: admin/tinymce/window.php:43
-#: admin/tinymce/window.php:120
-#: view/matches-gymnastics.php:44
-#: view/matches-irish-gaelic-football.php:44
-#: view/matches-tennis.php:45
-#: view/matches-volleyball.php:43
-#: view/matches.php:45
-msgid "Match"
-msgstr "Match"
-
-#: admin/show-league.php:323
-msgid "Update Results"
-msgstr "Mise à jour des résultats "
-
-#: admin/stats.php:59
-#: lib/stats.php:156
-msgid "Match Statistics"
-msgstr "Statistiques du match"
+#: admin/standings.php:124
+msgid "Save Ranking"
+msgstr "Enregistrer le classement"
 
 #: admin/stats.php:63
 #, php-format
-msgid "Match Statistics &#8211; %s v.s. %s"
+msgid "Match Statistics &#8211; %s vs %s"
 msgstr "Statistiques du match &#8211; %s v.s. %s"
 
-#: admin/stats.php:106
+#: admin/stats.php:109
 msgid "Insert more"
-msgstr "Insérer plus"
+msgstr "Ajouter plus"
 
-#: admin/stats.php:111
+#: admin/stats.php:114
 msgid "Save Statistics"
-msgstr "Sauvegarder les statistiques"
+msgstr "Enregistrer les statistiques"
 
-#: admin/stats.php:117
+#: admin/stats.php:120
 msgid "Statistics Settings"
 msgstr "Paramètres des statistiques"
 
-#: admin/stats.php:131
+#: admin/stats.php:134
 msgid "Statistics"
 msgstr "Statistiques"
 
-#: admin/stats.php:135
-#: admin/stats.php:164
-#: sports/racing.php:307
-#: view/match-racing.php:20
-#: view/matches-racing.php:41
+#: admin/stats.php:138 admin/stats.php:168 sports/racing.php:316
+#: templates/match-racing.php:28 templates/matches-racing.php:54
 msgid "Name"
 msgstr "Nom"
 
-#: admin/stats.php:136
+#: admin/stats.php:139
 msgid "Number of Fields"
 msgstr "Nombre de champs"
 
-#: admin/stats.php:154
+#: admin/stats.php:158
 msgid "Edit Statistics Field"
-msgstr "Editer les champs de statistiques"
+msgstr "Modifier les champs de statistiques"
 
-#: admin/stats.php:154
+#: admin/stats.php:158
 msgid "Add Statistics Field"
 msgstr "Ajouter des champs de statistiques"
 
-#: admin/stats.php:179
+#: admin/stats.php:185
 msgid "Add Field"
-msgstr "Ajouter champs"
+msgstr "Ajouter un champs"
 
-#: admin/team.php:13
+#: admin/team.php:14
 msgid "Edit Team"
-msgstr "Editer l'équipe"
+msgstr "Modifier l'équipe"
 
-#: admin/team.php:23
+#: admin/team.php:24
 #, php-format
-msgid "Unable to create directory %s. Is its parent directory writable by the server?"
-msgstr "Impossible de créer le répertoire %s. Les droits d'écriture sont-ils données sur le serveur? "
+msgid ""
+"Unable to create directory %s. Is its parent directory writable by the "
+"server?"
+msgstr ""
+"Impossible de créer le répertoire %s. Les droits d'écriture sont-ils donnés "
+"sur le serveur? "
 
-#: admin/team.php:42
-#: sports/racing.php:290
-#: view/matches-volleyball.php:27
-#: view/matches.php:28
+#: admin/team.php:44 sports/racing.php:296 templates/matches-gymnastics.php:38
+#: templates/matches-irish-gaelic-football.php:38
+#: templates/matches-tennis.php:39 templates/matches-volleyball.php:38
+#: templates/matches.php:37
 msgid "Choose Team"
 msgstr "Choisissez une équipe "
 
-#: admin/team.php:49
+#: admin/team.php:51
 msgid "Add Team from Database"
 msgstr "Ajouter une équipe de la base de données"
 
-#: admin/team.php:66
-msgid "Add Logo from Url"
-msgstr "Ajouter logo d'une Url"
-
 #: admin/team.php:68
+msgid "Add Logo from Url"
+msgstr "Ajouter le logo à partir d'une Url"
+
+#: admin/team.php:70
 msgid "Supported file types"
 msgstr "Types de fichiers supportés "
 
-#: admin/team.php:71
+#: admin/team.php:73
 msgid "Overwrite existing image"
 msgstr "Ecraser les images existantes "
 
-#: admin/team.php:72
+#: admin/team.php:74
 msgid "Delete Logo"
 msgstr "Supprimer le logo "
 
-#: admin/team.php:100
-#: lib/stats.php:340
-msgid "Team Roster"
-msgstr "Composition d'équipe"
+#: admin/team.php:91
+msgid "Default Team Match Start Time"
+msgstr "Heure par défaut de début du match"
 
-#: admin/team.php:103
-#: lib/ajax.php:129
-#: lib/stats.php:208
-#: sports/tennis.php:417
+#: admin/team.php:135 lib/ajax.php:140 lib/stats.php:210 sports/tennis.php:424
 msgid "None"
 msgstr "Aucun"
 
-#: admin/team.php:111
-#: lib/ajax.php:144
-#: lib/ajax.php:185
+#: admin/team.php:143 lib/ajax.php:155 lib/ajax.php:197
 msgid "Select Group (Optional)"
 msgstr "Sélectionner un groupe (optionnel)"
 
-#: admin/tinymce/window.php:41
-#: view/archive.php:45
-#: view/crosstable.php:20
-#: view/crosstable.php:47
-msgid "Crosstable"
-msgstr "Tableau croisé"
+#: admin/upgrade.php:13
+msgid "Upgrade database structure..."
+msgstr "Mettre à jour de la structure de la base de données ... "
 
-#: admin/tinymce/window.php:57
-#: admin/tinymce/window.php:92
-#: admin/tinymce/window.php:153
-#: admin/tinymce/window.php:198
+#: admin/upgrade.php:410
+msgid "finished"
+msgstr "Terminé"
+
+#: admin/upgrade.php:430 admin/upgrade.php:449
+msgid "Upgrade LeagueManager"
+msgstr "Mettre à jour LeagueManager "
+
+#: admin/upgrade.php:431
+msgid ""
+"Your database for LeagueManager is out-of-date, and must be upgraded before "
+"you can continue."
+msgstr ""
+"Votre base de données pour LeagueManager est obsolète, elle doit être mise à "
+"jour afin de pouvoir continuer. "
+
+#: admin/upgrade.php:432
+msgid "The upgrade process may take a while, so please be patient."
+msgstr ""
+"Le processus de mise à jour peut prendre un certain temps, soyez patient. "
+
+#: admin/upgrade.php:433
+msgid "Start upgrade now"
+msgstr "Démarrer la mise à jour "
+
+#: admin/upgrade.php:451
+msgid "Upgrade successful"
+msgstr "Mise à jour réussie "
+
+#: admin/upgrade.php:452
+msgid "Continue"
+msgstr "Continuer"
+
+#: admin/upgrade.php:470
+msgid "Successfully set Season for Matches and Teams"
+msgstr "Préparation réussie d'une saison pour les matchs et les équipes"
+
+#: admin/upgrade.php:480
+msgid "Upgrade to Version 2.9.2"
+msgstr "Mettre à jour vers la version 2.9.2"
+
+#: admin/upgrade.php:499
+msgid "New League"
+msgstr "Nouvelle compétition"
+
+#: admin/upgrade.php:502
+msgid "Keep League"
+msgstr "Conserver la compétition"
+
+#: admin/upgrade.php:510
+msgid "Old Season"
+msgstr "Saisons passées"
+
+#: admin/upgrade.php:514
+msgid "Submit"
+msgstr "Soumettre"
+
+#: admin/tinymce/window.php:46
+msgid "Archive"
+msgstr "Archive"
+
+#: admin/tinymce/window.php:58 admin/tinymce/window.php:93
+#: admin/tinymce/window.php:154 admin/tinymce/window.php:198
+#: admin/tinymce/window.php:226
 msgid "No League"
 msgstr "Aucune compétition"
 
-#: admin/tinymce/window.php:69
-#: admin/tinymce/window.php:104
+#: admin/tinymce/window.php:70 admin/tinymce/window.php:105
 #: admin/tinymce/window.php:210
 msgid "Display"
 msgstr "Format"
 
-#: admin/tinymce/window.php:72
+#: admin/tinymce/window.php:73
 msgid "Extend"
 msgstr "Etendu"
 
-#: admin/tinymce/window.php:73
+#: admin/tinymce/window.php:74
 msgid "Compact"
 msgstr "Normal"
 
-#: admin/tinymce/window.php:74
+#: admin/tinymce/window.php:75
 msgid "Slim"
 msgstr "Condensé"
 
-#: admin/tinymce/window.php:79
-#: lib/widget.php:336
+#: admin/tinymce/window.php:80 lib/widget.php:367
 msgid "Show Logos"
 msgstr "Montrer le logo "
 
-#: admin/tinymce/window.php:107
+#: admin/tinymce/window.php:108
 msgid "Match day based"
 msgstr "Par journées de compétition"
 
-#: admin/tinymce/window.php:108
-msgid "All"
-msgstr "Tous les matches"
-
 #: admin/tinymce/window.php:109
+msgid "All"
+msgstr "Tous"
+
+#: admin/tinymce/window.php:110
 msgid "Only Home Team"
-msgstr "Seulement les matches de l'équipe favorite"
+msgstr "Seulement les matchs de l'équipe locale"
 
-#: admin/tinymce/window.php:123
+#: admin/tinymce/window.php:124
 msgid "No Match"
-msgstr "Aucun"
+msgstr "Pas de matchs"
 
-#: admin/tinymce/window.php:174
+#: admin/tinymce/window.php:175
 msgid "No Team"
 msgstr "Pas d'équipe"
 
@@ -1046,294 +2089,207 @@ msgstr "Pas d'équipe"
 msgid "Embed"
 msgstr "Intégré"
 
-#: admin/tinymce/window.php:213
-#: view/crosstable.php:47
+#: admin/tinymce/window.php:213 templates/crosstable.php:47
 msgid "Popup"
 msgstr "Popup"
 
-#: admin/upgrade.php:13
-msgid "Upgrade database structure..."
-msgstr "Mettre à jour de la structure de la base de données ... "
-
-#: admin/upgrade.php:396
-msgid "finished"
-msgstr "Terminé"
-
-#: admin/upgrade.php:416
-#: admin/upgrade.php:435
-msgid "Upgrade LeagueManager"
-msgstr "Mettre à jour LeagueManager "
-
-#: admin/upgrade.php:417
-msgid "Your database for LeagueManager is out-of-date, and must be upgraded before you can continue."
-msgstr "Votre base de données pour LeagueManager est obsolète, elle doit être améliorée afin de pouvoir continuer. "
-
-#: admin/upgrade.php:418
-msgid "The upgrade process may take a while, so please be patient."
-msgstr "Le processus de mise à niveau peut prendre un certain temps, soyez patient. "
-
-#: admin/upgrade.php:419
-msgid "Start upgrade now"
-msgstr "Démarrer la mise à jour "
-
-#: admin/upgrade.php:437
-msgid "Upgrade successful"
-msgstr "Mise à jour réussie "
-
-#: admin/upgrade.php:438
-msgid "Continue"
-msgstr "Continuer"
-
-#: admin/upgrade.php:456
-msgid "Successfully set Season for Matches and Teams"
-msgstr "Préparation d'une saison pour les matches et les équipes réussie"
-
-#: admin/upgrade.php:466
-msgid "Upgrade to Version 2.9.2"
-msgstr "Mettre à jour vers la version 2.9.2"
-
-#: admin/upgrade.php:485
-msgid "New League"
-msgstr "Nouvelle compétition"
-
-#: admin/upgrade.php:488
-msgid "Keep League"
-msgstr "Conserver la compétition"
-
-#: admin/upgrade.php:496
-msgid "Old Season"
-msgstr "Ancienne saison"
-
-#: admin/upgrade.php:500
-msgid "Submit"
-msgstr "Soumettre"
-
-#: leaguemanager.php:299
-msgid "Page Revisions"
-msgstr "Versions"
-
-#: leaguemanager.php:299
-msgid "Insert time"
-msgstr "Insérer le temps "
-
-#: lib/ajax.php:210
+#: lib/ajax.php:222
 msgid "The image cannot be on a remote server"
 msgstr "L'image ne peut pas être sur un serveur distant"
 
-#: lib/championchip.php:51
-#: lib/championchip.php:65
-msgid "Championchip"
-msgstr "Championnat"
+#: lib/championship.php:219
+msgid "Groups"
+msgstr "Groupes"
 
-#: lib/championchip.php:79
+#: lib/championship.php:220
+msgid "Separate Groups by semicolon ;"
+msgstr "Séparer les groupes par un point virgule ;"
+
+#: lib/championship.php:223
+msgid "Allow Non-Group Games"
+msgstr "Autoriser les jeux non groupés"
+
+#: lib/championship.php:228
 msgid "Teams Advance"
-msgstr "Equipes promues"
+msgstr "Nombre d'équipes pour le prochain tour"
 
-#: lib/championchip.php:94
+#: lib/championship.php:244
 msgid "Final"
 msgstr "Finale"
 
-#: lib/championchip.php:96
+#: lib/championship.php:246
+msgid "Third Place"
+msgstr "Troisième place"
+
+#: lib/championship.php:248
 msgid "Semi Final"
-msgstr "Demi-Finale"
+msgstr "Demi-finale"
 
-#: lib/championchip.php:98
+#: lib/championship.php:250
 msgid "Quarter Final"
-msgstr "Quart de Finale"
+msgstr "Quart de finale"
 
-#: lib/championchip.php:101
+#: lib/championship.php:253
 #, php-format
 msgid "Last-%d"
 msgstr "Derniers-%d"
+
+#: lib/championship.php:317
+#, php-format
+msgid "Looser %s %d"
+msgstr "Perdant %s %d"
+
+#: lib/championship.php:320
+#, php-format
+msgid "Winner %s %d"
+msgstr "Gagnant %s %d"
+
+#: lib/championship.php:335
+#, php-format
+msgid "%d Group %s"
+msgstr "%d groupe %s"
 
 #: lib/core.php:196
 msgid "Other"
 msgstr "Autres"
 
-#: lib/shortcodes.php:221
-#: lib/shortcodes.php:287
-#: lib/widget.php:272
+#: lib/shortcodes.php:341 lib/shortcodes.php:419 lib/widget.php:295
 msgid "Report"
 msgstr "Résumé"
 
-#: lib/shortcodes.php:224
-#: lib/shortcodes.php:290
-#: lib/shortcodes.php:392
-#: lib/widget.php:264
-msgid "o.P.|on penalty"
-msgstr "S.P.|Sur Penalty"
+#: lib/shortcodes.php:346 lib/shortcodes.php:424
+msgctxt "leaguemanager"
+msgid "(o.P.)"
+msgstr "(o.P.)"
 
-#: lib/shortcodes.php:226
-#: lib/shortcodes.php:292
-#: lib/shortcodes.php:394
-#: lib/widget.php:266
-msgid "AET|after extra time"
-msgstr "AP|Après prolongations"
-
-#: lib/shortcodes.php:588
+#: lib/shortcodes.php:872
 #, php-format
 msgid "Could not load template %s.php"
 msgstr "Impossible de charger le modèle %s.php"
 
 #: lib/stats.php:117
 msgid "Activate Match Statistics"
-msgstr "Activer les statistiques"
+msgstr "Activer les statistiques par match"
 
-#: lib/stats.php:132
-#: lib/stats.php:144
+#: lib/stats.php:132 lib/stats.php:146
 msgid "Stats"
 msgstr "Statistiques"
 
-#: lib/stats.php:267
+#: lib/stats.php:174
+msgid "Stastistics from LeagueManager"
+msgstr "Statistiques de LeagueManager"
+
+#: lib/stats.php:269
 msgid "Statistics Field added"
-msgstr "Champ de statistique mis à jour"
+msgstr "Champ de statistique ajouté"
 
-#: lib/stats.php:285
+#: lib/stats.php:287
 msgid "Statistics Fields updated"
-msgstr "Champs de statistiques mis à jour "
+msgstr "Champs de statistique mis à jour "
 
-#: lib/stats.php:324
+#: lib/stats.php:325
 msgid "Saved Statstics"
-msgstr "Statistiques sauvegardées"
+msgstr "Statistiques enregistrées"
 
-#: lib/stats.php:340
+#: lib/stats.php:341
 msgid "Text"
 msgstr "Texte"
 
-#: lib/stats.php:343
+#: lib/stats.php:344
 msgid "Stats Field"
 msgstr "Champ de statistiques"
 
-#: lib/widget.php:30
-msgid "League results and upcoming matches at a glance"
-msgstr "Résultats et Matches à venir en un coup d'oeil "
+#: lib/widget.php:31
+msgid "League results and upcoming matches at a glance."
+msgstr "Résultats et matchs à venir en un coup d'oeil "
 
-#: lib/widget.php:160
-#: view/team.php:35
+#: lib/widget.php:32
+msgid "League Manager"
+msgstr "League Manager"
+
+#: lib/widget.php:183 templates/team.php:40
 msgid "Next Match"
-msgstr "Prochain Match "
+msgstr "Prochain match "
 
-#: lib/widget.php:183
-#: lib/widget.php:261
-#: view/team.php:37
-#: view/team.php:48
+#: lib/widget.php:201 lib/widget.php:290 templates/team.php:42
+#: templates/team.php:53
 #, php-format
 msgid "<strong>%d.</strong> Match Day"
 msgstr "<strong>%d.</strong> journée"
 
-#: lib/widget.php:234
-#: view/team.php:46
+#: lib/widget.php:262 templates/team.php:51
 msgid "Last Match"
-msgstr "Dernier Match "
+msgstr "Dernier match "
 
-#: lib/widget.php:316
-#: lib/widget.php:327
+#: lib/widget.php:282
+msgctxt "leaguemanager"
+msgid "AET"
+msgstr "AET"
+
+#: lib/widget.php:345 lib/widget.php:356
 msgid "Do not show"
 msgstr "Ne pas montrer "
 
-#: lib/widget.php:316
+#: lib/widget.php:345
 msgid "Last Matches"
-msgstr "Derniers Matches "
+msgstr "Derniers matchs "
 
-#: lib/widget.php:316
+#: lib/widget.php:345
 msgid "Next Matches"
-msgstr "Prochains Matches "
+msgstr "Prochains Matchs "
 
-#: lib/widget.php:316
+#: lib/widget.php:345
 msgid "Next & Last Matches"
-msgstr "Derniers et prochains matches "
+msgstr "Derniers et prochains matchs "
 
-#: lib/widget.php:324
+#: lib/widget.php:353
 msgid "Only own matches"
 msgstr "Seuls les résultats de l'équipe favorite"
 
-#: lib/widget.php:325
+#: lib/widget.php:354
 msgid "Limit"
 msgstr "Limite"
 
-#: lib/widget.php:327
+#: lib/widget.php:356
 msgid "Compact Version"
 msgstr "Version normale"
 
-#: lib/widget.php:327
+#: lib/widget.php:356
 msgid "Extend Version"
 msgstr "Version étendue"
 
-#: lib/widget.php:338
+#: lib/widget.php:365
 msgid "Link to report"
 msgstr "Lien vers le résumé "
 
-#: lib/widget.php:339
+#: lib/widget.php:368
 msgid "Date Format"
 msgstr "Format de la date "
+
+#: lib/widget.php:400
+msgid "Latest LeagueManager support discussions..."
+msgstr "Dernières discussions dans le support de LeagueManager"
 
 #: sports/baseball.php:61
 msgid "Baseball"
 msgstr "Base-Ball"
 
-#: sports/baseball.php:188
-#: sports/baseball.php:229
-msgid "RF|Runs For"
-msgstr "CP|Courses Pour"
-
-#: sports/baseball.php:188
-#: sports/baseball.php:229
-msgid "RA|Runs Against"
-msgstr "CC|Courses Contre"
-
-#: sports/baseball.php:188
-msgid "PCT|Percent Win"
-msgstr "PCT|Pourcentage gagné"
-
-#: sports/baseball.php:188
-msgid "GB|Games Behind"
-msgstr "GB|Games behind (voir Wikipedia)"
-
-#: sports/baseball.php:188
-#: sports/baseball.php:229
-#: sports/baseball.php:254
-msgid "SO|Shutouts"
-msgstr "BL|Blanchissages"
-
-#: sports/baseball.php:254
-#: sports/baseball.php:304
-msgid "RF|Runs for"
-msgstr "CP|Courses Pour"
-
-#: sports/baseball.php:254
-#: sports/baseball.php:304
-msgid "RA|Runs against"
-msgstr "CC|Courses Contre"
-
-#: sports/baseball.php:304
-msgid "PCT|Percentage win"
-msgstr "PCT|Pourcentage gagné"
-
-#: sports/baseball.php:304
-msgid "GB|games behind"
-msgstr "GB|Games behind (voir Wikipedia)"
-
 #: sports/basketball.php:54
 msgid "Basketball"
 msgstr "Basket-Ball"
 
-#: sports/basketball.php:138
+#: sports/basketball.php:131
+msgctxt "leaguemanager"
 msgid "Baskets"
 msgstr "Paniers"
 
-#: sports/basketball.php:173
-#: sports/basketball.php:202
+#: sports/basketball.php:170 sports/basketball.php:208
 msgid "Quarters"
 msgstr "Quart-temps"
 
-#: sports/basketball.php:173
-#: sports/basketball.php:202
-#: sports/handball.php:123
-#: sports/handball.php:149
-#: sports/hockey.php:291
-#: sports/hockey.php:321
-#: sports/soccer.php:123
-#: sports/soccer.php:149
+#: sports/basketball.php:170 sports/basketball.php:208 sports/handball.php:123
+#: sports/handball.php:149 sports/hockey.php:291 sports/hockey.php:321
+#: sports/soccer.php:123 sports/soccer.php:150
 msgid "Overtime"
 msgstr "Temps supplémentaire"
 
@@ -1357,64 +2313,66 @@ msgstr "PC &#8211; Jeux de rôle"
 msgid "Gymnastics"
 msgstr "Gymnastique"
 
-#: sports/gymnastics.php:86
-#: sports/gymnastics.php:145
-#: view/matches-gymnastics.php:46
-msgid "AP|apparatus points"
-msgstr "AP|Système de points"
-
 #: sports/gymnastics.php:121
 msgid "Apparatus Points"
-msgstr "Gerätepunkte"
+msgstr "Apparatus Points"
+
+#: sports/gymnastics.php:145
+msgctxt "apparatus points"
+msgid "AP"
+msgstr "AP"
 
 #: sports/handball.php:56
 msgid "Handball"
 msgstr "Hand-Ball"
 
-#: sports/handball.php:88
-#: sports/hockey.php:256
-#: sports/irish-gaelic-football.php:66
-#: sports/irish-gaelic-football.php:91
-#: sports/soccer.php:88
+#: sports/handball.php:88 sports/hockey.php:256 sports/soccer.php:88
+msgctxt "leaguemanager"
 msgid "Goals"
 msgstr "Buts"
 
-#: sports/handball.php:123
-#: sports/handball.php:149
-#: sports/soccer.php:123
-#: sports/soccer.php:149
+#: sports/handball.php:123 sports/handball.php:149 sports/soccer.php:123
+#: sports/soccer.php:150
 msgid "Halftime"
 msgstr "Mi-temps"
 
-#: sports/handball.php:123
-#: sports/handball.php:149
-#: sports/hockey.php:291
-#: sports/hockey.php:321
-#: sports/soccer.php:123
-#: sports/soccer.php:149
+#: sports/handball.php:123 sports/handball.php:149 sports/hockey.php:291
+#: sports/hockey.php:321 sports/soccer.php:123 sports/soccer.php:150
 msgid "Penalty"
 msgstr "Penalty"
 
-#: sports/hockey.php:27
-#: sports/hockey.php:178
+#: sports/hockey.php:27 sports/hockey.php:178
 msgid "German Icehockey League (DEL)"
 msgstr "Deutsche Eishockey Liga (DEL) "
 
-#: sports/hockey.php:27
-#: sports/hockey.php:181
+#: sports/hockey.php:27 sports/hockey.php:181
 msgid "National Hockey League (NHL)"
 msgstr "National Hockey League (NHL) "
 
 #: sports/hockey.php:179
-msgid "The DEL uses a more complicated form of the Three-Point-Rule. The winner after regular time gets three points, the loser none. The winner after overtime gets two points and the loser one. This rule was also applied at the Icehockey Worldchampionchip in 2008."
-msgstr "La DEL utilise un système plus compliqué de 3 points et de 1 point. Le gagnant à la fin du temps réglementaire obtient 3 points et le perdant, rien. Le gagnant après le temps réglementaire obtient 2 points et le perdant, 1 point. Cette régle était également appliquée lors du Icehockey Worldchampionchip 2008."
+msgid ""
+"The DEL uses a more complicated form of the Three-Point-Rule. The winner "
+"after regular time gets three points, the loser none. The winner after "
+"overtime gets two points and the loser one. This rule was also applied at "
+"the Ice Hockey World Championship in 2008."
+msgstr ""
+"La DEL utilise un système plus compliqué de règles des 3 points. Le gagnant "
+"à la fin du temps réglementaire obtient 3 points et le perdan rien. Le "
+"gagnant après le temps réglementaire obtient 2 points et le perdan 1 point. "
+"Cette régle était également appliquée lors du championnat du monde de hockey "
+"sur glace 2008."
 
 #: sports/hockey.php:182
-msgid "The NHL uses a derivative of the Two-Point-Rule. The winner after regular time and overtime gains two points whereas the loser after overtime and penalty gets one."
-msgstr "La NHL utilise un système dérivé de la régle 3 points et de 1 point. Le gagnant obtient toujours 2 points alors que le perdant obtient 1 points si le match va aux prolongations."
+msgid ""
+"The NHL uses a derivative of the Two-Point-Rule. The winner after regular "
+"time and overtime gains two points whereas the loser after overtime and "
+"penalty gets one."
+msgstr ""
+"La NHL utilise un système dérivé de la régle 3 points et de 1 point. Le "
+"gagnant obtient toujours 2 points alors que le perdant obtient 1 points si "
+"le match va aux prolongations."
 
-#: sports/hockey.php:291
-#: sports/hockey.php:321
+#: sports/hockey.php:291 sports/hockey.php:321
 msgid "Thirds"
 msgstr "Troisième"
 
@@ -1422,8 +2380,13 @@ msgstr "Troisième"
 msgid "Irish Gaelic Football"
 msgstr "Irish Gaelic Football"
 
-#: sports/irish-gaelic-football.php:66
-#: sports/irish-gaelic-football.php:91
+#: sports/irish-gaelic-football.php:66 sports/irish-gaelic-football.php:91
+msgid "Goals"
+msgstr "Buts"
+
+#: sports/irish-gaelic-football.php:66 sports/irish-gaelic-football.php:91
+#: sports/racing.php:317 templates/match-racing.php:29
+#: templates/matches-racing.php:56
 msgid "Points"
 msgstr "Points"
 
@@ -1431,7 +2394,8 @@ msgstr "Points"
 msgid "Sports with two Scores"
 msgstr "Sports avec deux scores"
 
-#: sports/other-two-scores.php:82
+#: sports/other-two-scores.php:82 sports/us-football.php:126
+msgctxt "leaguemanager"
 msgid "Scores"
 msgstr "Scores"
 
@@ -1439,16 +2403,12 @@ msgstr "Scores"
 msgid "Pool Billiard"
 msgstr "Billiard"
 
-#: sports/pool.php:139
-#: sports/pool.php:179
-#: sports/pool.php:203
+#: sports/pool.php:139 sports/pool.php:179 sports/pool.php:203
 #: sports/pool.php:250
 msgid "For"
 msgstr "Pour"
 
-#: sports/pool.php:139
-#: sports/pool.php:179
-#: sports/pool.php:203
+#: sports/pool.php:139 sports/pool.php:179 sports/pool.php:203
 #: sports/pool.php:250
 msgid "Against"
 msgstr "Contre"
@@ -1457,99 +2417,85 @@ msgstr "Contre"
 msgid "Racing"
 msgstr "Course"
 
-#: sports/racing.php:70
-#: sports/racing.php:280
+#: sports/racing.php:70 sports/racing.php:286
 msgid "Race Results"
-msgstr "Mise à jour des résultats de la course"
+msgstr "Résultats de la course"
 
-#: sports/racing.php:83
-#: sports/racing.php:95
-#: sports/racing.php:131
-#: sports/racing.php:199
-#: view/match-racing.php:22
-#: view/matches-racing.php:45
+#: sports/racing.php:83 sports/racing.php:95 sports/racing.php:133
+#: sports/racing.php:203 templates/match-racing.php:32
+#: templates/matches-racing.php:60
 msgid "Race Type"
 msgstr "Type de course"
 
-#: sports/racing.php:83
-#: sports/racing.php:107
+#: sports/racing.php:83 sports/racing.php:108
 msgid "Results"
 msgstr "Résultats "
 
-#: sports/racing.php:95
-#: sports/racing.php:201
-msgid "Description"
-msgstr "Description"
-
-#: sports/racing.php:193
+#: sports/racing.php:197
 msgid "Add"
 msgstr "Ajouter"
 
-#: sports/racing.php:197
-#: view/matches-racing.php:43
+#: sports/racing.php:201 templates/matches-racing.php:58
 msgid "Event"
 msgstr "Evénement "
 
-#: sports/racing.php:281
+#: sports/racing.php:287
 #, php-format
 msgid "Racing Results - %s"
 msgstr "Résultats de la course - %s"
 
-#: sports/racing.php:308
-#: view/match-racing.php:21
-#: view/matches-racing.php:44
+#: sports/racing.php:298
+msgid "Show all Teams"
+msgstr "Voir toutes les équipes"
+
+#: sports/racing.php:318 templates/match-racing.php:30
+#: templates/matches-racing.php:57
+msgid "Time"
+msgstr "Temps"
+
+#: sports/racing.php:319 templates/match-racing.php:31
+#: templates/matches-racing.php:59
 msgid "Category"
 msgstr "Catégorie"
 
-#: sports/racing.php:309
-#: view/match-racing.php:23
-#: view/matches-racing.php:46
-msgid "Result"
-msgstr "Résultat"
-
-#: sports/racing.php:310
-#: view/match-racing.php:24
-#: view/matches-racing.php:47
+#: sports/racing.php:320 templates/match-racing.php:33
+#: templates/matches-racing.php:61
 msgid "Other Info"
 msgstr "Autres informations"
 
-#: sports/racing.php:326
-msgid "Save Team Results"
-msgstr "Sauvegarder le résultat de l'équipe"
-
-#: sports/racing.php:330
+#: sports/racing.php:338
 msgid "No Team Roster found."
-msgstr "Aucune composition d'équipe trouvée"
+msgstr "Aucune composition d'équipe trouvée."
 
-#: sports/racing.php:366
+#: sports/racing.php:342
+msgid "Save Team Results"
+msgstr "Enregistrer les résultats de l'équipe"
+
+#: sports/racing.php:381
 msgid "Race Results Saved"
-msgstr "Résultats de la course mis à jour"
+msgstr "Résultats de la course enregistrés"
 
-#: sports/rugby.php:65
-#: sports/rugby.php:78
+#: sports/rugby.php:65 sports/rugby.php:78
 msgid "Rugby"
 msgstr "Rugby"
 
-#: sports/rugby.php:231
+#: sports/rugby.php:235
 msgid "Game Points"
 msgstr "Game Points"
 
-#: sports/rugby.php:274
-#: sports/rugby.php:300
+#: sports/rugby.php:278 sports/rugby.php:304
 msgid "Tries"
 msgstr "Essais"
 
-#: sports/rugby.php:274
-#: sports/rugby.php:300
+#: sports/rugby.php:278 sports/rugby.php:304
 msgid "Conversions"
 msgstr "Conversions"
 
-#: sports/rugby.php:274
-#: sports/rugby.php:300
+#: sports/rugby.php:278 sports/rugby.php:304
 msgid "Penaltykicks"
 msgstr "Drops & Pénalités"
 
-#: sports/rugby.php:354
+#: sports/rugby.php:358
 msgid "Gamepoints"
 msgstr "Game Points"
 
@@ -1557,140 +2503,255 @@ msgstr "Game Points"
 msgid "Soccer"
 msgstr "Football "
 
-#: sports/tennis.php:75
-#: sports/tennis.php:88
+#: sports/tabletennis.php:46 sports/tabletennis.php:59
+msgid "Tabletennis"
+msgstr "Tennis de table"
+
+#: sports/tennis.php:75 sports/tennis.php:88
 msgid "Tennis"
 msgstr "Tennis"
 
-#: sports/tennis.php:117
+#: sports/tennis.php:118
 msgid "Number of Sets"
 msgstr "Nombre de jeux"
 
-#: sports/tennis.php:367
+#: sports/tennis.php:371
 msgid "Straight Set"
 msgstr "Straight Set"
 
-#: sports/tennis.php:367
+#: sports/tennis.php:371
 msgid "Split Set"
 msgstr "Split Set"
 
-#: sports/tennis.php:367
-#: sports/tennis.php:526
+#: sports/tennis.php:371 sports/tennis.php:536
 msgid "Games Allowed"
 msgstr "Jeux autorisés"
 
-#: sports/tennis.php:409
+#: sports/tennis.php:416
 msgid "Home Partner"
 msgstr "Joueur (Dom)"
 
-#: sports/tennis.php:409
+#: sports/tennis.php:416
 msgid "Guest Partner"
-msgstr "Jouer (Ext)"
+msgstr "Joueur (Ext)"
 
-#: sports/tennis.php:438
-#: sports/tennis.php:470
-#: sports/volleyball.php:152
-#: sports/volleyball.php:195
-#: sports/volleyball.php:221
+#: sports/tennis.php:445 sports/volleyball.php:152 sports/volleyball.php:195
 #: sports/volleyball.php:274
 msgid "Sets"
 msgstr "Jeux"
 
-#: sports/tennis.php:526
+#: sports/tennis.php:536
 msgid "Straight Set Win"
 msgstr "Straight Set Win"
 
-#: sports/tennis.php:526
+#: sports/tennis.php:536
 msgid "Split Set Win"
 msgstr "Split Set Win"
 
-#: sports/tennis.php:526
+#: sports/tennis.php:536
 msgid "Straight Set Lost"
 msgstr "Straight Set Lost"
 
-#: sports/tennis.php:526
+#: sports/tennis.php:536
 msgid "Split Set Lost"
 msgstr "Split Set Lost"
+
+#: sports/us-football.php:28
+msgid "US Football (NFL)"
+msgstr "US Football (NFL)"
+
+#: sports/us-football.php:28
+msgid "US Collegiate Football (NCAA)"
+msgstr "US Collegiate Football (NCAA)"
+
+#: sports/us-football.php:28
+msgid "US High School Football (HS)"
+msgstr "US High School Football (HS)"
+
+#: sports/us-football.php:28
+msgid "US Football (fb)"
+msgstr "US Football (fb)"
+
+#: sports/us-football.php:126
+msgctxt "leaguemanager"
+msgid "Pct"
+msgstr "Pts"
 
 #: sports/volleyball.php:60
 msgid "Volleyball"
 msgstr "Volley-Ball"
 
-#: sports/volleyball.php:152
-#: sports/volleyball.php:274
+#: sports/volleyball.php:152 sports/volleyball.php:274
 msgid "Ballpoints"
 msgstr "Ballpoints "
 
-#: view/archive-tennis.php:35
-#: view/archive.php:35
-#: view/standings-compact.php:19
-#: view/standings-extend.php:20
+#: templates/archive-tennis.php:34 templates/archive.php:45
+#: templates/championship.php:92 templates/standings-compact.php:19
+#: templates/standings-extend.php:20 templates/standings-last5.php:20
+#: templates/standings-nolink.php:20
+#: templates/standings-racing-individual.php:24
 msgid "Standings"
-msgstr "Classement"
+msgstr "Classements"
 
-#: view/match-racing.php:18
-#: view/matches-racing.php:37
+#: templates/championship.php:56
+msgid "Final Matches"
+msgstr "Matchs des finales"
+
+#: templates/championship.php:86
+msgid "Preliminary Rounds"
+msgstr "Tours préliminaires"
+
+#: templates/match-racing.php:26 templates/matches-racing.php:50
 msgid "Races"
 msgstr "Courses"
 
-#: view/matches-gymnastics.php:28
-#: view/matches-irish-gaelic-football.php:28
-#: view/matches-tennis.php:29
-msgid "Chose Team"
-msgstr "Choisissez une équipe "
+#: templates/matches-by_matchday.php:21
+#, php-format
+msgid "Match Day %d"
+msgstr "Journée de compétition %d"
 
-#: view/standings-compact.php:21
-#: view/standings-extend.php:22
-msgid "Pos|Position"
-msgstr "Pos|Position"
+#: templates/matches-gymnastics.php:58
+msgid "AP"
+msgstr "Système de points"
 
-#: view/team.php:23
-msgid "Rank"
-msgstr "Position"
+#: templates/standings-compact.php:21 templates/standings-extend.php:22
+#: templates/standings-last5.php:22 templates/standings-nolink.php:22
+#: templates/standings-racing-individual.php:26
+msgid "Pos"
+msgstr "Pos"
 
-#: view/team.php:25
-msgid "Win"
+#: templates/standings-compact.php:32 templates/standings-extend.php:33
+#: templates/standings-last5.php:33 templates/standings-nolink.php:33
+msgid "W"
+msgstr "G"
+
+#: templates/standings-compact.php:35 templates/standings-extend.php:39
+#: templates/standings-last5.php:39 templates/standings-nolink.php:39
+msgid "L"
+msgstr "D"
+
+#: templates/standings-extend.php:36 templates/standings-last5.php:36
+#: templates/standings-nolink.php:36
+msgid "T"
+msgstr "N"
+
+#: templates/standings-last5.php:43
+msgid "Last 5"
+msgstr "Derniers 5 matchs"
+
+#: templates/standings-racing-individual.php:27
+msgid "Racer"
+msgstr "Courses"
+
+#: templates/team.php:30
+msgid "Won"
 msgstr "Victoire"
 
-#: view/team.php:26
-msgid "Tie"
+#: templates/team.php:31
+msgid "Tied"
 msgstr "Nul"
 
-#: view/team.php:27
-msgid "Defeat"
+#: templates/team.php:32
+msgid "Lost"
 msgstr "Défaite"
 
-#. Plugin Name of an extension
-msgid "LeagueManager"
-msgstr "Gestionnaire de League"
+#~ msgid "Result"
+#~ msgstr "Résultat"
 
-#. Plugin URI of an extension
-msgid "http://kolja.galerie-neander.de/plugins/leaguemanager/"
-msgstr "http://kolja.galerie-neander.de/plugins/leaguemanager/"
+#~ msgid "Donations"
+#~ msgstr "Dons"
 
-#. Description of an extension
-msgid "Manage and present sports league results."
-msgstr "Gestion et présentation de résultats sportifs."
+#~ msgid "display matches of given match day"
+#~ msgstr "affiche les matchs correspondants à une journée"
 
-#. Author of an extension
-msgid "Kolja Schleich"
-msgstr "Kolja Schleich"
+#~ msgid ""
+#~ "If you like my plugin and want to support me, I am grateful for any "
+#~ "donation."
+#~ msgstr ""
+#~ "Si vous aimez cette extension et voulez m'aider, j'accepte volontiers des "
+#~ "dons."
 
-#. Author URI of an extension
-msgid "http://kolja.galerie-neander.de/"
-msgstr "http://kolja.galerie-neander.de/"
+#~ msgid "Order: Forwin, Fordraw, Forloss"
+#~ msgstr "Points pour une victoire, un nul, une défaite"
+
+#~ msgid "Updated League Results"
+#~ msgstr "Mettre à jour les résultats de la compétition"
+
+#~ msgid ""
+#~ "Change Team Ranking based on sport specific rules. The sport type needs "
+#~ "to be appended so its only called, when this type is active. I will use "
+#~ "the example sport type <em>sport</em> from above."
+#~ msgstr ""
+#~ "Changer le classement des équipes en fonction des règles spécifiques au "
+#~ "sport. Le type de sport doit être ajoutée afin que son nom, lorsque ce "
+#~ "type est actif. Je vais utiliser le type de sport par exemple <em>sport</"
+#~ "em> d'en haut."
+
+#~ msgid "o.P.|on penalty"
+#~ msgstr "S.P.|Sur Penalty"
+
+#~ msgid "AET|after extra time"
+#~ msgstr "AP|Après prolongations"
+
+#~ msgid "RF|Runs For"
+#~ msgstr "CP|Courses Pour"
+
+#~ msgid "RA|Runs Against"
+#~ msgstr "CC|Courses Contre"
+
+#~ msgid "PCT|Percent Win"
+#~ msgstr "PCT|Pourcentage gagné"
+
+#~ msgid "GB|Games Behind"
+#~ msgstr "GB|Games behind (voir Wikipedia)"
+
+#~ msgid "SO|Shutouts"
+#~ msgstr "BL|Blanchissages"
+
+#~ msgid "RF|Runs for"
+#~ msgstr "CP|Courses Pour"
+
+#~ msgid "RA|Runs against"
+#~ msgstr "CC|Courses Contre"
+
+#~ msgid "PCT|Percentage win"
+#~ msgstr "PCT|Pourcentage gagné"
+
+#~ msgid "GB|games behind"
+#~ msgstr "GB|Games behind (voir Wikipedia)"
+
+#~ msgid "AP|apparatus points"
+#~ msgstr "AP|Système de points"
+
+#~ msgid "Chose Team"
+#~ msgstr "Choisissez une équipe "
+
+#~ msgid "Pos|Position"
+#~ msgstr "Pos|Position"
+
+#~ msgid "Win"
+#~ msgstr "Victoire"
+
+#~ msgid "Tie"
+#~ msgstr "Nul"
+
+#~ msgid "Defeat"
+#~ msgstr "Défaite"
+
+#~ msgid "http://kolja.galerie-neander.de/plugins/leaguemanager/"
+#~ msgstr "http://kolja.galerie-neander.de/plugins/leaguemanager/"
+
+#~ msgid "Manage and present sports league results."
+#~ msgstr "Gestion et présentation de résultats sportifs."
+
+#~ msgid "Kolja Schleich"
+#~ msgstr "Kolja Schleich"
+
+#~ msgid "http://kolja.galerie-neander.de/"
+#~ msgstr "http://kolja.galerie-neander.de/"
 
 #~ msgid "Status"
 #~ msgstr "Statut"
-
-#~ msgid "Edit Matches &#8211; %s"
-#~ msgstr "Editer les matches &#8211; %s"
-
-#~ msgid "Add Matches &#8211; %s"
-#~ msgstr "Ajouter des matches &#8211; %s"
-
-#~ msgid "Time"
-#~ msgstr "Temps"
 
 #~ msgid "Scorer"
 #~ msgstr "Buteur"
@@ -1700,9 +2761,6 @@ msgstr "http://kolja.galerie-neander.de/"
 
 #~ msgid "Cards"
 #~ msgstr "Cartes"
-
-#~ msgid "Player"
-#~ msgstr "Joueur"
 
 #~ msgid "Card"
 #~ msgstr "Carte"
@@ -1733,9 +2791,6 @@ msgstr "http://kolja.galerie-neander.de/"
 
 #~ msgid "RA|runs against"
 #~ msgstr "CC|Courses Contre"
-
-#~ msgid "AP"
-#~ msgstr "Système de points"
 
 #~ msgid "Nation Hockey League (NHL)"
 #~ msgstr "National Hockey League (NHL) "
