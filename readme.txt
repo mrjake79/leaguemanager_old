@@ -84,6 +84,7 @@ The LeagueManager icon is taken from the Fugue Icons of http://www.pinvoke.com/.
 * Coming soon - Players, pagination for leagues, teams, matches, and players. New admin dashboard. New sport files.
 
 = 3.9.1.7 =
+* UPDATED: updated french translation
 * BUGFIX: fixed setting getting stuck on user-defined point rule
 * BUGFIX: fixed an SQL query error in getMatches()
 
