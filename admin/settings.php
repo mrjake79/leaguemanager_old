@@ -14,7 +14,7 @@ else :
 		$options['textdomain'] = (string)$settings['sport'];
 		update_option('leaguemanager', $options);
 
-		if ( isset($_POST['forwin']) && is_numeric($_POST['forwin']) )
+		if ( $settings['point_rule'] == 'user' && isset($_POST['forwin']) && is_numeric($_POST['forwin']) )
 			$settings['point_rule'] = array( 'forwin' => intval($_POST['forwin']), 'fordraw' => intval($_POST['fordraw']), 'forloss' => intval($_POST['forloss']), 'forwin_overtime' => intval($_POST['forwin_overtime']), 'forloss_overtime' => intval($_POST['forloss_overtime']) );
 
 		$this->editLeague( htmlspecialchars($_POST['league_title']), $settings, intval($_POST['league_id']) );

@@ -811,12 +811,13 @@ class LeagueManager
 			elseif ($this->seasonExists($league_id, htmlspecialchars($season)))
 				$search_terms[] = $wpdb->prepare("`season` = '%s'", htmlspecialchars($season));
 		}
+		
 		if ($final != false && $this->finalExists(htmlspecialchars($final))) $search_terms[] = $wpdb->prepare("`final` = '%s'", htmlspecialchars($final));
 		if ($group != false && $this->groupExists($league_id, htmlspecialchars($group))) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars($group));
 		if ($team_id) {
 			$search_terms[] = $wpdb->prepare("(`home_team` = '%d' OR `away_team` = '%d')", $team_id, $team_id);
 		} else {
-			if ($home_team) $search_terms[] = $wpdb->prepare("`home_team` = '%s", $home_team);
+			if ($home_team) $search_terms[] = $wpdb->prepare("`home_team` = '%s'", $home_team);
 			if ($away_team) $search_terms[] = $wpdb->prepare("`away_team` = '%s'", $away_team);
 		}
 		if ($match_day) $search_terms[] = $wpdb->prepare("`match_day` = '%d'", $match_day);

@@ -276,6 +276,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			} elseif ( !empty($group) ) {
 				$match_args['group'] = $group;
 			}
+			
 			if ($match_day != "" && $match_day != -1 && empty($mode)) $match_args['match_day'] = $match_day;
 			
 			$match_args['limit'] = $limit;
@@ -350,11 +351,11 @@ class LeagueManagerShortcodes extends LeagueManager
 				if ( $match->hadPenalty ) {
 					$matches[$i]->homeScore = $match->penalty['home']+$match->overtime['home'];
 					$matches[$i]->awayScore = $match->penalty['away']+$match->overtime['away'];
-					$matches[$i]->score = sprintf("%s - %s", $matches[$i]->homeScore, $matches[$i]->awayScore)." "._x( '(o.P.)', 'leaguemanager' );
+					$matches[$i]->score = sprintf("%s - %s", $matches[$i]->homeScore, $matches[$i]->awayScore)." ".__( '(o.P.)', 'leaguemanager' );
 				} elseif ( $match->hadOvertime ) {
 					$matches[$i]->homeScore = $match->overtime['home'];
 					$matches[$i]->awayScore = $match->overtime['away'];
-					$matches[$i]->score = sprintf("%s - %s", $matches[$i]->homeScore, $matches[$i]->awayScore)." "._x( '(AET)', 'leaguemanager' );
+					$matches[$i]->score = sprintf("%s - %s", $matches[$i]->homeScore, $matches[$i]->awayScore)." ".__( '(AET)', 'leaguemanager' );
 					//$matches[$i]->score = sprintf("%s - %s", $matches[$i]->home_points, $matches[$i]->away_points);
 				} elseif ( $match->home_points != NULL && $match->away_points != NULL ) {
 					$matches[$i]->homeScore = $match->home_points;
@@ -428,11 +429,11 @@ class LeagueManagerShortcodes extends LeagueManager
 		if ( $match->hadPenalty ) {
 			$match->homeScore = $match->penalty['home']+$match->overtime['home'];
 			$match->awayScore = $match->penalty['away']+$match->overtime['away'];
-			$match->score = sprintf("%s - %s", $match->homeScore, $match->awayScore)." "._x( '(o.P.)', 'leaguemanager' );
+			$match->score = sprintf("%s - %s", $match->homeScore, $match->awayScore)." ".__( '(o.P.)', 'leaguemanager' );
 		} elseif ( $match->hadOvertime ) {
 			$match->homeScore = $match->overtime['home'];
 			$match->awayScore = $match->overtime['away'];
-			$match->score = sprintf("%s - %s", $match->homeScore, $match->awayScore)." "._x( '(AET)', 'leaguemanager' );
+			$match->score = sprintf("%s - %s", $match->homeScore, $match->awayScore)." ".__( '(AET)', 'leaguemanager' );
 			//$match->score = sprintf("%s - %s", $match->home_points, $match->away_points);
 		} elseif ( $match->home_points != NULL && $match->away_points != NULL ) {
 			$match->homeScore = $match->home_points;
@@ -829,12 +830,12 @@ class LeagueManagerShortcodes extends LeagueManager
 
 		if ($match) {
 			if ( !empty($match->penalty['home']) && !empty($match->penalty['away']) ) {
+				$match->overtime = maybe_unserialize($match->overtime);
 				$match->penalty = maybe_unserialize($match->penalty);
-				$points = array( 'home' => $match->penalty['home'], 'away' => $match->penalty['away']);
+				$points = array( 'home' => $match->overtime['home']+$match->penalty['home'], 'away' => $match->overtime['away']+$match->penalty['away']);
 			} elseif ( !empty($match->overtime['home']) && !empty($match->overtime['away']) ) {
 				$match->overtime = maybe_unserialize($match->overtime);
-			//	$points = array( 'home' => $match->overtime['home'], 'away' => $match->overtime['away']);
-				$points = array( 'home' => $match->home_points, 'away' => $match->away_points );
+				$points = array( 'home' => $match->overtime['home'], 'away' => $match->overtime['away']);
 			} else {
 				$points = array( 'home' => $match->home_points, 'away' => $match->away_points );
 			}
