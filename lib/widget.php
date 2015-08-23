@@ -92,9 +92,9 @@ class LeagueManagerWidget extends WP_Widget
 		}
 		
 		if ( empty($instance['group']) ) {
-			echo $before_widget . $before_title ."<center>".  $league->title . "<br />Season: " . $season ."</center>".  $after_title;
+			echo $before_widget . $before_title .  $league->title . ' - ' . __('Season', 'leaguemanager') . " " . $season . $after_title;
 		} else {
-			echo $before_widget . $before_title ."<center>". $league->title . "<br />Season: " . $season . "<br />Group: " . $instance['group'] ."</center>". $after_title;
+			echo $before_widget . $before_title . $league->title . ' - ' . __('Season', 'leaguemanager') . " " . $season . " - " . __('Group', 'leaguemanager') . " " . $instance['group'] . $after_title;
 		}
 				
 		echo "<div class='leaguemanager_widget'>";
