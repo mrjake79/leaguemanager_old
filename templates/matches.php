@@ -41,7 +41,7 @@ The following variables are usable:
 		<?php endforeach; ?>
 		</select>
 		<?php endif; ?>
-		<input type='submit' value='<?php _e('Show') ?>' />
+		<input type='submit' class="button" value='<?php _e('Show') ?>' />
 	</div>
 	</form>
 </div>
