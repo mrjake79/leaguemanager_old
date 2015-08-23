@@ -127,7 +127,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			$teams = array_values($teamlist);
 		}
 
-		$i = 0; $class = array();
+		$i = 0; $class = array('alternate');
 		foreach ( $teams AS $team ) {
 			$class = ( !isset($class) || in_array('alternate', $class) ) ? array() : array('alternate');
 			// Add classes for ascend or descend
@@ -307,7 +307,7 @@ class LeagueManagerShortcodes extends LeagueManager
 
             if ($time=='prev1'){ array_multisort( $matchdate, SORT_ASC, $matches ); }
 
-			$i = 0;
+			$i = 0; $class = 'alternate';
 			foreach ( $matches AS $match ) {
 				$class = ( 'alternate' == $class ) ? '' : 'alternate';
 
@@ -493,9 +493,7 @@ class LeagueManagerShortcodes extends LeagueManager
 
 		$finals = array();
 		foreach ( $championship->getFinals() AS $final ) {
-			$class = ( !isset($class) || 'alternate' == $class ) ? '' : 'alternate';
-			$data['class'] = $class;
-
+			$class = 'alternate';
 			$data['key'] = $final['key'];
 			$data['name'] = $final['name'];
 			$data['num_matches'] = $final['num_matches'];
@@ -509,7 +507,11 @@ class LeagueManagerShortcodes extends LeagueManager
 			$matches = array();
 			for ( $i = 1; $i <= $final['num_matches']; $i++ ) {
 				$match = $matches_raw[$i-1];
+				
 				if ( $match ) {
+					$class = ( !isset($class) || 'alternate' == $class ) ? '' : 'alternate';
+					$match->class = $class;
+				
 					if ( is_numeric($match->home_team) && is_numeric($match->away_team) ) {
 						$match->title = $match->title2 = sprintf("%s &#8211; %s", $teams[$match->home_team]['title'], $teams[$match->away_team]['title']);
 					} else {

@@ -21,7 +21,7 @@ The following variables are usable:
 </tr>
 <tbody id="the-list-finals" class="form-table">
 <?php foreach ( $finals AS $final ) : ?>
-<tr class="<?php echo $final->class ?>">
+<tr class="">
 	<th scope="row"><strong><?php echo $final->name ?></strong></th>
 	<?php foreach ( (array)$final->matches AS $no => $match ) : ?>
 	<td colspan="<?php echo $final->colspan ?>" style="text-align: center;">
@@ -69,7 +69,7 @@ The following variables are usable:
 </thead>
 <tbody id="the-list-<?php echo $final->key ?>" class="form-table">
 <?php foreach ( (array)$final->matches AS $no => $match ) : ?>
-<tr class="<?php echo $final->class ?>">
+<tr class="<?php echo $match->class ?>">
 	<td><?php echo $no ?></td>
 	<td><?php echo $match->date ?></td> 
 	<td><?php echo $match->title ?></td>
