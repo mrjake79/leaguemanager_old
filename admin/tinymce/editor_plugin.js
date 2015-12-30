@@ -18,8 +18,8 @@
 
 			ed.addCommand('mceLeagueManager', function() {
 				ed.windowManager.open({
-					file : url + '/window.php',
-					width : 500 + ed.getLang('LeagueManager.delta_width', 0),
+					file: ajaxurl + '?action=leaguemanager_tinymce_window',
+					width : 600 + ed.getLang('LeagueManager.delta_width', 0),
 					height : 210 + ed.getLang('LeagueManager.delta_height', 0),
 					inline : 1
 				}, {

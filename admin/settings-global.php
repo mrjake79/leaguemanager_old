@@ -48,6 +48,22 @@ else :
         </td>
 	</table>
 	
+	<h3><?php _e('Dashboard Widget Support News', 'leaguemanager') ?></h3>
+	<table class='form-table'>
+	<tr valign='top'>
+		<th scope='row'><label for='dashboard_num_items'><?php _e( 'Number of Support Threads', 'leaguemanager' ) ?></label></th><td><input type='text' name='dashboard[num_items]' id='dashboard_num_items' value='<?php echo $options['dashboard_widget']['num_items'] ?>' size='2' /></td>
+	</tr>
+	<tr valign='top'>
+		<th scope='row'><label for='dashboard_show_author'><?php _e( 'Show Author', 'leaguemanager' ) ?></label></th><td><input type='checkbox' name='dashboard[show_author]' id='dashboard_show_author'<?php checked($options['dashboard_widget']['show_author'], 1) ?> /></td>
+	</tr>
+	<tr valign='top'>
+		<th scope='row'><label for='dashboard_show_date'><?php _e( 'Show Date', 'leaguemanager' ) ?></label></th><td><input type='checkbox' name='dashboard[show_date]' id='dashboard_show_date'<?php checked($options['dashboard_widget']['show_date'], 1) ?> /></td>
+	</tr>
+		<tr valign='top'>
+		<th scope='row'><label for='dashboard_show_summary'><?php _e( 'Show Summary', 'leaguemanager' ) ?></label></th><td><input type='checkbox' name='dashboard[show_summary]' id='dashboard_show_summary'<?php checked($options['dashboard_widget']['show_summary'], 1) ?> /></td>
+	</tr>
+	</table>
+	
 	<input type='hidden' name='page_options' value='color_headers,color_rows,color_rows_alt,color_rows_ascend,color_rows_descend,color_rows_relegation' />
 	<p class='submit'><input type='submit' name='updateLeagueManager' value='<?php _e( 'Save Preferences', 'leaguemanager' ) ?> &raquo;' class='button button-primary' /></p>
 </div>

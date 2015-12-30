@@ -35,6 +35,13 @@
 			<option value='<?php echo $i ?>'<?php if ($leaguemanager->getMatchDay() == $i) echo ' selected="selected"' ?>><?php printf(__( '%d. Match Day', 'leaguemanager'), $i) ?></option>
 			<?php endfor; ?>
 		</select>
+		<select size="1" name="team_id">
+		<option value=""><?php _e( 'Choose Team', 'leaguemanager' ) ?></option>
+		<?php foreach ( $teams AS $team ) : ?>
+			<?php $selected = (isset($_POST['team_id']) && intval($_POST['team_id']) == $team->id) ? ' selected="selected"' : ''; ?>
+			<option value="<?php echo $team->id ?>"<?php echo $selected ?>><?php echo $team->title ?></option>
+		<?php endforeach; ?>
+		</select>
 		<input type='submit' name="doaction3" id="doaction3" class="button-secondary action" value='<?php _e( 'Filter' ) ?>' />
 		<?php endif; ?>
 	</div>
@@ -82,6 +89,19 @@
 
 	<?php do_action ( 'leaguemanager_match_administration_descriptions' ) ?>
 
+	<?php if ( isset($league->mode) && $league->mode != "championship" && $leaguemanager->getPageLinks() ) : ?>
+	<div class="tablenav">
+		<div class="tablenav-pages">
+		<?php $page_links_text = sprintf( '<span class="displaying-num">' . __( 'Displaying %s&#8211;%s of %s', 'leaguemanager' ) . '</span>%s',
+			number_format_i18n( ( $leaguemanager->getCurrentPage() - 1 ) * $leaguemanager->getNumMatchesPerPage() + 1 ),
+			number_format_i18n( min( $leaguemanager->getCurrentPage() * $leaguemanager->getNumMatchesPerPage(),  $leaguemanager->getNumMatchesQuery() ) ),
+			number_format_i18n(  $leaguemanager->getNumMatchesQuery() ),
+			$leaguemanager->getPageLinks()
+			); echo $page_links_text; ?>
+		</div>
+	</div>
+	<?php endif; ?>
+	
 	<?php if ( $matches ) : ?>
 		<input type="hidden" name="league_id" value="<?php echo $league->id ?>" />
 		<input type="hidden" name="updateLeague" value="results" />

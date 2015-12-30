@@ -1359,6 +1359,26 @@ msgstr ""
 msgid "Teams Relegation"
 msgstr ""
 
+#: admin/settings-global.php:20
+msgid "Dashboard Widget Support News"
+msgstr ""
+
+#: admin/settings-global.php:23
+msgid "Number of Support Threads"
+msgstr ""
+
+#: admin/settings-global.php:26
+msgid "Show Author"
+msgstr ""
+
+#: admin/settings-global.php:29
+msgid "Show Date"
+msgstr ""
+
+#: admin/settings-global.php:32
+msgid "Show Summary"
+msgstr ""
+
 #: admin/settings-global.php:30 admin/settings.php:165
 msgid "Save Preferences"
 msgstr ""

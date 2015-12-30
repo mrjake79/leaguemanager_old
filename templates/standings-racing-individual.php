@@ -13,8 +13,8 @@ $racing = new LeagueManagerRacing();
 $racer = $racing->getRacerResults($teams);
 $racer_id = isset($_GET['show']) ? intval($_GET['show']) : false;
 ?>
-<?php if ( isset($_GET['team']) && !$widget ) : ?>
-	<?php global $lmShortcodes; $lmShortcodes->showTeam( array('id' => intval($_GET['team']), 'echo' => 1) ) ?>
+<?php if ( isset($_GET['team_'.$league->id]) && !$widget ) : ?>
+	<?php global $lmShortcodes; $lmShortcodes->showTeam( array('id' => intval($_GET['team_'.$league->id]), 'echo' => 1) ) ?>
 <?php elseif ( $racer_id ) : ?>
 	<?php do_action('projectmanager_dataset', array('id' => $racer_id, 'echo' => 1), true) ?>
 <?php else : ?>

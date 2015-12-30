@@ -104,6 +104,7 @@ $league_mode = (isset($league->mode) ? ($league->mode) : '' );
 $cup = ( $league_mode == 'championship' ) ? true : false;
 
 $group = isset($_GET['group']) ? htmlspecialchars($_GET['group']) : '';
+$team_id = isset($_POST['team_id']) ? intval($_POST['team_id']) : false;
 
 $team_list = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name'], "orderby" => array("id" => "ASC")), 'ARRAY' );
 $options = get_option('leaguemanager');
@@ -113,6 +114,11 @@ if ( $season )
 	$match_args["season"] = $season['name'];
 if ( $group )
 	$match_args["group"] = $group;
+if ( $team_id )
+	$match_args['team_id'] = $team_id;
+
+//if (intval($league->num_matches_per_page) > 0)
+//	$match_args['limit'] = intval($league->num_matches_per_page);
 
 if ( isset($_POST['doaction3'])) {
 	if ($_POST['match_day'] != -1) {
@@ -135,6 +141,7 @@ if ( empty($league->seasons)  ) {
 if ( $league_mode != 'championship' ) {
 	$teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name']), 'OBJECT' );
 	$matches = $leaguemanager->getMatches( $match_args );
+	$leaguemanager->setNumMatches($leaguemanager->getMatches(array_merge($match_args, array('limit' => false, 'count' => true))));
 }
 
 $matches_file = apply_filters('leaguemanager_matches_file_'.$league->sport, $league);

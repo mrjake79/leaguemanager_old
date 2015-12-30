@@ -1,21 +1,4 @@
 <?php
-
-$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
-
-if (file_exists($root.'/wp-load.php')) {
-	// WP 2.6
-	require_once($root.'/wp-load.php');
-} else {
-	// Before 2.6
-	if (!file_exists($root.'/wp-config.php'))  {
-		echo "Could not find wp-config.php";	
-		die;
-	}// stop when wp-config is not there
-	require_once($root.'/wp-config.php');
-}
-
-require_once(ABSPATH.'/wp-admin/admin.php');
-
 // check for rights
 if(!current_user_can('edit_posts')) die;
 
@@ -26,9 +9,9 @@ global $wpdb;
 <head>
 	<title><?php _e('Leaguemanager', 'leaguemanager') ?></title>
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo get_option('blog_charset'); ?>" />
-	<script language="javascript" type="text/javascript" src="<?php echo get_option('siteurl') ?>/wp-includes/js/tinymce/tiny_mce_popup.js"></script>
-	<script language="javascript" type="text/javascript" src="<?php echo get_option('siteurl') ?>/wp-includes/js/tinymce/utils/mctabs.js"></script>
-	<script language="javascript" type="text/javascript" src="<?php echo get_option('siteurl') ?>/wp-includes/js/tinymce/utils/form_utils.js"></script>
+	<script language="javascript" type="text/javascript" src="<?php echo includes_url(); ?>js/tinymce/tiny_mce_popup.js"></script>
+	<script language="javascript" type="text/javascript" src="<?php echo includes_url(); ?>js/tinymce/utils/mctabs.js"></script>
+	<script language="javascript" type="text/javascript" src="<?php echo includes_url(); ?>js/tinymce/utils/form_utils.js"></script>
 	<script language="javascript" type="text/javascript" src="<?php echo LEAGUEMANAGER_URL ?>/admin/tinymce/tinymce.js"></script>
 	<base target="_self" />
 </head>

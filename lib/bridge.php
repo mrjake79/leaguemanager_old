@@ -61,7 +61,7 @@ class LeagueManagerBridge extends LeagueManager
 			$projectmanager->setCatID($cat_id);
 
 			$search = "`project_id` = ".intval($roster['id']);
-			if ( $cat_id ) $search .= $projectmanager->getCategorySearchString($cat_id);
+			if ( $cat_id ) $search .= $projectmanager->getCategorySearchString();
 
 			$datasets = $wpdb->get_results( "SELECT `id`, `name` FROM {$wpdb->projectmanager_dataset} WHERE $search" );
 			$i = 0;

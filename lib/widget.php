@@ -97,7 +97,7 @@ class LeagueManagerWidget extends WP_Widget
 			echo $before_widget . $before_title . $league->title . ' - ' . __('Season', 'leaguemanager') . " " . $season . " - " . __('Group', 'leaguemanager') . " " . $instance['group'] . $after_title;
 		}
 				
-		echo "<div class='leaguemanager_widget'>";
+		echo "<div class='leaguemanager_widget_content'>";
 		if ( $instance['match_display'] != 'none' ) {
 			$show_prev_matches = $show_next_matches = false;
 			if ( $instance['match_display'] == 'prev' )
@@ -148,7 +148,8 @@ class LeagueManagerWidget extends WP_Widget
 	{
 		global $leaguemanager;
 
-		$match_limit = ( intval($instance['match_limit']) > 0 ) ? $instance['match_limit'] : false;			
+		$league = $leaguemanager->getLeague($instance['league']);
+		$match_limit = ( is_numeric($instance['match_limit']) && intval($instance['match_limit']) > 0 ) ? intval($instance['match_limit']) : false;			
 		$match_args = array("league_id" => $instance['league'], "final" => '', "season" => $instance['season'], "time" => "next");
 		if ( !empty($instance['group']) ) {
 			$match_args['group'] = $instance['group'];
@@ -167,7 +168,11 @@ class LeagueManagerWidget extends WP_Widget
 			$teams = $leaguemanager->getTeams( $team_args, 'ARRAY' );
 			
 			$curr = $this->getMatchIndex('next');
-			$match = $matches[$curr];
+			if (isset($matches[$curr]))
+				$match = $matches[$curr];
+			else
+				die("Error: Match with index ".$curr." does not exist");
+			
 			$match_limit_js = ( $match_limit ) ? $match_limit : 'false';
 			$home_only = ( isset($instance['home_only']) ) ? $home_only = $instance['home_only'] : $home_only = 0;
 
@@ -227,7 +232,8 @@ class LeagueManagerWidget extends WP_Widget
 	{
 		global $leaguemanager;
 
-		$match_limit = ( intval($instance['match_limit']) > 0 ) ? $instance['match_limit'] : false;			
+		$league = $leaguemanager->getLeague($instance['league']);
+		$match_limit = ( is_numeric($instance['match_limit']) && intval($instance['match_limit']) > 0 ) ? intval($instance['match_limit']) : false;
 		$match_args = array("league_id" => $instance['league'], "final" => '', "season" => $instance['season'], "time" => "prev");
 		if ( !empty($instance['group']) ) {
 			$match_args['group'] = $instance['group'];
@@ -238,7 +244,7 @@ class LeagueManagerWidget extends WP_Widget
 		
 		$match_args['limit'] = $match_limit;
 		$match_args['orderby'] = array("date" => "DESC", "id" => "DESC");
-			
+		
 		$matches = $leaguemanager->getMatches( $match_args );
 		if ( $matches ) {
 			$team_args = array("league_id" => $instance['league'], "season" => $instance['season'], "orderby" => array("id" => "ASC"));
@@ -247,7 +253,12 @@ class LeagueManagerWidget extends WP_Widget
 			$teams = $leaguemanager->getTeams( $team_args, 'ARRAY' );
 							
 			$curr = $this->getMatchIndex('prev');
-			$match = $matches[$curr];
+			if (isset($matches[$curr]))
+				$match = $matches[$curr];
+			else
+				die("Error: Match with index ".$curr." does not exist");
+		
+			
 			$match_limit_js = ( $match_limit ) ? $match_limit : 'false';
 			$home_only = ( isset($instance['home_only']) ) ? $home_only = $instance['home_only'] : $home_only = 0;
 			
@@ -277,13 +288,17 @@ class LeagueManagerWidget extends WP_Widget
 								
 			if ( !isset($match->title) ) $match->title = sprintf("%s &#8211; %s", $home_team, $away_team);
 
-			if ( $match->hadPenalty )
-				$score = sprintf("%d - %d", $match->penalty['home'], $match->penalty['away'])." "._x( 'o.P.', 'leaguemanager' );
-			elseif ( $match->hadOvertime )
-				$score = sprintf("%d - %d", $match->overtime['home'], $match->overtime['away'])." "._x( 'AET', 'leaguemanager' );
-			else
-				$score = sprintf("%d - %d", $match->home_points, $match->away_points);
-
+			if ( $match->home_points == "" && $match->away_points == "" ) {
+				$score = "N/A";
+			} else {
+				if ( $match->hadPenalty )
+					$score = sprintf("%d - %d", $match->penalty['home'], $match->penalty['away'])." "._x( 'o.P.', 'leaguemanager' );
+				elseif ( $match->hadOvertime )
+					$score = sprintf("%d - %d", $match->overtime['home'], $match->overtime['away'])." "._x( 'AET', 'leaguemanager' );
+				else
+					$score = sprintf("%d - %d", $match->home_points, $match->away_points);
+			}
+			
 			$out .= "<p class='match_title'><strong>". $match->title."</strong></p>";
 			$out .= "<p class='logos'><img class='home_logo' src='".$teams[$match->home_team]['logo']."' alt='' /><span class='result'>".$score."</span><img class='away_logo' src='".$teams[$match->away_team]['logo']."' alt='' /></p>";
 
@@ -291,7 +306,9 @@ class LeagueManagerWidget extends WP_Widget
 			$out .= "<p class='match_day'>".sprintf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $match->match_day)."</p>";
 			
 			$time = ( '00:00' == $match->hour.":".$match->minutes ) ? '' : mysql2date(get_option('time_format'), $match->date);
-
+			$out .= "<p class='date'>".mysql2date(get_option('date_format'), $match->date).", <span class='time'>".$time."</span></p>";
+			$out .= "<p class='location'>".$match->location."</p>";
+			
 			if ( $match->post_id != 0 && ( isset($instance['report']) && ($instance['report'] == 1)) )
 				$out .=  "<p class='report'><a href='".get_permalink($match->post_id)."'>".__( 'Report', 'leaguemanager' )."&raquo;</a></p>";
 					
@@ -394,15 +411,17 @@ if ( !class_exists('LeagueManager_Widgets')) {
 		 */
 		public static function latest_support_news()
 		{
+			$options = get_option('leaguemanager');
+			
 			echo '<div class="rss-widget">';
 
 			wp_widget_rss_output(array(
 			'url'          => 'http://wordpress.org/support/rss/plugin/leaguemanager',
 			'title'        => __('Latest LeagueManager support discussions...', 'leaguemanager'),
-			'items'        => 3,
-			'show_summary' => 1,
-			'show_author'  => 1,
-			'show_date'    => 1
+			'show_author' => $options['dashboard_widget']['show_author'],
+			'show_date' => $options['dashboard_widget']['show_date'],
+			'show_summary' => $options['dashboard_widget']['show_summary'],
+			'items' => $options['dashboard_widget']['num_items']
 			));
 
 			echo '</div>';

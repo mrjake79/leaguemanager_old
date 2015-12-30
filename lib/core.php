@@ -63,6 +63,22 @@ class LeagueManager
 	 */
 	var $bridge = false;
 
+	
+	/**
+	 * number of matches per page
+	 *
+	 * @var int
+	 */
+	var $num_matches_per_page = 0;
+	
+	
+	/**
+	 * number of pages for matches
+	 *
+	 * @var int
+	 */
+	var $num_max_pages = 0;
+	
 
 	/**
 	 * Initializes plugin
@@ -158,6 +174,18 @@ class LeagueManager
 	}
 	
 
+	/**
+	 * get current league ID
+	 *
+	 * @param none
+	 * @return int
+	 */
+	function getCurrentLeagueID()
+	{
+		return intval($this->league->id);
+	}
+	
+	
 	/**
 	 * set season
 	 *
@@ -384,9 +412,13 @@ class LeagueManager
 	{
 		global $wpdb;
 		
+		$league_id = $this->getCurrentLeagueID();
+		
 		$season = isset($this->season['name']) ? $this->season['name'] : '';
 		if ( isset($_GET['match_day']) ) {
 			$match_day = intval($_GET['match_day']);
+		} elseif ( isset($_GET['match_day_'.$league_id])) {
+			$match_day = intval($_GET['match_day_'.$league_id]);
 		} elseif ( isset($this->match_day) && $this->match_day != -1) {
 			$match_day = intval($this->match_day);
 		} elseif (isset($_POST['match_day'])) {
@@ -436,6 +468,8 @@ class LeagueManager
 	{
 		if ( isset($_GET['season']) && !empty($_GET['season']) )
 			$data = $league->seasons[htmlspecialchars($_GET['season'])];
+		elseif ( isset($_GET['season_'.$league->id]) )
+			$data = $league->seasons[htmlspecialchars($_GET['season_'.$league->id])];
 		elseif ( $season )
 			$data = $league->seasons[$season];
 		elseif ( !empty($league->seasons) )
@@ -501,9 +535,40 @@ class LeagueManager
 		$league = (object)array_merge((array)$league,(array)$league->settings);
 		unset($league->settings);
 
+		$league = $this->getDefaultLeagueSettings( $league );
+		
+		if (isset($league->num_matches_per_page) && $league->num_matches_per_page > 0)
+			$this->setNumMatchesPerPage($league->num_matches_per_page);
+		
 		$this->league = $league;
 		return $league;
 	}
+	
+	
+	/**
+	 * get default league settings
+	 *
+	 * @param object $league
+	 * @return object
+	 */
+	function getDefaultLeagueSettings( $league )
+	{
+		if ( !isset($league->sport) ) $league->sport = "soccer";
+		if ( !isset($league->point_rule) ) $league->point_rule = "three";
+		if ( !isset($league->point_format) ) $league->point_format = "%d:%d";
+		if ( !isset($league->point_format2) ) $league->point_format2 = "%d:%d";
+		if ( !isset($league->team_ranking) ) $league->team_ranking = "auto";
+		if ( !isset($league->mode) ) $league->mode = "default";
+		if ( !isset($league->default_match_start_time) ) $league->default_match_start_time = array("hour" => 0, "minutes" => 0);
+		if ( !isset($league->standings) ) $league->standings = array( 'pld' => 1, 'won' => 1, 'tie' => 1, 'lost' => 1 );
+		if ( !isset($league->num_ascend) ) $league->num_ascend = "";
+		if ( !isset($league->num_descend) ) $league->num_descend = "";
+		if ( !isset($league->num_relegation) ) $league->num_relegation = "";
+		if ( !isset($league->num_matches_per_page) ) $league->num_matches_per_page = 10;
+		if ( !isset($league->use_stats) ) $league->use_stats = 0;
+		
+		return $league;
+		}
 	
 	
 	/**
@@ -699,7 +764,30 @@ class LeagueManager
 		return $num_matches;
 	}
 	
-		
+	
+	/**
+	 * get number of matches saved in class
+	 *
+	 * @param none
+	 * @return int
+	 */
+	function getNumMatchesQuery()
+	{
+		return intval($this->num_matches);
+	}
+	
+	
+	/**
+	 * set number of matches
+	 *
+	 * @param int $num_matches
+	 */
+	function setNumMatches( $num_matches )
+	{
+		$this->num_matches = intval($num_matches);
+	}
+	
+	
 	/**
 	 * rank teams
 	 *
@@ -794,9 +882,13 @@ class LeagueManager
 	{
 	 	global $wpdb;
 	
-		$defaults = array( 'league_id' => false, 'season' => false, 'group' => false, 'final' => false, 'match_day' => false, 'time' => false, 'home_only' => false, 'winner_id' => false, 'loser_id' => false, 'team_id' => false, 'home_team' => false, 'away_team' => false, 'home_points' => false, 'away_points' => false, 'limit' => false, 'orderby' => array("date" => "ASC"));
-		$args = array_merge($defaults, $args);
+		$defaults = array( 'league_id' => false, 'count' => false, 'season' => false, 'group' => false, 'final' => false, 'match_day' => false, 'time' => false, 'home_only' => false, 'winner_id' => false, 'loser_id' => false, 'team_id' => false, 'home_team' => false, 'away_team' => false, 'home_points' => false, 'away_points' => false, 'limit' => true, 'orderby' => array("date" => "ASC"));
+		$args = array_merge($defaults, (array)$args);
 		extract($args, EXTR_SKIP);
+		
+		$league = $this->getCurrentLeague();
+		// disable limit for championship mode
+		if ( isset($league->mode) && $league->mode == "championship" ) $limit = false;
 		
 		$search_terms = array();
 		if ($league_id) {
@@ -839,24 +931,34 @@ class LeagueManager
 			$search_terms[] = $wpdb->prepare("`loser_id` = '%d'", $loser_id);
 		
 		if ( $time == 'next' )
-			$search_terms[] = "DATEDIFF(NOW(), `date`) <= 0";
-		elseif ( $time == 'prev' )
-			$search_terms[] = "DATEDIFF(NOW(), `date`) > 0";
+			$search_terms[] = "TIMESTAMPDIFF(MINUTE, NOW(), `date`) >= 0";
+		elseif ( $time == 'prev' || $time == 'latest' )
+			$search_terms[] = "TIMESTAMPDIFF(MINUTE, NOW(), `date`) < 0";
 		elseif ( $time == 'prev1' )
-			$search_terms[] = "DATEDIFF(NOW(), `date`) > 0) AND (`winner_id` != 0) ";
+			$search_terms[] = "TIMESTAMPDIFF(MINUTE, NOW(), `date`) < 0) AND (`winner_id` != 0) ";
 		elseif ( $time == 'today' )
 			$search_terms[] = "DATEDIFF(NOW(), `date`) = 0";
 		elseif ( $time == 'day' )
-			$search_terms[] = "DATEDIFF('". htmlspecialchars($match_date)."', `date`) = 0";		
+			$search_terms[] = "DATEDIFF('". htmlspecialchars($match_date)."', `date`) = 0";
 		
 		$search = "";
 		if (count($search_terms) > 0) {
 			$search = implode(" AND ", $search_terms);
 		}
 		
-		if ($home_only)
+		if ($home_only) {
 			$search .= $this->buildHomeOnlyQuery($league_id);
+		}
 			
+		// Force ordering by date ascending if next matches are queried
+		if ( $time == 'next' ) {
+			$orderby['date'] = 'ASC';
+		}
+		// Force ordering by date descending if previous/latest matches are queried
+		if ( $time == 'prev' || $time == 'latest' ) {
+			$orderby['date'] = 'DESC';
+		}
+		
 		$orderby_string = ""; $i = 0;
 		foreach ($orderby AS $order => $direction) {
 			if (!in_array($direction, array("DESC", "ASC", "desc", "asc"))) $direction = "ASC";
@@ -868,14 +970,28 @@ class LeagueManager
 		}
 		$order = $orderby_string;
 		
-		$sql = "SELECT `group`, `home_team`, `away_team`, DATE_FORMAT(`date`, '%Y-%m-%d %H:%i') AS date, DATE_FORMAT(`date`, '%e') AS day, DATE_FORMAT(`date`, '%c') AS month, DATE_FORMAT(`date`, '%Y') AS year, DATE_FORMAT(`date`, '%H') AS `hour`, DATE_FORMAT(`date`, '%i') AS `minutes`, `match_day`, `location`, `league_id`, `home_points`, `away_points`, `winner_id`, `loser_id`, `post_id`, `season`, `id`, `custom` FROM {$wpdb->leaguemanager_matches}";
-		if ( $search != "") $sql .= " WHERE $search";
-		$sql .= " ORDER BY $order";
-		if ( $limit ) $sql .= " LIMIT 0,".intval($limit)."";
+		$num_matches_per_page = ( $limit && is_numeric($limit) ) ? intval($limit) : $this->getNumMatchesPerPage();
 		
-		$matches = $wpdb->get_results( $sql, $output );
+		if ( $limit === true )
+			$offset = ( $this->getCurrentPage() - 1 ) * $this->getNumMatchesPerPage();
+		else 
+			$offset = 0;
+		
+		if ( $count ) {
+			$sql = "SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches}";
+			if ( $search != "") $sql .= " WHERE $search";
+			$sql .= " ORDER BY $order";
+			//if ( $limit ) $sql .= " LIMIT ".intval($offset).",".intval($limit)."";
+			return $wpdb->get_var($sql);
+		} else {
+			$sql = "SELECT `group`, `home_team`, `away_team`, DATE_FORMAT(`date`, '%Y-%m-%d %H:%i') AS date, DATE_FORMAT(`date`, '%e') AS day, DATE_FORMAT(`date`, '%c') AS month, DATE_FORMAT(`date`, '%Y') AS year, DATE_FORMAT(`date`, '%H') AS `hour`, DATE_FORMAT(`date`, '%i') AS `minutes`, `match_day`, `location`, `league_id`, `home_points`, `away_points`, `winner_id`, `loser_id`, `post_id`, `season`, `id`, `custom` FROM {$wpdb->leaguemanager_matches}";
+			if ( $search != "") $sql .= " WHERE $search";
+			$sql .= " ORDER BY $order";
+			if ( $limit && intval($num_matches_per_page) > 0 ) $sql .= " LIMIT ".$offset.",".intval($num_matches_per_page)."";
+	
+			$matches = $wpdb->get_results( $sql, $output );
+		}
 
-		//print_r($matches);
 		$i = 0;
 		foreach ( $matches AS $match ) {
 			$matches[$i]->location = stripslashes($match->location);
@@ -930,8 +1046,8 @@ class LeagueManager
 			else
 				$title = "";
 		} else {
-			$home_logo_img = ($teams[$match->home_team]['logo'] != "" && $show_logo) ? "<img src='".$this->getThumbnailUrl($teams[$match->home_team]['logo'])."' alt='' />" : "";
-			$away_logo_img = ($teams[$match->away_team]['logo'] != "" && $show_logo) ? "<img src='".$this->getThumbnailUrl($teams[$match->away_team]['logo'])."' alt='' />" : "";
+			$home_logo_img = ($teams[$match->home_team]['logo'] != "" && $show_logo) ? "<img class='home-logo logo' src='".$this->getThumbnailUrl($teams[$match->home_team]['logo'])."' alt='' />" : "";
+			$away_logo_img = ($teams[$match->away_team]['logo'] != "" && $show_logo) ? "<img class='away-logo logo' src='".$this->getThumbnailUrl($teams[$match->away_team]['logo'])."' alt='' />" : "";
 			$home_team_name = ($this->isHomeTeamMatch($match->home_team, $match->away_team, $teams)) ? "<strong>".$teams[$match->home_team]['title']."</strong>" : $teams[$match->home_team]['title']; 
 			$away_team_name = ($this->isHomeTeamMatch($match->home_team, $match->away_team, $teams)) ? "<strong>".$teams[$match->away_team]['title']."</strong>" : $teams[$match->away_team]['title']; 
 		
@@ -962,6 +1078,104 @@ class LeagueManager
 	}
 
 
+	/**
+	 * display pagination
+	 *
+	 * @param int $current_page
+	 * @param string $base
+	 * @return string
+	 */
+	function getPageLinks($current_page = false, $base = 'paged')
+	{
+		if (!$current_page) $current_page = $this->getCurrentPage();
+		
+		if (is_admin()) $query_args = array('league_id' => $this->getLeagueID());
+		else $query_args = (isset($this->query_args)) ? $this->query_args : array();
+		
+		if (isset($_POST['match_day']) && is_string($_POST['match_day'])) {
+			$query_args['match_day'] = htmlspecialchars($_POST['match_day']);
+		}
+		
+		$page_links = paginate_links( array(
+			'base' => add_query_arg( $base, '%#%' ),
+			'format' => '',
+			'prev_text' => '&#9668;',
+			'next_text' => '&#9658;',
+			'total' => $this->getNumPages(),
+			'current' => $current_page,
+			'add_args' => $query_args
+		));
+			
+		return $page_links;
+	}
+	
+	
+	/**
+	 * retrieve current page
+	 *
+	 * @param none
+	 * @return int
+	 */
+	function getCurrentPage($league_id = false)
+	{
+		global $wp;
+		
+		if (!$league_id) $league_id = $this->getLeagueID();
+		
+		$key = "paged_".$league_id;
+		if (isset($_GET['paged']))
+			$this->current_page = intval($_GET['paged']);
+		elseif (isset($wp->query_vars['paged']))
+			$this->current_page = max(1, intval($wp->query_vars['paged']));
+		elseif (isset($_GET[$key]))
+			$this->current_page = intval($_GET[$key]);
+		elseif (isset($wp->query_vars[$key]))
+			$this->current_page = max(1, intval($wp->query_vars[$key]));
+		else
+			$this->current_page = 1;
+
+		return intval($this->current_page);
+	}
+	
+	
+	/**
+	 * get number of matches per page
+	 *
+	 * @param none
+	 * @return int
+	 */
+	function getNumMatchesPerPage()
+	{
+		//return intval($this->league->num_matches_per_page);
+		return $this->num_matches_per_page;
+	}
+	
+	
+	/**
+	 * set number of matches per page
+	 *
+	 * @param int $num
+	 * @return void
+	 */
+	function setNumMatchesPerPage( $num )
+	{
+		$this->num_matches_per_page = $num;
+	}
+	
+	
+	/**
+	 * set number of pages
+	 *
+	 * @param int $num_max_pages
+	 * @return none
+	 */
+	function getNumPages()
+	{
+		$this->num_max_pages = ( 0 == $this->getNumMatchesPerPage() ) ? 1 : ceil( $this->getNumMatchesQuery()/$this->getNumMatchesPerPage() );
+		return $this->num_max_pages;
+	}
+	
+	
 	/**
 	 * get card name
 	 *
@@ -1018,7 +1232,7 @@ class LeagueManager
 	function seasonExists($league_id, $season)
 	{
 		$league = $this->getLeague($league_id);
-		if (in_array($season, array_keys($league->seasons)))
+		if (is_array($league->seasons) && in_array($season, array_keys($league->seasons)))
 			return true;
 		else
 			return false;
@@ -1061,6 +1275,26 @@ class LeagueManager
 			return true;
 		else
 			return false;
+	}
+	
+	
+	/**
+	 * small helper function to correct 0:0 in overtime fields to empty values
+	 */
+	function cleanOvertime()
+	{
+		global $wpdb;
+		
+		// get all matches from database
+		$matches = $wpdb->get_results( "SELECT * FROM {$wpdb->leaguemanager_matches} ORDER By id ASC" );
+		foreach ( $matches AS $match ) {
+			$match->custom = stripslashes_deep(maybe_unserialize($match->custom));
+			
+			if ( count($match->custom) && $match->custom['overtime']['home'] == "0" && $match->custom['overtime']['away'] == "0" ) {
+				$match->custom['overtime'] = array('home' => '', 'away' => '');
+			}
+			$wpdb->query($wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `custom` = '%s' WHERE `id` = '%d'", maybe_serialize($match->custom), $match->id ));
+		}
 	}
 }
 ?>

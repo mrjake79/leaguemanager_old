@@ -9,7 +9,7 @@ else :
 				$add_teams = isset($_POST['no_add_teams']) ? false : true;
 				$this->saveSeason( htmlspecialchars($_POST['season']), intval($_POST['num_match_days']), $add_teams );
 			} else {
-				$this->saveSeason( htmlspecialchars($_POST['season']), intval($_POST['num_match_days']), false, htmlspecialchars($_POST['season_id']) );
+				$this->saveSeason( htmlspecialchars($_POST['season']), intval($_POST['num_match_days']), false, $_POST['season_id'] );
 			}
 		} else {
 			$leaguemanager->setMessage( __( 'Season was empty', 'leaguemanager' ), true );
@@ -23,7 +23,7 @@ else :
 		}
 	}
 
-	$league = $leaguemanager->getCurrentLeague();
+	$league = $leaguemanager->getLeague(intval($_GET['league_id']));
 	$season_id = false;
 	$season_data = array('name' => '', 'num_match_days' => '');
 	if ( isset($_GET['edit']) ) {
@@ -79,7 +79,7 @@ else :
 		(<a href="admin.php?page=leaguemanager&amp;subpage=seasons&amp;league_id=<?php echo $league->id ?>"><?php _e( 'Add New', 'leaguemanager') ?></a>)
 		<?php endif; ?>
 	</h3>
-	<form action="" method="post">
+	<form action="admin.php?page=leaguemanager&amp;subpage=seasons&amp;league_id=<?php echo $league->id ?>" method="post">
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row"><label for="season"><?php _e( 'Season', 'leaguemanager' ) ?></label></th>

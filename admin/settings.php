@@ -4,7 +4,8 @@ if ( !current_user_can( 'manage_leaguemanager' ) ) :
 
 else :
 	$options = get_option('leaguemanager');
-	$league = $leaguemanager->getCurrentLeague();
+	//$league = $leaguemanager->getCurrentLeague();
+	$league = $leaguemanager->getLeague( intval($_GET['league_id']) );
 	if ( isset($_POST['updateSettings']) ) {
 		check_admin_referer('leaguemanager_manage-league-options');
 
@@ -19,11 +20,11 @@ else :
 
 		$this->editLeague( htmlspecialchars($_POST['league_title']), $settings, intval($_POST['league_id']) );
 		$this->printMessage();
+		
+		$options = get_option('leaguemanager');
+		$league = $leaguemanager->getLeague( intval($_GET['league_id']) );
 	}
-
-	$options = get_option('leaguemanager');
-	$league = $leaguemanager->getLeague( intval($_GET['league_id']) );
-
+	
 	$forwin = $fordraw = $forloss = $forwin_overtime = $forloss_overtime = 0;
 	// Manual point rule
 	if ( is_array($league->point_rule) ) {
@@ -149,15 +150,19 @@ else :
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="teams_ascend"><?php _e( 'Teams Ascend', 'leaguemanager' ) ?></label></th>
-				<td><input type="text" name="settings[num_ascend]" id="teams_ascend" value="<?php echo $league->num_ascend ?>" size="2" />&#160;<span class="setting-description"><?php _e( 'Number of Teams that ascend into higher league', 'leaguemanager' ) ?></span></td>
+				<td><input type="number" step="1" min="0" class="small-text" name="settings[num_ascend]" id="teams_ascend" value="<?php echo $league->num_ascend ?>" size="2" />&#160;<span class="setting-description"><?php _e( 'Number of Teams that ascend into higher league', 'leaguemanager' ) ?></span></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="teams_descend"><?php _e( 'Teams Descend', 'leaguemanager' ) ?></label></th>
-				<td><input type="text" name="settings[num_descend]" id="teams_descend" value="<?php echo $league->num_descend ?>" size="2" />&#160;<span class="setting-description"><?php _e( 'Number of Teams that descend into lower league', 'leaguemanager' ) ?></span></td>
+				<td><input type="number" step="1" min="0" class="small-text" name="settings[num_descend]" id="teams_descend" value="<?php echo $league->num_descend ?>" size="2" />&#160;<span class="setting-description"><?php _e( 'Number of Teams that descend into lower league', 'leaguemanager' ) ?></span></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="teams_relegation"><?php _e( 'Teams Relegation', 'leaguemanager' ) ?></label></th>
-				<td><input type="text" name="settings[num_relegation]" id="teams_relegation" value="<?php echo $league->num_relegation ?>" size="2" />&#160;<span class="setting-description"><?php _e( 'Number of Teams that need to go into relegation', 'leaguemanager' ) ?></span></td>
+				<td><input type="number" step="1" min="0" class="small-text" name="settings[num_relegation]" id="teams_relegation" value="<?php echo $league->num_relegation ?>" size="2" />&#160;<span class="setting-description"><?php _e( 'Number of Teams that need to go into relegation', 'leaguemanager' ) ?></span></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="num_matches_per_page"><?php _e( 'Matches per page', 'leaguemanager' ) ?></label></th>
+				<td><input type="number" step="1" min="0" class="small-text" name="settings[num_matches_per_page]" id="num_matches_per_page" value="<?php echo $league->num_matches_per_page ?>" size="2" />&#160;<span class="setting-description"><?php _e( 'Number of matches to show per page', 'leaguemanager' ) ?></span></td>
 			</tr>
 
 			<?php do_action( 'league_settings_'.$league->sport, $league ); ?>

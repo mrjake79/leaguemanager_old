@@ -3,8 +3,8 @@ Contributors: Kolja Schleich, LaMonte Forthun
 Donate link: 
 Tags: sport, widget, basketball, football, hockey, league, soccer, volleyball, gymnastics, tennis, baseball, rugby
 Requires at least: 2.7
-Tested up to: 4.3
-Stable tag: 3.9.1.7
+Tested up to: 4.3.1
+Stable tag: 3.9.8
 License: LGPLv2.1 or later
 
 Plugin to manage and present Sports Leagues
@@ -71,7 +71,7 @@ Replace *league_ID* with the ID of the league you want to display. This will dis
 4. Easy insertion of tags via TinyMCE Button
 5. Widget control panel
 6. Example of 'Last 5' (shows 'Last 3') Functionality
-
+7. Match Report
 
 == Credits ==
 The LeagueManager icon is taken from the Fugue Icons of http://www.pinvoke.com/.
@@ -83,7 +83,40 @@ The LeagueManager icon is taken from the Fugue Icons of http://www.pinvoke.com/.
 * TO-DO - Updating the translation code to remove the deprecated code has broken some translations due to a change in how WordPress handles multiple options. The translations files need some attention, so do the sport files...
 * Coming soon - Players, pagination for leagues, teams, matches, and players. New admin dashboard. New sport files.
 
+= 3.9.8 =
+* BUGFIX: fixed an issue with deleting logos used also by other teams
+
+= 3.9.7 =
+* BUGFIX: fixed an important issue with editing seasons
+
+= 3.9.6 =
+* some fixes
+
+= 3.9.5 =
+* NEW: load custom sport files from stylesheet directory in subdirectory sports
+* BUGFIX: fixed problem saving match report
+
+= 3.9.4 =
+* BUGFIX: fixed an issue with saving match results
+* BUGFIX: some small fixes
+
+= 3.9.3 =
+* NEW: show multiple leagues on the same page
+* NEW: global options to set support news widget options in dashboard
+* BUGFIX: limit in matches shortcode
+* BUGFIX: get next and previous matches in widget on a scale of minutes instead of 1 day
+
+= 3.9.2 =
+* BUGFIX: fixed some poor file location calling
+* BUGFIX: fixed TinyMCE window width
+
+= 3.9.1.9 =
+* BUGFIX: fixed issue with wrong next match in last-5 standings table
+
 = 3.9.1.8 =
+* NEW: matches pagination
+* NEW: team filter for matches in admin panel
+* BUGFIX: fixed home_only argument in matches shortcode
 * BUGFIX: fixed some styling issues
 
 = 3.9.1.7 =

@@ -95,6 +95,7 @@ class LeagueManagerShortcodes extends LeagueManager
 		$league = $leaguemanager->getLeague( $search );
 		if (!$season) {
 			$season = $leaguemanager->getSeason( $league );
+			$league->season = $season;
 			$season = $season['name'];
 		}
 
@@ -141,7 +142,7 @@ class LeagueManagerShortcodes extends LeagueManager
 			if ( 1 == $team->home ) $class[] = 'homeTeam';
 
 			$url = get_permalink();
-			$url = add_query_arg( 'team', $team->id, $url );
+			$url = add_query_arg( 'team_'.$league->id, $team->id, $url );
 
 			$teams[$i]->pageURL = $url;
 			//if ( $league->team_ranking == 'auto' ) $teams[$i]->rank = $i+1;
@@ -203,11 +204,12 @@ class LeagueManagerShortcodes extends LeagueManager
 			'template' => '',
 			'mode' => '',
 			'season' => '',
-			'limit' => false,
+			'limit' => 'true',
 			'archive' => false,
 			'roster' => false,
 			'order' => false,
 			'match_day' => '',
+			'home_only' => 'false',
 			'match_date' => false,
 			'group' => false,
 			'time' => false,
@@ -248,6 +250,8 @@ class LeagueManagerShortcodes extends LeagueManager
 			// Set match day
 			if (isset($_GET['match_day']))
 				$match_day = intval($_GET['match_day']);
+			elseif (isset($_GET['match_day_'.$league->id]))
+				$match_day = intval($_GET['match_day_'.$league->id]);
 			elseif ($league->isCurrMatchDay != "")
 				$match_day = $leaguemanager->getMatchDay($league->isCurrMatchDay);
 			
@@ -268,8 +272,8 @@ class LeagueManagerShortcodes extends LeagueManager
     		}
 
 			// Standard is match day based with team dropdown
-			if ( !empty($team) || (isset($_GET['team_id']) && !empty($_GET['team_id'])) )
-				$team_id = !empty($team) ? $team : (int)$_GET['team_id'];
+			if ( !empty($team) || (isset($_GET['team_id_'.$league->id]) && !empty($_GET['team_id_'.$league->id])) )
+				$team_id = !empty($team) ? $team : (int)$_GET['team_id_'.$league->id];
 
 			if ( !empty($team_id) ) {
 				$match_args['team_id'] = $team_id;
@@ -278,29 +282,28 @@ class LeagueManagerShortcodes extends LeagueManager
 			}
 			
 			if ($match_day != "" && $match_day != -1 && empty($mode)) $match_args['match_day'] = $match_day;
+	
+			if ( $limit && is_numeric($limit) ) $leaguemanager->setNumMatchesPerPage($limit);
 			
-			$match_args['limit'] = $limit;
+			$leaguemanager->getMatchDay();
+			if ( $limit === 'false' )  {
+				$match_args['limit'] = false;
+			} elseif ( $limit && is_numeric($limit) ) {
+				$match_args['limit'] = intval($limit);
+			}
+			
 			$match_args['time'] = $time;
 			$match_args['order'] = $order;
 			$match_args['match_date'] = $match_date;
-
-			/*
-			if ( $time ) {
-				if ( $time == 'next' )
-					$search .= " AND DATEDIFF(NOW(), `date`) <= 0";
-				elseif ( $time == 'prev' )
-					$search .= " AND DATEDIFF(NOW(), `date`) > 0";
-				elseif ( $time == 'prev1' )
-					$search .= " AND DATEDIFF(NOW(), `date`) > 0) AND (`winner_id` != 0) ";
-				elseif ( $time == 'today' )
-					$search .= " AND DATEDIFF(NOW(), `date`) = 0";
-				elseif ( $time == 'day' )
-					$search .= " AND DATEDIFF('". $match_date."', `date`) = 0";
-			}
-			*/
+			$match_args['home_only'] = ( $home_only == 1 || $home_only == 'true' ) ? true : false;
+			//if ($home_only == 0) $match_args['home_only'] = false;
 			
 			$matches = $leaguemanager->getMatches( $match_args );
 
+			$leaguemanager->setNumMatches($leaguemanager->getMatches(array_merge($match_args, array('limit' => false, 'count' => true))));
+			$league->current_page = $leaguemanager->getCurrentPage($league->id);
+			$league->pagination = ( $limit == 'true' ) ? $leaguemanager->getPageLinks($league->current_page, "paged_".$league->id) : '';
+			
             foreach ( $matches AS $key => $row ) {
                 $matchdate[$key] = $row->date;
             }
@@ -320,9 +323,9 @@ class LeagueManagerShortcodes extends LeagueManager
 				$matches[$i]->homeLogo = $home ? $leaguemanager->getThumbnailUrl($home->logo) : '';
 				$matches[$i]->awayLogo = $away ? $leaguemanager->getThumbnailUrl($away->logo) : '';
 		
-				$url = get_permalink();
-				$url = add_query_arg( 'match', $match->id, $url );
-				$matches[$i]->pageURL = $url;
+				$url = esc_url(get_permalink());
+				$url = add_query_arg( 'match_'.$league->id, $match->id, $url );
+				$matches[$i]->pageURL = esc_url($url);
 
 				if ( $timeformat ) {
     				$matches[$i]->start_time = ( '00' == $match->hour && '00' == $match->minutes ) ? '' : mysql2date($timeformat, $match->date);
@@ -752,28 +755,30 @@ class LeagueManagerShortcodes extends LeagueManager
 			$league_id = $league->id;
 		}
 
-		if ( isset($_GET['season']) && !empty($_GET['season']) )
-			$season = $_GET['season'];
-		else
-			$season = false;
-
 		// Get League ID from shortcode or $_GET
 		$league_id = ( !$league_id && isset($_GET['league_id']) && !empty($_GET['league_id']) ) ? (int)$_GET['league_id'] : false;
 
+		if ( isset($_GET['season']) && !empty($_GET['season']) )
+			$season = $_GET['season'];
+		elseif ( isset($_GET['season_'.$league_id]) )
+			$season = $_GET['season_'.$league_id];
+		else
+			$season = false;
+		
 		// select first league
 		if ( !$league_id )
 			$league_id = $leagues[0]->id;
 
 		// Get League and first Season if not set
-		if ( !$league ) $league = $leaguemanager->getLeague( $league_id );
+		if ( !$league ) $curr_league = $leaguemanager->getLeague( $league_id );
 		if ( !$season ) {
-			$season = reset($league->seasons);
+			$season = reset($curr_league->seasons);
 			$season = $season['name'];
 		}
 
-		$league->season = $season;
+		$curr_league->season = $season;
 
-		if ( $league->mode == 'championship' ) $championship->initialize($league->id);
+		if ( $curr_league->mode == 'championship' ) $championship->initialize($curr_league->id);
 
 		$seasons = array();
 		foreach ( $leagues AS $l ) {
@@ -784,12 +789,12 @@ class LeagueManagerShortcodes extends LeagueManager
 		}
 		sort($seasons);
 
-		if ( empty($template) && $this->checkTemplate('archive-'.$league->sport) )
-			$filename = 'archive-'.$league->sport;
+		if ( empty($template) && $this->checkTemplate('archive-'.$curr_league->sport) )
+			$filename = 'archive-'.$curr_league->sport;
 		else
 			$filename = ( !empty($template) ) ? 'archive-'.$template : 'archive';
 
-		$out = $this->loadTemplate( $filename, array('leagues' => $leagues, 'seasons' => $seasons, 'league_id' => $league_id) );
+		$out = $this->loadTemplate( $filename, array('leagues' => $leagues, 'seasons' => $seasons, 'curr_league' => $curr_league) );
 		return $out;
 	}
 

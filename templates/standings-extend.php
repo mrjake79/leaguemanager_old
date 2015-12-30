@@ -11,8 +11,8 @@ The following variables are usable:
 */
 ?>
 
-<?php if ( isset($_GET['team']) && !$widget ) : ?>
-	<?php leaguemanager_team($_GET['team']); ?>
+<?php if ( isset($_GET['team_'.$league->id]) && !$widget ) : ?>
+	<?php leaguemanager_team($_GET['team_'.$league->id]); ?>
 <?php else : ?>
 
 <?php if ( $teams ) : ?>

@@ -93,9 +93,9 @@ The following variables are usable:
 <?php leaguemanager_standings( $league->id, array('season' => $league->season, 'group' => $group) ); ?>
 
 <h5><?php _e( 'Match Plan', 'leaguemanager' ) ?></h5>
-<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'group' => $group) ); ?>
+<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'limit' => 'false', 'group' => $group) ); ?>
 
 <?php endforeach; ?>
 
 <h5><?php _e( 'Inter Group Matches', 'leaguemanager' ) ?></h5>
-<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'group' => '') ); ?>
+<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'group' => '', 'limit' => 'false') ); ?>

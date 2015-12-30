@@ -3,7 +3,7 @@
 Plugin Name: LeagueManager
 Plugin URI: http://wordpress.org/extend/plugins/leaguemanager/
 Description: Manage and present sports league results.
-Version: 3.9.1.8
+Version: 3.9.8
 Author: Kolja Schleich, LaMonte Forthun
 
 Copyright 2008-2015  Kolja Schleich  (email : kolja.schleich@googlemail.com)
@@ -38,7 +38,7 @@ class LeagueManagerLoader
 	 *
 	 * @var string
 	 */
-	var $version = '3.9.1.8';
+	var $version = '3.9.8';
 
 
 	/**
@@ -46,7 +46,7 @@ class LeagueManagerLoader
 	 *
 	 * @var string
 	 */
-	var $dbversion = '3.7';
+	var $dbversion = '3.7.1';
 
 
 	/**
@@ -94,6 +94,8 @@ class LeagueManagerLoader
 		// Add TinyMCE Button
 		add_action( 'init', array(&$this, 'addTinyMCEButton') );
 		add_filter( 'tiny_mce_version', array(&$this, 'changeTinyMCEVersion') );
+		// register AJAX action to show TinyMCE Window
+		add_action( 'wp_ajax_leaguemanager_tinymce_window', array(&$this, 'showTinyMCEWindow') );
 		
 		// Start this plugin once all other plugins are fully loaded
 		//add_action( 'plugins_loaded', array(&$this, 'initialize') );
@@ -142,19 +144,10 @@ class LeagueManagerLoader
 	 */
 	function defineConstants()
 	{
-		if ( !defined( 'WP_CONTENT_URL' ) )
-			define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
-		if ( !defined( 'WP_PLUGIN_URL' ) )
-			define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
-		if ( !defined( 'WP_CONTENT_DIR' ) )
-			define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
-		if ( !defined( 'WP_PLUGIN_DIR' ) )
-			define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
-
 		define( 'LEAGUEMANAGER_VERSION', $this->version );
 		define( 'LEAGUEMANAGER_DBVERSION', $this->dbversion );
-		define( 'LEAGUEMANAGER_URL', WP_PLUGIN_URL.'/'.basename(__FILE__, '.php') );
-		define( 'LEAGUEMANAGER_PATH', WP_PLUGIN_DIR.'/'.basename(__FILE__, '.php') );
+		define( 'LEAGUEMANAGER_URL', rtrim(esc_url(plugin_dir_url(__FILE__)), "/") ); // remove trailing slash as the plugin has been coded without it
+		define( 'LEAGUEMANAGER_PATH', dirname(__FILE__) );
 	}
 
 
@@ -225,15 +218,38 @@ class LeagueManagerLoader
 	 */
 	function loadSports()
 	{
+		$files = array();
+		
+		// First save default sport files in array indexed by filename
 		$dir = LEAGUEMANAGER_PATH."/sports";
 		if ( $handle = opendir($dir) ) {
 			while ( false !== ($file = readdir($handle)) ) {
 				$file_info = pathinfo($dir.'/'.$file);
 				$file_type = (isset($file_info['extension'])) ? $file_info['extension'] : '';
 				if ( $file != "." && $file != ".." && !is_dir($file) && substr($file, 0,1) != "."  && $file_type == 'php' )  {
-					require_once($dir.'/'.$file);
+					//require_once($dir.'/'.$file);
+					$files[$file] = $dir.'/'.$file;
 				}
 			}
+		}
+		
+		// Save sport files in user stylesheet directory indexed by filename, thus overwriting original files with the same name
+		$dir = get_stylesheet_directory() . "/sports";
+		if ( file_exists($dir) ) {
+			if ( $handle = opendir($dir) ) {
+				while ( false !== ($file = readdir($handle)) ) {
+				$file_info = pathinfo($dir.'/'.$file);
+				$file_type = (isset($file_info['extension'])) ? $file_info['extension'] : '';
+				if ( $file != "." && $file != ".." && !is_dir($file) && substr($file, 0,1) != "."  && $file_type == 'php' )  {
+					$files[$file] = $dir.'/'.$file;
+				}
+			}
+			}
+		}
+		
+		// load files
+		foreach ( $files AS $file ) {
+			require_once($file);
 		}
 	}
 
@@ -335,30 +351,31 @@ class LeagueManagerLoader
 	function loadStyles()
 	{
 		wp_enqueue_style('thickbox');
-		wp_enqueue_style('leaguemanager', LEAGUEMANAGER_URL . "/style.css", false, '1.0', 'screen');
+		wp_enqueue_style('leaguemanager', LEAGUEMANAGER_URL . "/style.css", false, '1.0', 'all');
 
-		echo "\n<style type='text/css'>";
+		$css = "";
 		if ( !empty($this->options['colors']['headers']) )
-		echo "\n\ttable.leaguemanager th { background-color: ".$this->options['colors']['headers']." }";
+		$css .= "\ntable.leaguemanager th { background-color: ".$this->options['colors']['headers']." }";
 
 		if ( !empty($this->options['colors']['rows']['main']) )
-		echo "\n\ttable.leaguemanager tr { background-color: ".$this->options['colors']['rows']['main']." }";
+		$css .= "\ntable.leaguemanager tr { background-color: ".$this->options['colors']['rows']['main']." }";
 
 		if ( !empty($this->options['colors']['rows']['alternate']) )
-		echo "\n\ttable.leaguemanager tr.alternate { background-color: ".$this->options['colors']['rows']['alternate']." }";
+		$css .= "\ntable.leaguemanager tr.alternate { background-color: ".$this->options['colors']['rows']['alternate']." }";
 
 		if ( !empty($this->options['colors']['rows']['ascend']) )
-		echo "\n\ttable.standingstable tr.ascend, table.standingstable tr.ascend.alternate { background-color: ".$this->options['colors']['rows']['ascend']." }";
+		$css .= "\ntable.standingstable tr.ascend, table.standingstable tr.ascend.alternate { background-color: ".$this->options['colors']['rows']['ascend']." }";
 
 		if ( !empty($this->options['colors']['rows']['descend']) )
-		echo "\n\ttable.standingstable tr.descend, table.standingstable tr.descend.alternate { background-color: ".$this->options['colors']['rows']['descend']." }";
+		$css .= "\ntable.standingstable tr.descend, table.standingstable tr.descend.alternate { background-color: ".$this->options['colors']['rows']['descend']." }";
 
 		if ( !empty($this->options['colors']['rows']['relegation']) )
-		echo "\n\ttable.standingstable tr.relegation, table.standingstable tr.relegation.alternate { background-color: ".$this->options['colors']['rows']['relegation']." }";
+		$css .= "\ntable.standingstable tr.relegation, table.standingstable tr.relegation.alternate { background-color: ".$this->options['colors']['rows']['relegation']." }";
 
 		if ( !empty($this->options['colors']['rows']['alternate']) )
-		echo "\n\ttable.crosstable th, table.crosstable td { border: 1px solid ".$this->options['colors']['rows']['alternate']."; }";
-		echo "\n</style>";
+		$css .= "\ntable.crosstable th, table.crosstable td { border: 1px solid ".$this->options['colors']['rows']['alternate']."; }";
+		
+		wp_add_inline_style( 'leaguemanager', $css );
 	}
 
 
@@ -397,7 +414,16 @@ class LeagueManagerLoader
 		return ++$version;
 	}
 
-
+	/**
+	 * Display the TinyMCE Window.
+	 *
+	 */
+	function showTinyMCEWindow() {
+		require_once( LEAGUEMANAGER_PATH . '/admin/tinymce/window.php' );
+		exit;
+	}
+	
+	
 	/**
 	 * Activate plugin
 	 *
@@ -411,6 +437,10 @@ class LeagueManagerLoader
 		$options['textdomain'] = 'default';
 		$options['colors']['headers'] = '#dddddd';
 		$options['colors']['rows'] = array( 'main' => '#ffffff', 'alternate' => '#efefef', 'ascend' => '#ffffff', 'descend' => '#ffffff', 'relegate' => '#ffffff');
+		$options['dashboard_widget']['num_items'] = 4;
+		$options['dashboard_widget']['show_author'] = 1;
+		$options['dashboard_widget']['show_date'] = 1;
+		$options['dashboard_widget']['show_summary'] = 1;
  
 		add_option( 'leaguemanager', $options, 'LeagueManager Options', 'yes' );
 		add_option( 'leaguemanager_widget', array(), 'LeagueManager Widget Options', 'yes' );

@@ -493,6 +493,9 @@ else :
 <p><?php _e( 'The plugin will then first look in your theme directory. Further it is possible to design own templates, e.g. multiple standings templates. Assume you create a template called <strong>standings-sample1.php</strong>. To load this template use the following code.', 'leaguemanager' ) ?></p>
 <blockquote><p>[standings league_id=ID template=<strong>sample1</strong>]</p></blockquote>
 
+<h4><?php _e('Customization of sport files', 'leaguemanager') ?></h4>
+<p><?php _e( 'If you want to modify existing sports copy it to', 'leaguemanager' ) ?></p>
+<blockquote><p>your_theme_dir/sports/</p></blockquote>
 
 <a href="#top" class="alignright"><?php _e( 'Top', 'leaguemanager' ) ?></a>	<h3 id="template_tags"><?php _e( 'Template Tags', 'leaguemanager' ) ?></h3>
 <p><?php _e( 'Template Tags are functions that can be used in your Wordpress Theme to display the plugin data. Here is a brief listing of available tags. For details see file functions.php', 'leaguemanager' ) ?><p>

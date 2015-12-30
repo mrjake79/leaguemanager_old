@@ -121,7 +121,7 @@ class LeagueManagerTwoScores extends LeagueManager
 		$goals = array( 'plus' => 0, 'minus' => 0 );
 				
 		//$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '".$team_id."'" );
-		$matches = $leaguemanager->getMatches( array("home_team" => $team_id) );
+		$matches = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
@@ -139,7 +139,7 @@ class LeagueManagerTwoScores extends LeagueManager
 		}
 		
 		//$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '".$team_id."'" );
-		$matches = $leaguemanager->getMatches( array("away_team" => $team_id) );
+		$matches = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);

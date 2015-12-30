@@ -29,7 +29,7 @@ class LeagueManagerUSFootball extends LeagueManager
 		add_filter( 'leaguemanager_sports', array(&$this, 'sports') );
 		add_filter( 'leaguemanager_point_rules_list', array(&$this, 'getPointRuleList') );
 		add_filter( 'leaguemanager_point_rules',  array(&$this, 'getPointRules') );
-		add_action( 'leaguemanager_doc_point_rules', array(&$this, 'pointRuleDocumentation') );
+		//add_action( 'leaguemanager_doc_point_rules', array(&$this, 'pointRuleDocumentation') );
 		foreach ( $this->keys AS $key => $name ) {
 			add_filter( 'rank_teams_'.$key, array(&$this, 'rankTeams') );
 			add_filter( 'team_points_'.$key, array(&$this, 'calculatePoints'), 10, 3 );
@@ -185,7 +185,7 @@ class LeagueManagerUSFootball extends LeagueManager
 		$goals = array( 'plus' => 0, 'minus' => 0 );
 				
 		//$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '".$team_id."'" );
-		$matches = $leaguemanager->getMatches( array("home_team" => $team_id) );
+		$matches = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
@@ -198,7 +198,7 @@ class LeagueManagerUSFootball extends LeagueManager
 		}
 		
 		//$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '".$team_id."'" );
-		$matches = $leaguemanager->getMatches( array("away_team" => $team_id) );
+		$matches = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);

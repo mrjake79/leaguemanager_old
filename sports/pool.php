@@ -112,13 +112,13 @@ class LeagueManagerPool extends LeagueManager
 		global $leaguemanager;
 
 		$score = array( 'for' => 0, 'against' => 0 );
-		$home = $leaguemanager->getMatches( array("home_team" => $team_id) );
+		$home = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
 		foreach ( $home AS $match ) {
 			$score['for'] += $match->forScore;
 			$score['against'] += $match->againstScore;
 		}
 
-		$away = $leaguemanager->getMatches( array("away_team" => $team_id) );
+		$away = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
 		foreach ( $away AS $match ) {
 			$score['for'] += $match->againstScore;
 			$score['against'] += $match->forScore;

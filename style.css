@@ -9,7 +9,8 @@
 #lm_head {
 	font-family:Verdana;
 	font-size:18px;
-    position: relative; top: -2px;
+    position: relative;
+	top: -2px;
 }
 #lm_admin .lm_head_strong {
 	font-family:Verdana;
@@ -20,7 +21,8 @@
 #lm_version {
     font-family:Verdana;
     font-size:14px;
-    position: relative; top: -20px;
+    position: relative;
+	top: -20px;
     float: right;
 }
 
@@ -140,13 +142,13 @@ table.leaguemanager {
 	margin: 1em auto 1.5em auto;
 }
 table.leaguemanager th {
-	padding: 2px 5px;
+	padding: 2px 3px;
 	margin: 0;
 	border-bottom: 1px solid;
 	}
 table.leaguemanager td {
-	vertical-align: top;
-	padding: 3px 5px;
+	vertical-align: middle;
+	padding: 3px;
 	border: 0;
 	margin: 0;
 	}
@@ -161,7 +163,7 @@ table.leaguemanager a.D:hover { background-position:0 -350px; }
 table.leaguemanager a.L:hover { background-position:0 -400px; }
 table.leaguemanager a.N:hover { background-position:0 -700px; }
 
-table.leaguemanager .last5Icon a { background-image: url(images/last5.png); position: relative; top: 3px; }
+table.leaguemanager .last5Icon a { background-image: url(images/last5.png); position: relative; top: 0px; }
 
 table.leaguemanager .last5-bg { float:left; width:20px; height:17px; }
 
@@ -170,7 +172,7 @@ table.leaguemanager .num {
 	}
 table.leaguemanager .last5 {
 	text-align: center;
-	width: 120px;
+	width: 130px;
 	}
 table.leaguemanager .logo {
 	width: 20px;
@@ -264,16 +266,17 @@ div.teampage .prev_match .score {
 */
 .leaguemanager_widget {
 	background-image: none;
-	width: 90%;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	}
 .leaguemanager_widget h4 {
 	position: relative;
-	color: white;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid;
 	text-align: center;
-	margin: 0.5em 0 0.3em 0;
+	margin: 0.5em 0 0.5em 0;
+	padding-bottom: 0.3em;
+	font-size: 1em;
 	}
 .leaguemanager_widget h4 .next {
 	position: absolute;
@@ -327,7 +330,7 @@ div.teampage .prev_match .score {
 /*--- Standings Table ---*/
 .leaguemanager_widget table.leaguemanager {
 	font-size: 0.9em;
-	margin: 0 auto 0 auto;
+	margin: 0;
 	padding: 0;
 	}
 .leaguemanager_widget table.leaguemanager th {
@@ -337,7 +340,7 @@ div.teampage .prev_match .score {
 	padding: 4px;
 	margin: 0;
 	border: 0;
-	border-bottom: 1px solid #dfdfdf;
+	border-bottom: 1px solid;
 	background-color: transparent;
 	}
 
@@ -369,8 +372,8 @@ div.teampage .prev_match .score {
 	*display: inline;
 	zoom: 1;
 	font-size: 12px;
-	color: #5d666c;
-	border: solid 1px #dedede;
+	/*color: #5d666c;*/
+	border: solid 1px;/* #dedede;*/
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
@@ -380,7 +383,7 @@ div.teampage .prev_match .score {
 }
 
 #lm_admin .pagination li.active a{
-	border-color: #5d666c
+	/*border-color: #5d666c*/
 }
 
 #lm_admin .pagination li a:hover{
@@ -394,7 +397,7 @@ div.teampage .prev_match .score {
 	width: 25px;
 	text-align: center;
 	font-size: 12px;
-	color: #5d666c;
+	/*color: #5d666c;*/
 	margin: 4px 0
 }
 
@@ -436,4 +439,3 @@ div.teampage .prev_match .score {
 #lm_admin .pagination li.last_page a em{
 	display: none
 }
- 

@@ -196,8 +196,8 @@ class LeagueManagerGymnastics extends LeagueManager
 	{
 		global $wpdb;
 
-		$home = $leaguemanager->getMatches( array("home_team" => $team_id) );//$wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '%d'", $team_id) );
-		$away = $leaguemanager->getMatches( array("away_team" => $team_id) );//$wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '%d'", $team_id) );
+		$home = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );//$wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '%d'", $team_id) );
+		$away = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );//$wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '%d'", $team_id) );
 
 		$points = array( 'plus' => 0, 'minus' => 0);
 		if ( count($home) > 0 ) {

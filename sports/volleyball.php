@@ -115,7 +115,7 @@ class LeagueManagerVolleyball extends LeagueManager
 		$data['sets'] = array( "won" => 0, "lost" => 0 );
 		$data['ballpoints'] = array( 'plus' => 0, 'minus' => 0 );
 
-		$matches = $leaguemanager->getMatches( array("team_id" => $team_id) );
+		$matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false) );
 		foreach ( $matches AS $match ) {
 			// Home Match
 			if ( $team_id == $match->home_team ) {

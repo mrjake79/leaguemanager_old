@@ -405,7 +405,7 @@ class LeagueManagerRacing extends LeagueManager
 		$r = array();
 		$keys = array();
 		$points = array();
-		$matches = $leaguemanager->getMatches( array("league_id" => $teams[0]->league_id, "season" => $teams[0]->season) );
+		$matches = $leaguemanager->getMatches( array("league_id" => $teams[0]->league_id, "season" => $teams[0]->season, "limit" => false) );
 		foreach ($matches AS $match) {
 			if (isset($match->raceresult)) {
 				foreach ($match->raceresult AS $id => $result) {

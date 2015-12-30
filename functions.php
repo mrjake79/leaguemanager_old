@@ -96,7 +96,7 @@ function get_next_match($id_team, $limit = 1) {
              FROM {$wpdb->leaguemanager_matches}
              WHERE (home_team = %d OR away_team = %d)
              AND (DATEDIFF(NOW(), `date`) <= 0)
-             ORDER BY date DESC
+             ORDER BY date ASC
              LIMIT %d", $id_team, $id_team, $limit) );
 
              return $next_results;
@@ -115,7 +115,7 @@ function leaguemanager_crosstable( $league_id, $args = array() ) {
 	$defaults = array('season' => false, 'template' => '', 'mode' => '');
 	$args = array_merge($defaults, $args);
 	extract($args, EXTR_SKIP);
-	echo $lmShortcodes->showCrosstable( array('league_id' => $league_id, 'mode' => $mode, 'template' => $temaplate, 'season' => $season) );
+	echo $lmShortcodes->showCrosstable( array('league_id' => $league_id, 'mode' => $mode, 'template' => $template, 'season' => $season) );
 }
 
 
@@ -128,10 +128,10 @@ function leaguemanager_crosstable( $league_id, $args = array() ) {
  */
 function leaguemanager_matches( $league_id, $args = array() ) {
 	global $lmShortcodes;
-	$defaults = array('season' => false, 'template' => '', 'mode' => '', 'archive' => false, 'match_day' => false, 'group' => false, 'roster' => false, 'order' => false);
+	$defaults = array('season' => false, 'template' => '', 'mode' => '', 'limit' => 'true', 'archive' => false, 'match_day' => false, 'group' => false, 'roster' => false, 'order' => false);
 	$args = array_merge($defaults, $args);
 	extract($args, EXTR_SKIP);
-	echo $lmShortcodes->showMatches( array('league_id' => $league_id, 'mode' => $mode, 'season' => $season, 'archive' => $archive, 'template' => $template, 'roster' => $roster, 'order' => $order, 'match_day' => $match_day, 'group' => $group) );
+	echo $lmShortcodes->showMatches( array('league_id' => $league_id, 'limit' => $limit, 'mode' => $mode, 'season' => $season, 'archive' => $archive, 'template' => $template, 'roster' => $roster, 'order' => $order, 'match_day' => $match_day, 'group' => $group) );
 }
 
 

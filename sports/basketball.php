@@ -92,7 +92,7 @@ class LeagueManagerBasketball extends LeagueManager
 
 		$team_id = intval($team_id);
 		//$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '%d'", $team_id) );
-		$matches = $leaguemanager->getMatches( array("home_team" => $team_id) );
+		$matches = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
@@ -106,7 +106,7 @@ class LeagueManagerBasketball extends LeagueManager
 		}
 
 		//$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '%d'", $team_id) );
-		$matches = $leaguemanager->getMatches( array("away_team" => $team_id) );
+		$matches = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);

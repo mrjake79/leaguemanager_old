@@ -64,6 +64,7 @@ class LeagueManagerAJAX
 		} else {
 			$instance = array( 'league' => $league_id, 'match_limit' => $match_limit, 'season' => $season, 'home_only' => $home_only, 'date_format' => $date_format );
 		}
+		
 		if ( $element == 'next' ) {
 			$parent_id = 'next_matches_'.$widget_number;
 			$match_box = $widget->showNextMatchBox($widget_number, $instance, false);
@@ -165,7 +166,7 @@ class LeagueManagerAJAX
 			}
 		}
 
-		$home = ( $team->home == 1 ) ? "document.getElementById('home').checked = true;" : "document.getElementById('home').checked = false;";
+		$home = ( isset($team->home) && $team->home == 1 ) ? "document.getElementById('home').checked = true;" : "document.getElementById('home').checked = false;";
 
 		$logo = ( !empty($team->logo) ) ? "<img src='".$team->logo."' />" : "";
 		die("

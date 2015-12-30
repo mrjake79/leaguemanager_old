@@ -658,7 +658,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 					$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_teams} SET `season` = '%s' WHERE `id` = '%d'", $season, $team->id) );
 				}
 			}
-			if ( $matches = $leaguemanager->getMatches( array("season" => $key, "league_id" => $league->id) ) ) {
+			if ( $matches = $leaguemanager->getMatches( array("season" => $key, "league_id" => $league->id, "limit" => false) ) ) {
 				foreach ( $matches AS $match ) {
 					$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `season` = '%s' WHERE `id` = '%d'", $season, $match->id) );
 				}
@@ -838,13 +838,15 @@ class LeagueManagerAdminPanel extends LeagueManager
 		global $wpdb;
 
 		$team = parent::getTeam( $team_id );
+		$logo = $team->logo;
 		// check if other team uses the same logo
-		$keep_logo = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `logo` = '%s'", $team->logo) );
-		if ( $keep_logo == 0 )
-			$this->delLogo( $team->logo );
+		//$keep_logo = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `logo` = '%s'", $team->logo) );
+		//if ( $keep_logo == 0 )
 
 		$wpdb->query( $wpdb->prepare("DELETE FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '%d' OR `away_team` = '%d'", $team_id, $team_id) );
 		$wpdb->query( $wpdb->prepare("DELETE FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d'", $team_id) );
+		
+		$this->delLogo( $logo );
 	}
 
 
@@ -910,10 +912,12 @@ class LeagueManagerAdminPanel extends LeagueManager
 					parent::setMessage( __('Logo exists and is not uploaded. Set the overwrite option if you want to replace it.','leaguemanager'), true );
 				} else {
 					if ( move_uploaded_file($file['tmp_name'], $new_file) ) {
-						if ( $team = $this->getTeam( $team_id ) )
-							if ( $team->logo != '' ) $this->delLogo($team->logo);
+						$team = $this->getTeam( $team_id );
+						$logo_file = $team->logo;
 
 						$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_teams} SET `logo` = '%s' WHERE id = '%d'", $leaguemanager->getImageUrl(basename($file['name'])), $team_id ) );
+						
+						$this->delLogo($logo_file);
 
 						$logo->createThumbnail();
 					} else {
@@ -936,9 +940,13 @@ class LeagueManagerAdminPanel extends LeagueManager
 	 */
 	function delLogo( $image )
 	{
-		global $leaguemanager;
-		@unlink( $leaguemanager->getImagePath($image) );
-		@unlink( $leaguemanager->getThumbnailPath($image) );
+		global $wpdb, $leaguemanager;
+		
+		$num = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `logo` = '%s'", $image) );
+		if ( $num == 0 ) {
+			@unlink( $leaguemanager->getImagePath($image) );
+			@unlink( $leaguemanager->getThumbnailPath($image) );
+		}
 	}
 
 /************
@@ -1170,7 +1178,11 @@ class LeagueManagerAdminPanel extends LeagueManager
 			$options['colors']['headers'] = htmlspecialchars($_POST['color_headers']);
             $options['colors']['rows'] = array( 'alternate' => htmlspecialchars($_POST['color_rows_alt']), 'main' => htmlspecialchars($_POST['color_rows']), 'ascend' => htmlspecialchars($_POST['color_rows_ascend']), 'descend' => htmlspecialchars($_POST['color_rows_descend']), 'relegation' => htmlspecialchars($_POST['color_rows_relegation']) );
             $options['hide_admin_widgets'] = (isset($_POST['hide_admin_widgets']) ? ((bool) $_POST['hide_admin_widgets']) : false);
-
+			$options['dashboard_widget']['num_items'] = intval($_POST['dashboard']['num_items']);
+			$options['dashboard_widget']['show_author'] = isset($_POST['dashboard']['show_author']) ? 1 : 0;
+			$options['dashboard_widget']['show_date'] = isset($_POST['dashboard']['show_date']) ? 1 : 0;
+			$options['dashboard_widget']['show_summary'] = isset($_POST['dashboard']['show_summary']) ? 1 : 0;
+			
 			update_option( 'leaguemanager', $options );
 			parent::setMessage(__( 'Settings saved', 'leaguemanager' ));
 			parent::printMessage();
@@ -1193,8 +1205,8 @@ class LeagueManagerAdminPanel extends LeagueManager
 		if ( $leagues = $wpdb->get_results( "SELECT `title`, `id` FROM {$wpdb->leaguemanager} ORDER BY id ASC" ) ) {
 			$league_id = $season = 0;
 			$curr_league = $match = false;
-			if ( $post_ID != 0 ) {
-				$match = $wpdb->get_results( $wpdb->prepare("SELECT `id`, `league_id`, `season` FROM {$wpdb->leaguemanager_matches} WHERE `post_id` = '%d'", $post_ID) );
+			if ( $post->ID != 0 ) {
+				$match = $wpdb->get_results( $wpdb->prepare("SELECT `id`, `league_id`, `season` FROM {$wpdb->leaguemanager_matches} WHERE `post_id` = '%d'", $post->ID) );
 				$match = ( isset($match[0]) ) ? $match[0] : '';
 
 				if ( $match ) {
@@ -1293,7 +1305,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 			$ajax = false;
 		}
 
-		$matches = $leaguemanager->getMatches( array("league_id" => $league_id, "season" => $season) );
+		$matches = $leaguemanager->getMatches( array("league_id" => $league_id, "season" => $season, "limit" => false) );
 		$teams = $leaguemanager->getTeams( array("league_id" => $league_id, "season" => $season, "orderby" => array("id" => "ASC")), 'ARRAY');
 
 		$out = '<select size="1" name="match_id" id="match_id" class="alignleft">';
@@ -1326,9 +1338,10 @@ class LeagueManagerAdminPanel extends LeagueManager
 
 		if (isset($_POST['post_ID'])) {
 			$post_ID = (int) $_POST['post_ID'];
-			$match_ID = (int) $_POST['match_id'];
-			$curr_match_ID = (int) $_POST['curr_match_id'];
-			if ( $curr_match_ID != $match_ID ) {
+			$match_ID = isset($_POST['match_id']) ? (int) $_POST['match_id'] : false;
+			$curr_match_ID = isset($_POST['curr_match_id']) ? (int) $_POST['curr_match_id'] : false;
+			
+			if ( $match_ID && $curr_match_ID != $match_ID ) {
 				$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `post_id` = '%d' WHERE `id` = '%d'", $post_ID, $match_ID ) );
 				if ( $curr_match_ID != 0 )
 					$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `post_id` = 0 WHERE `id` = '%d'", $curr_match_ID ) );
