@@ -3,8 +3,8 @@ Contributors: Kolja Schleich, LaMonte Forthun
 Donate link: 
 Tags: sport, widget, basketball, football, hockey, league, soccer, volleyball, gymnastics, tennis, baseball, rugby
 Requires at least: 2.7
-Tested up to: 4.3.1
-Stable tag: 3.9.8
+Tested up to: 4.4.1
+Stable tag: 4.0.2
 License: LGPLv2.1 or later
 
 Plugin to manage and present Sports Leagues
@@ -16,7 +16,7 @@ This Plugin is designed to manage sports leagues and display them on your blog.
 **Features**
 
 * easy adding of teams and matches
-* add team logo (wp-content directory needs to be writable by the server)
+* fancy slideshows of previous or next matches in combination with the [Fancy Slideshow Plugin](https://wordpress.org/plugins/sponsors-slideshow-widget/))
 * numerous point-rules implemented to also support special rules (e.g. Hockey, Pool, Baseball, Cornhole)
 * weekly-based ordering of matches with bulk editing mechanism
 * automatic or manual saving of standings table
@@ -74,7 +74,7 @@ Replace *league_ID* with the ID of the league you want to display. This will dis
 7. Match Report
 
 == Credits ==
-The LeagueManager icon is taken from the Fugue Icons of http://www.pinvoke.com/.
+The LeagueManaager icons were designed by Yusuke Kamiyamane (http://p.yusukekamiyamane.com/)
 
 == Changelog ==
 
@@ -82,6 +82,32 @@ The LeagueManager icon is taken from the Fugue Icons of http://www.pinvoke.com/.
 * TO-DO - The Match Day (Fixtures) filter on the admin standings page isn't currently working. I'm aware of the issue and importances to those using the Match Day filter to get around the PHP variable limit. I hope to have this resolved shortly.
 * TO-DO - Updating the translation code to remove the deprecated code has broken some translations due to a change in how WordPress handles multiple options. The translations files need some attention, so do the sport files...
 * Coming soon - Players, pagination for leagues, teams, matches, and players. New admin dashboard. New sport files.
+
+= 4.0.2 =
+* NEW: don't automatically calculate results for basketball if a final score is submitted
+* BUGFIX: added again logo copying upgrade routine to copy logos to new upload folder structure
+* BUGFIX: fixed [leaguearchive league_id=X] bug
+* UPDATE: updated French translation
+
+= 4.0.1 =
+* BUGFIX: fixed problem with logo upload
+
+= 4.0 =
+* NEW: fancy slideshows of matches using the [Fancy Slideshows Plugin](https://wordpress.org/plugins/sponsors-slideshow-widget/)
+* NEW: point rule for volleyball giving 3 points for wins and 2 points for 3:2 wins and 1 point for 3:2 loss
+* NEW: improved security for data export
+* NEW: some new fancy styles using jQuery UI tabs
+* NEW: jQuery UI sortable standings table if team ranking is manual
+* NEW: accordion styled list of teams
+* NEW: updated teams and matches single view with fancy new style
+* NEW: documentation on data import file structures
+* NEW: gymnastics sport - support for score points of each apparatus and automatic apparatus points and score points calculation upon updating competition results
+* BUGFIX: fixed some issues in data import and export
+* BUGFIX: fixed some smaller issues
+* BUGFIX: fixed a small issue in plugin activation with notifications giving unexpected output
+* BUGFIX: fixed activation issue for missing roles
+* BUGFIX: fixed issue with team export and import
+* BUGFIX: fixed logo URLs upon export/import
 
 = 3.9.8 =
 * BUGFIX: fixed an issue with deleting logos used also by other teams

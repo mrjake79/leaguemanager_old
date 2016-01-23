@@ -3,10 +3,10 @@
 Plugin Name: LeagueManager
 Plugin URI: http://wordpress.org/extend/plugins/leaguemanager/
 Description: Manage and present sports league results.
-Version: 3.9.8
+Version: 4.0.2
 Author: Kolja Schleich, LaMonte Forthun
 
-Copyright 2008-2015  Kolja Schleich  (email : kolja.schleich@googlemail.com)
+Copyright 2008-2016  Kolja Schleich  (email : kolja.schleich@googlemail.com)
 					 LaMonte Forthun (email : lamontef@collegefundsoftware.com, lamontef@yahoo.com)
 
 This program is free software; you can redistribute it and/or modify
@@ -38,7 +38,7 @@ class LeagueManagerLoader
 	 *
 	 * @var string
 	 */
-	var $version = '3.9.8';
+	var $version = '4.0.2';
 
 
 	/**
@@ -46,7 +46,7 @@ class LeagueManagerLoader
 	 *
 	 * @var string
 	 */
-	var $dbversion = '3.7.1';
+	var $dbversion = '3.7.4';
 
 
 	/**
@@ -100,6 +100,11 @@ class LeagueManagerLoader
 		// Start this plugin once all other plugins are fully loaded
 		//add_action( 'plugins_loaded', array(&$this, 'initialize') );
 
+		// Enable matches in Fancy slideshows
+		add_filter( 'fancy_slideshow_sources', array( &$this, 'addSlideshowSources' ) );
+		add_filter( 'fancy_slideshow_overlay_styles', array( &$this, 'addSlideshowOverlayStyles' ) );
+		add_filter( 'fancy_slideshow_get_slides_matches', array(&$this, 'getSlideshowSlides') );
+		
 		$leaguemanager = new LeagueManager( $this->bridge );
 		$championship = new LeagueManagerChampionship();
 		$lmStats = new LeagueManagerStats();
@@ -113,6 +118,135 @@ class LeagueManagerLoader
 	}
 
 
+	/**
+	 * Add individual league matches to slideshow categories
+	 *
+	 * @param string $categories
+	 * @return string
+	 */
+	function addSlideshowSources( $categories )
+	{
+		global $leaguemanager;
+		
+		$categories['leagues_matches'] = array( "title" => __( 'League Matches', 'leaguemanager'), "options" => array() );
+		foreach ( $leaguemanager->getLeagues() AS $league ) {
+			$categories["leagues_matches"]["options"][] = array( "value" => "matches_".$league->id, "label" => $league->title );
+			// Include Options for next and previous matches
+			$times = array( 'next' => __('Next Matches', 'leaguemanager'), 'prev' => __('Previous Matches', 'leaguemanager') );
+			foreach ( $times AS $time => $name ) {
+				$categories["leagues_matches"]["options"][] = array( "value" => sprintf("matches_%d_%s", $league->id, $time), "label" => sprintf("%s - %s", $league->title, $name) );
+			}
+		}
+		
+		return $categories;
+	}
+	
+	
+	/**
+	 * add custom league slideshow overlay style
+	 *
+	 * @param array $styles
+	 * @return array
+	 */
+	function addSlideshowOverlayStyles( $styles )
+	{
+		$styles['leaguemanager'] = __( 'LeagueManager', 'leaguemanager' );
+		return $styles;
+	}
+	
+	
+	/**
+	 * retrieve Slideshow Slideshow
+	 *
+	 * @param array $category
+	 * @return array
+	 */
+	function getSlideshowSlides( $category )
+	{
+		global $leaguemanager;
+		
+		$league = $leaguemanager->getLeague( $category[1] );
+		
+		if ( $category[0] == 'matches' ) {
+			$show_logos = ( $league->slideshow['show_logos'] == 1 ) ? true : false;
+			$time = isset($category[2]) ? $category[2] : false;
+			$limit = ( $league->slideshow['num_matches'] > 0 ) ? intval($league->slideshow['num_matches']) : false;
+			$latest_season = end($league->seasons);
+			$season = ( $league->slideshow['season'] == 'latest' ) ? $latest_season['name'] : $league->slideshow['season'];
+			$matches = $leaguemanager->getMatches( array('league_id' => $league->id, 'season' => $season, 'time' => $time, 'limit' => $limit) );
+			$team_args = array("league_id" => $league->id, "season" => false, "orderby" => array("id" => "ASC"));
+			//if ( !empty($instance['group']) ) $team_args["group"] = $instance['group'];
+			
+			$teams = $leaguemanager->getTeams( $team_args, 'ARRAY' );
+			
+			$slides = array();
+			if ( $matches ) {
+				foreach ( $matches AS $match ) {
+					$title = $leaguemanager->getMatchTitle($match->id, $show_logos, $match);
+					
+					if ( $time == 'next' ) {
+						$score = ' v.s. ';
+					} else {
+						if ( $match->home_points == "" && $match->away_points == "" ) {
+							$score = "N/A";
+						} else {
+							if ( $match->hadPenalty )
+								$score = sprintf($league->point_format, $match->penalty['home'], $match->penalty['away'])." "._x( 'o.P.', 'leaguemanager' );
+							elseif ( $match->hadOvertime )
+								$score = sprintf($league->point_format, $match->overtime['home'], $match->overtime['away'])." "._x( 'AET', 'leaguemanager' );
+							else
+								$score = sprintf($league->point_format, $match->home_points, $match->away_points);
+						}
+						
+						$score = "<span class='result'>".$score."</span>";
+					}
+					
+					$home_team = $teams[$match->home_team]['title'];
+					$away_team = $teams[$match->away_team]['title'];
+					if ( !isset($match->title) ) $match->title = sprintf("%s &#8211; %s", $home_team, $away_team);
+					
+					$slide_title = "";
+					$slide_title .= "<p class='match_title'><strong>". $match->title."</strong></p>";
+					if ( $show_logos )
+						$slide_title .= "<p class='logos'><img class='logo home_logo' src='".$teams[$match->home_team]['logo']."' alt='' />".$score."<img class='logo away_logo' src='".$teams[$match->away_team]['logo']."' alt='' /></p>";
+					else
+						$slide_title .= "<p class='logos'>".$score."</p>";
+
+					$slide_desc = "";
+					if ( !empty($match->match_day) )
+						$slide_desc .= "<p class='match_day'>".sprintf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $match->match_day)."</p>";
+					
+					$slide_desc .= "<p class='date'>".mysql2date(get_option('date_format'), $match->date).", <span class='time'>".$match->time."</span></p>";
+					$slide_desc .= "<p class='location'>".$match->location."</p>";
+				
+					if ( $match->post_id != 0 )
+						$slide_desc .=  "<p class='report'><a href='".get_permalink($match->post_id)."'>".__( 'Report', 'leaguemanager' )."</a></p>";
+				
+					$slide = array(
+						"name" => $title,
+						"image" => '', // DEPRECATED
+						"imageurl" => '',
+						"imagepath" => '',
+						"url" => '',
+						"url_target" => '',
+						"link_class" => '',
+						"link_rel" => '',
+						"title" => $title,
+						"slide_title" => $slide_title,
+						"slide_desc" => $slide_desc
+					);
+					
+					$slides[] = (object)$slide;
+				}
+			}
+			
+			return $slides;
+		}
+		
+		return array();
+	}
+	
+	
 	/**
 	 * initialize plugin
 	 *
@@ -303,7 +437,7 @@ class LeagueManagerLoader
 				return true;
 			}
 		}
-
+		
 		load_plugin_textdomain( 'leaguemanager', false, 'leaguemanager/languages' );
 	}
 
@@ -316,7 +450,7 @@ class LeagueManagerLoader
 	 */
 	function loadScripts()
 	{
-		wp_register_script( 'leaguemanager', LEAGUEMANAGER_URL.'/leaguemanager.js', array('jquery', 'sack', 'thickbox'), LEAGUEMANAGER_VERSION );
+		wp_register_script( 'leaguemanager', LEAGUEMANAGER_URL.'/leaguemanager.js', array('jquery', 'jquery-ui-core', 'jquery-ui-accordion', 'jquery-ui-tabs', 'jquery-effects-core', 'jquery-effects-slide', 'sack', 'thickbox'), LEAGUEMANAGER_VERSION );
 		wp_enqueue_script('leaguemanager');
 		?>
 		<script type="text/javascript">
@@ -352,28 +486,21 @@ class LeagueManagerLoader
 	{
 		wp_enqueue_style('thickbox');
 		wp_enqueue_style('leaguemanager', LEAGUEMANAGER_URL . "/style.css", false, '1.0', 'all');
+		
+		wp_register_style('jquery-ui', LEAGUEMANAGER_URL . "/css/jquery/jquery-ui.min.css", false, '1.11.4', 'all');
+		wp_register_style('jquery-ui-structure', LEAGUEMANAGER_URL . "/css/jquery/jquery-ui.structure.min.css", array('jquery-ui'), '1.11.4', 'all');
+		wp_register_style('jquery-ui-theme', LEAGUEMANAGER_URL . "/css/jquery/jquery-ui.theme.min.css", array('jquery-ui', 'jquery-ui-structure'), '1.11.4', 'all');
+		
+		wp_enqueue_style('jquery-ui-structure');
+		wp_enqueue_style('jquery-ui-theme');
+		
+		//wp_register_style('jquery_ui_css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css', false, '1.0', 'screen');
+		//wp_enqueue_style('jquery_ui_css');
 
-		$css = "";
-		if ( !empty($this->options['colors']['headers']) )
-		$css .= "\ntable.leaguemanager th { background-color: ".$this->options['colors']['headers']." }";
-
-		if ( !empty($this->options['colors']['rows']['main']) )
-		$css .= "\ntable.leaguemanager tr { background-color: ".$this->options['colors']['rows']['main']." }";
-
-		if ( !empty($this->options['colors']['rows']['alternate']) )
-		$css .= "\ntable.leaguemanager tr.alternate { background-color: ".$this->options['colors']['rows']['alternate']." }";
-
-		if ( !empty($this->options['colors']['rows']['ascend']) )
-		$css .= "\ntable.standingstable tr.ascend, table.standingstable tr.ascend.alternate { background-color: ".$this->options['colors']['rows']['ascend']." }";
-
-		if ( !empty($this->options['colors']['rows']['descend']) )
-		$css .= "\ntable.standingstable tr.descend, table.standingstable tr.descend.alternate { background-color: ".$this->options['colors']['rows']['descend']." }";
-
-		if ( !empty($this->options['colors']['rows']['relegation']) )
-		$css .= "\ntable.standingstable tr.relegation, table.standingstable tr.relegation.alternate { background-color: ".$this->options['colors']['rows']['relegation']." }";
-
-		if ( !empty($this->options['colors']['rows']['alternate']) )
-		$css .= "\ntable.crosstable th, table.crosstable td { border: 1px solid ".$this->options['colors']['rows']['alternate']."; }";
+		ob_start();
+		require_once(LEAGUEMANAGER_PATH.'/css/colors.css.php');
+		$css = ob_get_contents();
+		ob_end_clean();
 		
 		wp_add_inline_style( 'leaguemanager', $css );
 	}
@@ -431,6 +558,8 @@ class LeagueManagerLoader
 	 */
 	function activate()
 	{
+		global $leaguemanager;
+		
 		$options = array();
 		$options['version'] = $this->version;
 		$options['dbversion'] = $this->dbversion;
@@ -442,18 +571,25 @@ class LeagueManagerLoader
 		$options['dashboard_widget']['show_date'] = 1;
 		$options['dashboard_widget']['show_summary'] = 1;
  
-		add_option( 'leaguemanager', $options, 'LeagueManager Options', 'yes' );
-		add_option( 'leaguemanager_widget', array(), 'LeagueManager Widget Options', 'yes' );
+		add_option( 'leaguemanager', $options, '', 'yes' );
+		add_option( 'leaguemanager_widget', array(), '', 'yes' );
 
+		// create directory
+		wp_mkdir_p($leaguemanager->getImagePath(false, true));
+		
 		/*
 		* Set Capabilities
 		*/
 		$role = get_role('administrator');
-		$role->add_cap('manage_leaguemanager');
-		$role->add_cap('league_manager');
-
+		if ( $role !== null ) {
+			$role->add_cap('manage_leaguemanager');
+			$role->add_cap('league_manager');
+		}
+		
 		$role = get_role('editor');
-		$role->add_cap('league_manager');
+		if ( $role !== null ) {
+			$role->add_cap('league_manager');
+		}
 
 		$this->install();
 	}
@@ -504,7 +640,8 @@ class LeagueManagerLoader
 						`league_id` int( 11 ) NOT NULL,
 						`season` varchar( 255 ) NOT NULL default '',
 						`rank` int( 11 ) NOT NULL default '0',
-						`roster` longtext NOT NULL,
+						`roster` longtext NOT NULL default '',
+						`profile` int( 11 ) NOT NULL default '0',
 						`custom` longtext NOT NULL,
 						PRIMARY KEY ( `id` )) $charset_collate;";
 		maybe_create_table( $wpdb->leaguemanager_teams, $create_teams_sql );
@@ -556,19 +693,25 @@ class LeagueManagerLoader
 		delete_option( 'leaguemanager_widget' );
 		delete_option( 'leaguemanager' );
 
-		// Delete Logos
-		$dir = $leaguemanager->getImagePath();
-		if ( $handle = opendir($dir) ) {
-			while (false !== ($file = readdir($handle))) {
-				if ($file != "." && $file != "..")
-					@unlink($file);
-			}
-			closedir($handle);
+		/*
+		* Set Capabilities
+		*/
+		$role = get_role('administrator');
+		if ( $role !== null ) {
+			$role->remove_cap('manage_leaguemanager');
+			$role->remove_cap('league_manager');
 		}
-		@rmdir($dir);
+		
+		$role = get_role('editor');
+		if ( $role !== null ) {
+			$role->remove_cap('league_manager');
+		}
+		
+		// Delete upload directory
+		$leaguemanager->removeDir($leaguemanager->getImagePath(false, true));
 	}
-
-
+	
+	
 	/**
 	 * get admin object
 	 *
@@ -607,6 +750,8 @@ class LeagueManagerLoader
 // Run the Plugin
 global $lmLoader;
 $lmLoader = new LeagueManagerLoader();
+
+// suppress output
 if ( isset($_POST['leaguemanager_export']) )
-	$lmLoader->adminPanel->export((int)$_POST['league_id'], $_POST['mode']);
+	ob_start();
 ?>

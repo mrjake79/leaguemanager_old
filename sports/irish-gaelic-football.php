@@ -91,7 +91,7 @@ class LeagueManagerGaelicFootball extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'Goals', 'leaguemanager' )."\t".__('Points', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'Goals', 'leaguemanager' ))."\t".utf8_decode(__('Points', 'leaguemanager'));
 		return $content;
 	}
 
@@ -106,7 +106,7 @@ class LeagueManagerGaelicFootball extends LeagueManager
 	function exportMatchesData( $content, $match )
 	{
 		if ( isset($match->num_goals) )
-			$content .= "\t".sprintf("%d-%d", $match->num_goals['home'], $match->num_goals['away'])."\t".sprintf("%d-%d", $match->num_points['home'], $match->points['away']);
+			$content .= "\t".sprintf("%d:%d", $match->num_goals['home'], $match->num_goals['away'])."\t".sprintf("%d:%d", $match->num_points['home'], $match->points['away']);
 		else
 			$content .= "\t\t";
 
@@ -126,8 +126,8 @@ class LeagueManagerGaelicFootball extends LeagueManager
 	{
 		$match_id = intval($match_id);
 		
-		$num_goals = explode("-", $line[8]);
-		$num_pints = explode("-", $line[9]);
+		$num_goals = isset($line[9]) ? explode(":", $line[9]) : array("","");
+		$num_points = isset($line[10]) ? explode(":", $line[10]) : array("","");
 		$custom[$match_id]['num_goals'] = array( 'home' => $num_goals[0], 'away' => $num_goals[1] );
 		$custom[$match_id]['num_points'] = array( 'home' => $num_points[0], 'away' => $num_points[1] );
 

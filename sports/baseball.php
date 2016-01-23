@@ -94,6 +94,7 @@ class LeagueManagerBaseball extends LeagueManager
 
 		$team_id = intval($team_id);
 		$team = $wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d'", $team_id) );
+		$team = $team[0];
 		$custom = maybe_unserialize($team->custom);
 
 		$custom['runs'] = $this->getRuns($team_id);
@@ -220,6 +221,10 @@ class LeagueManagerBaseball extends LeagueManager
 	 */
 	function editTeam( $team )
 	{
+		if ( !isset($team->runs) ) $team->runs = array( 'for' => '', 'against' => '' );
+		if ( !isset($team->gb) ) $team->gb = '';
+		if ( !isset($team->shutouts) ) $team->shutouts = '';
+		
 		echo '<input type="hidden" name="custom[runs][for]" value="'.$team->runs['for'].'" /><input type="hidden"  name="custom[runs][against]" value="'.$team->runs['against'].'" /><input type="hidden" name="custom[gb]" value="'.$team->gb.'" /><input type="hidden" name="custom[shutouts]" value="'.$team->shutouts.'" />';
 	}
 
@@ -260,7 +265,7 @@ class LeagueManagerBaseball extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'RF', 'leaguemanager' )."\t".__('RA', 'leaguemanager')."\t".__('SO', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'RF', 'leaguemanager' ))."\t".utf8_decode(__('RA', 'leaguemanager'))."\t".utf8_decode(__('SO', 'leaguemanager'));
 		return $content;
 	}
 
@@ -275,7 +280,7 @@ class LeagueManagerBaseball extends LeagueManager
 	function exportMatchesData( $content, $match )
 	{
 		if ( isset($match->runs) )
-			$content .= "\t".$match->runs['for']."\t".$match->runs['against']."\t".sprintf("%d-%d", $match->shutouts['home'], $match->shutouts['away']);
+			$content .= "\t".$match->runs['for']."\t".$match->runs['against']."\t".sprintf("%d:%d", $match->shutouts['home'], $match->shutouts['away']);
 		else
 			$content .= "\t\t\t";
 
@@ -294,9 +299,9 @@ class LeagueManagerBaseball extends LeagueManager
 	function importMatches( $custom, $line, $match_id )
 	{
 		$match_id = intval($match_id);
-		$shutouts = explode("-", $line[10]);
+		$shutouts = isset($line[11]) ? explode(":", $line[11]) : array('','');
 
-		$custom[$match_id]['runs'] = array( 'for' => $line[8], 'against' => $line[9] );
+		$custom[$match_id]['runs'] = ( isset($line[9]) && isset($line[10]) ) ? array( 'for' => $line[9], 'against' => $line[10] ) : array('for' => '', 'against' => '');
 		$custom[$match_id]['shutouts'] = array( 'home' => $shutouts[0], 'away' => $shutouts[1] );
 
 		return $custom;
@@ -311,7 +316,7 @@ class LeagueManagerBaseball extends LeagueManager
 	 */
 	function exportTeamsHeader( $content )
 	{
-		$content .= "\t".__( 'RF', 'leaguemanager' )."\t".__('RA', 'leaguemanager')."\t".__('PCT')."\t"._c('GB|games behind', 'leaguemanager')."\t".__('SO', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'RF', 'leaguemanager' ))."\t".utf8_decode(__('RA', 'leaguemanager'))."\t".utf8_decode(__('PCT'))."\t".utf8_decode(__( 'GB', 'leaguemanager'))."\t".utf8_decode(__('SO', 'leaguemanager'));
 		return $content;
 	}
 
@@ -326,9 +331,9 @@ class LeagueManagerBaseball extends LeagueManager
 	function exportTeamsData( $content, $team )
 	{
 		if ( isset($team->runs) )
-			$content .= "\t".$team->runs['for']."\t".$team->runs['against']."\t".($team->won_matches/$team->done_matches)."\t".$team->shutouts;
+			$content .= "\t".$team->runs['for']."\t".$team->runs['against']."\t".($team->won_matches/$team->done_matches)."\t".$team->gb."\t".$team->shutouts;
 		else
-			$content .= "\t\t\t\t";
+			$content .= "\t\t\t\t\t";
 
 		return $content;
 	}
@@ -343,10 +348,9 @@ class LeagueManagerBaseball extends LeagueManager
 	 */
 	function importTeams( $custom, $line )
 	{
-		$shutouts = explode("-", $line[11]);
-
-		$custom['runs'] = array( 'for' => $line[8], 'against' => $line[9] );
-		$custom['shutouts'] = array( 'home' => $shutouts[0], 'away' => $shutouts[1] );
+		$custom['runs'] = array( 'for' => $line[16], 'against' => $line[17] );
+		$custom['gb'] = $line[18];
+		$custom['shutouts'] = $line[19];
 
 		return $custom;
 	}

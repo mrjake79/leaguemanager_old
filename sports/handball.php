@@ -132,6 +132,13 @@ class LeagueManagerHandball extends LeagueManager
 	 */
 	function displayMatchesColumns( $match )
 	{
+		if ( !isset($match->halftime) )
+			$match->halftime = array('plus' => '', 'minus' => '');
+		if ( !isset($match->overtime) )
+			$match->overtime = array('home' => '', 'away' => '');
+		if ( !isset($match->penalty) )
+			$match->penalty = array('home' => '', 'away' => '');
+		
 		echo '<td><input class="points" type="text" size="2" id="halftime_plus_'.$match->id.'" name="custom['.$match->id.'][halftime][plus]" value="'.$match->halftime['plus'].'" /> : <input class="points" type="text" size="2" id="halftime_minus_'.$match->id.'" name="custom['.$match->id.'][halftime][minus]" value="'.$match->halftime['minus'].'" /></td>';
 		echo '<td><input class="points" type="text" size="2" id="overtime_home_'.$match->id.'" name="custom['.$match->id.'][overtime][home]" value="'.$match->overtime['home'].'" /> : <input class="points" type="text" size="2" id="overtime_away_'.$match->id.'" name="custom['.$match->id.'][overtime][away]" value="'.$match->overtime['away'].'" /></td>';
 		echo '<td><input class="points" type="text" size="2" id="penalty_home_'.$match->id.'" name="custom['.$match->id.'][penalty][home]" value="'.$match->penalty['home'].'" /> : <input class="points" type="text" size="2" id="penalty_away_'.$match->id.'" name="custom['.$match->id.'][penalty][away]" value="'.$match->penalty['away'].'" /></td>';
@@ -146,7 +153,7 @@ class LeagueManagerHandball extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'Halftime', 'leaguemanager' )."\t".__('Overtime', 'leaguemanager')."\t".__('Penalty', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'Halftime', 'leaguemanager' ))."\t".utf8_decode(__('Overtime', 'leaguemanager'))."\t".utf8_decode(__('Penalty', 'leaguemanager'));
 		return $content;
 	}
 
@@ -161,7 +168,7 @@ class LeagueManagerHandball extends LeagueManager
 	function exportMatchesData( $content, $match )
 	{
 		if ( isset($match->halftime) )
-			$content .= "\t".sprintf("%d-%d", $match->halftime['plus'], $match->halftime['minus'])."\t".sprintf("%d-%d", $match->overtime['home'], $match->overtime['away'])."\t".sprintf("%d-%d", $match->penalty['home'], $match->penalty['away']);
+			$content .= "\t".sprintf("%d:%d", $match->halftime['plus'], $match->halftime['minus'])."\t".sprintf("%d:%d", $match->overtime['home'], $match->overtime['away'])."\t".sprintf("%d:%d", $match->penalty['home'], $match->penalty['away']);
 		else
 			$content .= "\t\t\t";
 
@@ -181,9 +188,9 @@ class LeagueManagerHandball extends LeagueManager
 	{
 		$match_id = intval($match_id);
 		
-		$halftime = explode("-", $line[8]);
-		$overtime = explode("-", $line[9]);
-		$penalty = explode("-", $line[10]);
+		$halftime = isset($line[9]) ? explode(":", $line[9]) : array("","");
+		$overtime = isset($line[10]) ? explode(":", $line[10]) : array("","");
+		$penalty = isset($line[11]) ? explode(":", $line[11]) : array("","");
 		$custom[$match_id]['halftime'] = array( 'plus' => $halftime[0], 'minus' => $halftime[1] );
 		$custom[$match_id]['overtime'] = array( 'home' => $overtime[0], 'away' => $overtime[1] );
 		$custom[$match_id]['penalty'] = array( 'home' => $penalty[0], 'away' => $penalty[1] );
@@ -205,7 +212,6 @@ class LeagueManagerHandball extends LeagueManager
 
 		$goals = array( 'plus' => 0, 'minus' => 0 );
 
-		//$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '%d'", $team_id) );
 		$matches = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
@@ -223,7 +229,6 @@ class LeagueManagerHandball extends LeagueManager
 			}
 		}
 
-		//$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '%d'", $team_id) );
 		$matches = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {

@@ -103,6 +103,9 @@ class LeagueManagerImage extends LeagueManager
 	{
 		global $leaguemanager;
 		$image = $leaguemanager->getImagePath($this->image);
+		
+		if ( !file_exists($image) ) return false;
+		
 		$thumb = $leaguemanager->getThumbnailPath($this->image);
 
 		$thumbnail = new Thumbnail($image);
@@ -112,7 +115,7 @@ class LeagueManagerImage extends LeagueManager
 		$thumbnail->save($thumb);
 
 		chmod($image, 0644);
-		chmod($thumb, 0644);
+		chmod($thumb, 0644);	
 	}
 }
 

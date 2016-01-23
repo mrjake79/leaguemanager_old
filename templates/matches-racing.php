@@ -16,8 +16,8 @@ if ( !empty($match->raceresult) ) {
 
 }
 ?>
-<?php if (isset($_GET['match']) ) : ?>
-	<?php leaguemanager_match($_GET['match']); ?>
+<?php if (isset($_GET['match_'.$league->id]) ) : ?>
+	<?php leaguemanager_match($_GET['match_'.$league->id]); ?>
 <?php else : ?>
 
 <?php if ( ($league->show_match_day_selection || $league->show_team_selection) && $league->mode != 'championship' ) : ?>

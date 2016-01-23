@@ -79,7 +79,7 @@ The following variables are usable:
 
 // Get Next Match
     $next_results = get_next_match($team->id, 1);
-    $last5 = '<td style="text-align: right;" class="last5Icon">';
+    $last5 = '<td style="text-align: right;" class="last5Icon last5">';
     if ( $next_results ) {
         foreach ($next_results as $next_result)
         {
@@ -96,7 +96,8 @@ The following variables are usable:
     }
 
     // Get the latest results
-    $results = get_latest_results($team->id, 5);
+    //$results = get_last_matches($team->id, 5);
+	$results = get_latest_results($team->id, 5);
     foreach ($results as $result)
     {
 		$result->hadPenalty = ( isset($result->penalty) && $result->penalty['home'] != '' && $result->penalty['away'] != '' ) ? true : false;

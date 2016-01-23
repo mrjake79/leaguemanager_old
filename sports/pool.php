@@ -41,7 +41,7 @@ class LeagueManagerPool extends LeagueManager
 		add_action( 'leaguemanager_standings_columns_'.$this->key, array(&$this, 'displayStandingsColumns'), 10, 2 );
 		add_action( 'team_edit_form_'.$this->key, array(&$this, 'editTeam') );
 
-		add_action( 'leaguemanager_save_standings', array(&$this, 'saveStandings') );
+		add_action( 'leaguemanager_save_standings_'.$this->key, array(&$this, 'saveStandings') );
 	}
 	function LeagueManagerSoccer()
 	{
@@ -92,10 +92,11 @@ class LeagueManagerPool extends LeagueManager
 		global $wpdb;
 
 		$team = $wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d'", $team_id) );
+		$team = $team[0];
 		$custom = maybe_unserialize($team->custom);
 
-		$custom['forScore'] = $this->getScore($team_id, 'for');
-		$custom['againstScore'] = $this->getScore($team_id, 'against');
+		$custom['forScore'] = $this->getPoolScore($team_id, 'for');
+		$custom['againstScore'] = $this->getPoolScore($team_id, 'against');
 
 		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_teams} SET `custom` = '%s' WHERE `id` = '%d'", maybe_serialize($custom), $team_id ) );
 	}
@@ -107,7 +108,7 @@ class LeagueManagerPool extends LeagueManager
 	 * @param int $team_id
 	 * @return array number of runs for and against as assoziative array
 	 */
-	function getScore( $team_id, $index )
+	function getPoolScore( $team_id, $index )
 	{
 		global $leaguemanager;
 
@@ -167,6 +168,11 @@ class LeagueManagerPool extends LeagueManager
 	 */
 	function editTeam( $team )
 	{
+		if ( !isset($team->forScore) )
+			$team->forScore = '';
+		if ( !isset($team->againstScore) )
+			$team->againstScore = '';
+		
 		echo '<input type="hidden" name="custom[forScore]" value="'.$team->forScore.'" /><input type="hidden" name="custom[againstScore]" value="'.$team->againstScore.'" />';
 	}
 
@@ -206,7 +212,7 @@ class LeagueManagerPool extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'For', 'leaguemanager' )."\t".__('Against', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'For', 'leaguemanager' ))."\t".utf8_decode(__('Against', 'leaguemanager'));
 		return $content;
 	}
 
@@ -241,8 +247,8 @@ class LeagueManagerPool extends LeagueManager
 	{
 		$match_id = intval($match_id);
 		
-		$custom[$match_id]['forScore'] = $line[8];
-		$custom[$match_id]['againstScore'] = $line[9];
+		$custom[$match_id]['forScore'] = isset($line[9]) ? $line[9] : '';
+		$custom[$match_id]['againstScore'] = isset($line[10]) ? $line[10] : '';
 		return $custom;
 	}
 
@@ -255,7 +261,7 @@ class LeagueManagerPool extends LeagueManager
 	 */
 	function exportTeamsHeader( $content )
 	{
-		$content .= "\t".__( 'For', 'leaguemanager' )."\t".__('Against', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'For', 'leaguemanager' ))."\t".utf8_decode(__('Against', 'leaguemanager'));
 		return $content;
 	}
 
@@ -287,8 +293,8 @@ class LeagueManagerPool extends LeagueManager
 	 */
 	function importTeams( $custom, $line )
 	{
-		$custom['forScore'] = $line[8];
-		$custom['againstScore'] = $line[9];
+		$custom['forScore'] = isset($line[16]) ? $line[16] : '';
+		$custom['againstScore'] = isset($line[17]) ? $line[17] : '';
 		return $custom;
 	}
 }

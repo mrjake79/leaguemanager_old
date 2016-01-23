@@ -130,7 +130,7 @@ class LeagueManagerRacing extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'Race Type', 'leaguemanager' );
+		$content .= "\t".utf8_decode(__( 'Race Type', 'leaguemanager' ));
 		return $content;
 	}
 
@@ -164,7 +164,7 @@ class LeagueManagerRacing extends LeagueManager
 	function importMatches( $custom, $line, $match_id )
 	{
 		$match_id = intval($match_id);
-		$custom[$match_id]['racetype'] = $line[8];
+		$custom[$match_id]['racetype'] = $line[9];
 		return $custom;
 	}
 

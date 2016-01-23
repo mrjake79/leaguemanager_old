@@ -57,6 +57,8 @@ class LeagueManagerTennis extends LeagueManager
 		add_action( 'leaguemanager_save_standings_'.$this->key, array(&$this, 'saveStandings') );
 
 		add_action( 'league_settings_'.$this->key, array(&$this, 'leagueSettings') );
+		
+		add_action( 'leaguemanager_update_results_'.$this->key, array(&$this, 'updateResults') );
 	}
 	function LeagueManagerSoccer()
 	{
@@ -274,6 +276,7 @@ class LeagueManagerTennis extends LeagueManager
 		global $wpdb, $leaguemanager;
 
 		$team = $wpdb->get_results( "SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = {$team_id}" );
+		$team = $team[0];
 		$custom = isset($team->custom) ? maybe_unserialize($team->custom) : '';
 		$custom = $this->getStandingsData($team_id, $custom);
 
@@ -386,7 +389,7 @@ class LeagueManagerTennis extends LeagueManager
 
 		if (!isset($team->straight_set)) $team->straight_set = array('win' => '', 'lost' => '');
 		if (!isset($team->split_set)) $team->split_set = array('win' => '', 'lost' => '');
-		if (!isset($team->games_allowd)) $team->games_allowed = '';
+		if (!isset($team->games_allowed)) $team->games_allowed = '';
 		if ( is_admin() && $rule == 'manual' )
 			echo '<td><input type="text" size="2" name="custom['.$team->id.'][straight_set][win]" value="'.$team->straight_set['win'].'" />:<input type="text" size="2" name="custom['.$team->id.'][straight_set][lost]" value="'.$team->straight_set['lost'].'" /></td><td><input type="text" size="2" name="custom['.$team->id.'][split_set][win]" value="'.$team->split_set['win'].'" />:<input type="text" size="2" name="custom['.$team->id.'][split_set][lost]" value="'.$team->split_set['lost'].'" /></td><td><input type="text" size="2" name="custom['.$team->id.'][games_allowed]" value="'.$team->games_allowed.'" /></td>';
 		else
@@ -402,6 +405,10 @@ class LeagueManagerTennis extends LeagueManager
 	 */
 	function editTeam( $team )
 	{
+		if (!isset($team->straight_set)) $team->straight_set = array('win' => '', 'lost' => '');
+		if (!isset($team->split_set)) $team->split_set = array('win' => '', 'lost' => '');
+		if (!isset($team->games_allowd)) $team->games_allowed = '';
+		
 		echo '<input type="hidden" name="custom[straight_set][win]" value="'.$team->straight_set['win'].'" /><input type="hidden" name="custom[straight_set][lost]" value="'.$team->straight_set['lost'].'" /><input type="hidden" name="custom[split_set][win]" value="'.$team->split_set['win'].'" /><input type="hidden" name="custom[split_set][lost]" value="'.$team->split_set['lost'].'" /><input type="hidden" name="custom[games_allowed]" value="'.$team->games_allowed.'" />';
 	}
 
@@ -457,11 +464,17 @@ class LeagueManagerTennis extends LeagueManager
 		global $leaguemanager;
 		$league = $leaguemanager->getCurrentLeague();
 
-		for ( $i = 1; $i <= $league->num_sets; $i++ ) {
-			if (!isset($match->sets[$i])) {
-				$match->sets[$i] = array('player1' => '', 'player2' => '');
+		if ( !isset($league->num_sets) || empty($league->num_sets) ) {
+			$leaguemanager->setMessage(__('You have to define the number of sets', 'leaguemanager'), true);
+			$leaguemanager->printMessage();
+			echo "<td></td>";
+		} else {
+			for ( $i = 1; $i <= $league->num_sets; $i++ ) {
+				if (!isset($match->sets[$i])) {
+					$match->sets[$i] = array('player1' => '', 'player2' => '');
+				}
+				echo '<td><input class="points" type="text" size="2" id="set_'.$match->id.'_'.$i.'_player1" name="custom['.$match->id.'][sets]['.$i.'][player1]" value="'.$match->sets[$i]['player1'].'" /> : <input class="points" type="text" size="2" id="set_'.$match->id.'_'.$i.'_player2" name="custom['.$match->id.'][sets]['.$i.'][player2]" value="'.$match->sets[$i]['player2'].'" /></td>';
 			}
-			echo '<td><input class="points" type="text" size="2" id="set_'.$match->id.'_'.$i.'_player1" name="custom['.$match->id.'][sets]['.$i.'][player1]" value="'.$match->sets[$i]['player1'].'" /> : <input class="points" type="text" size="2" id="set_'.$match->id.'_'.$i.'_player2" name="custom['.$match->id.'][sets]['.$i.'][player2]" value="'.$match->sets[$i]['player2'].'" /></td>';
 		}
 	}
 
@@ -477,7 +490,7 @@ class LeagueManagerTennis extends LeagueManager
 		global $leaguemanager;
 		$league = $leaguemanager->getCurrentLeague();
 
-		$content .= "\t"._c( 'Sets', 'leaguemanager' ).str_repeat("\t", $league->num_sets-1);
+		$content .= "\t".utf8_decode(__( 'Sets', 'leaguemanager' )).str_repeat("\t", $league->num_sets-1);
 		return $content;
 	}
 
@@ -496,7 +509,7 @@ class LeagueManagerTennis extends LeagueManager
 
 		if ( isset($match->sets) ) {
 			foreach ( $match->sets AS $j => $set ) {
-				$content .= "\t".implode("-", $set);
+				$content .= "\t".implode(":", $set);
 			}
 		} else {
 			$content .= str_repeat("\t", $league->num_sets);
@@ -517,8 +530,8 @@ class LeagueManagerTennis extends LeagueManager
 	function importMatches( $custom, $line, $match_id )
 	{
 		$match_id = intval($match_id);
-		for( $x = 8; $x <= 10; $x++ ) {
-			$set = explode("-",$line[$x]);
+		for( $x = 9; $x <= 11; $x++ ) {
+			$set = isset($line[$x]) ? explode(":",$line[$x]) : array('','');
 			$custom[$match_id]['sets'][] = array( 'player1' => $set[0], 'player2' => $set[1] );
 		}
 
@@ -534,7 +547,7 @@ class LeagueManagerTennis extends LeagueManager
 	 */
 	function exportTeamsHeader( $content )
 	{
-		$content .= "\t".__( 'Straight Set Win', 'leaguemanager' )."\t".__('Split Set Win', 'leaguemanager')."\t".__('Straight Set Lost')."\t".__('Split Set Lost', 'leaguemanager')."\t".__('Games Allowed', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'Straight Set Win', 'leaguemanager' ))."\t".utf8_decode(__('Split Set Win', 'leaguemanager'))."\t".utf8_decode(__('Straight Set Lost'))."\t".utf8_decode(__('Split Set Lost', 'leaguemanager'))."\t".utf8_decode(__('Games Allowed', 'leaguemanager'));
 		return $content;
 	}
 
@@ -566,11 +579,35 @@ class LeagueManagerTennis extends LeagueManager
 	 */
 	function importTeams( $custom, $line )
 	{
-		$custom['straight_set'] = array( 'win' => $line[8], 'lost' => $line[10] );
-		$custom['split_set'] = array( 'win' => $line[9], 'lost' => $line[11] );
-		$custom['games_allowed'] = $line[12];
+		$custom['straight_set'] = ( isset($line[16]) && isset($line[17]) ) ? array( 'win' => $line[16], 'lost' => $line[17] ) : array( 'win' => '', 'lost' => '' );
+		$custom['split_set'] = ( isset($line[18]) && isset($line[19]) ) ? array( 'win' => $line[18], 'lost' => $line[19] ) : array( 'win' => '', 'lost' => '' );
+		$custom['games_allowed'] = isset($line[20])? $line[20] : '';
 
 		return $custom;
+	}
+	
+	
+	/**
+	 * update match results and automatically calculate score
+	 *
+	 * @param int $match_id
+	 * @return none
+	 */
+	function updateResults( $match_id )
+	{
+		global $wpdb, $leaguemanager;
+		
+		$match = $leaguemanager->getMatch( $match_id );
+		$score = array( 'home' => 0, 'guest' => '' );
+		foreach ( $match->sets AS $set ) {
+			if ( $set['player1'] > $set['player2'] ) {
+				$score['home'] += 1;
+			} else {
+				$score['guest'] += 1;
+			}
+		}
+		
+		$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
 	}
 }
 

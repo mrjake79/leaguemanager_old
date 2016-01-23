@@ -64,12 +64,11 @@ if ( isset($_GET['match_id']) ) {
 	<p class="leaguemanager_breadcrumb"><a href="admin.php?page=leaguemanager"><?php _e( 'LeagueManager', 'leaguemanager' ) ?></a> &raquo; <a href="admin.php?page=leaguemanager&amp;subpage=show-league&amp;league_id=<?php echo $league->id ?>"><?php echo $league->title ?></a> &raquo; <?php _e( 'Match Statistics', 'leaguemanager' ) ?></p>
 
 <?php if ( $match ) : ?>
-
-	<h2><?php printf(__( 'Match Statistics &#8211; %s vs %s', 'leaguemanager'), $home->title, $away->title) ?></h2>
+	<h1><?php printf( "%s &mdash; %s",  $league->title, sprintf(__( 'Match Statistics &#8211; %s vs %s', 'leaguemanager'), $home->title, $away->title) ); ?></h1>
 
 	<form action="" method="post">
 	<?php foreach ( $lmStats->get($league->id) AS $stat ) : ?>
-		<h3><?php echo $stat->name ?></h3>
+		<h2><?php echo $stat->name ?></h2>
 		
 		<table class="widefat">
 		<thead>
@@ -116,13 +115,13 @@ if ( isset($_GET['match_id']) ) {
 
 
 		<input type="hidden" name="match_id" value="<?php echo $match->id ?>" />
-		<p class="submit"><input type="submit" name="updateMatchStats" value="<?php _e( 'Save Statistics', 'leaguemanager' ) ?> &raquo;" class="button button-primary" /></p>
+		<p class="submit"><input type="submit" name="updateMatchStats" value="<?php _e( 'Save Statistics', 'leaguemanager' ) ?>" class="button button-primary" /></p>
 
 		</form>
 <?php else : ?>
 <div class="narrow">
 
-<h2><?php _e( 'Statistics Settings', 'leaguemanager' ) ?></h2>
+<h1><?php printf( "%s &mdash; %s",  $league->title, __( 'Statistics Settings', 'leaguemanager' ) ); ?></h1>
 
 <form id="stats-filter" action="" method="post" name="stats">
 <?php wp_nonce_field( 'stats-bulk' ) ?>
@@ -159,12 +158,12 @@ if ( isset($_GET['match_id']) ) {
 </form>
 
 
-<h3>
+<h2>
 	<?php if ( $stats_id ) _e( 'Edit Statistics Field', 'leaguemanager' ); else _e( 'Add Statistics Field', 'leaguemanager' ) ?>&#160;
 	<?php if ( $stats_id ) : ?>
 	(<a href="admin.php?page=leaguemanager&amp;subpage=matchstats&amp;league_id=<?php echo $league->id ?>"><?php _e( 'Add New', 'leaguemanager') ?></a>)
 	<?php endif; ?>
-</h3>
+</h2>
 
 <form action="" method="post">
 <table class="form-table">

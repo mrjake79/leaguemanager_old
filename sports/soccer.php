@@ -146,7 +146,7 @@ class LeagueManagerSoccer extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'Halftime', 'leaguemanager' )."\t".__('Overtime', 'leaguemanager')."\t".__('Penalty', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'Halftime', 'leaguemanager' ))."\t".utf8_decode(__('Overtime', 'leaguemanager'))."\t".utf8_decode(__('Penalty', 'leaguemanager'));
 		return $content;
 	}
 
@@ -161,7 +161,7 @@ class LeagueManagerSoccer extends LeagueManager
 	function exportMatchesData( $content, $match )
 	{
 		if ( isset($match->halftime) )
-			$content .= "\t".sprintf("%d-%d", $match->halftime['plus'], $match->halftime['minus'])."\t".sprintf("%d-%d", $match->overtime['home'], $match->overtime['away'])."\t".sprintf("%d-%d", $match->penalty['home'], $match->penalty['away']);
+			$content .= "\t".sprintf("%d:%d", $match->halftime['plus'], $match->halftime['minus'])."\t".sprintf("%d:%d", $match->overtime['home'], $match->overtime['away'])."\t".sprintf("%d:%d", $match->penalty['home'], $match->penalty['away']);
 		else
 			$content .= "\t\t\t";
 
@@ -181,12 +181,21 @@ class LeagueManagerSoccer extends LeagueManager
 	{
 		$match_id = intval($match_id);
 		
-		$halftime = explode("-", $line[8]);
-		$overtime = explode("-", $line[9]);
-		$penalty = explode("-", $line[10]);
+		$halftime = explode(":", $line[9]);
+		if ( isset($line[10]) ) {
+			$overtime = explode(":", $line[10]);
+			$custom[$match_id]['overtime'] = array( 'home' => $overtime[0], 'away' => $overtime[1] );
+		} else {
+			$custom[$match_id]['overtime'] = array( 'home' => '', 'away' => '' );
+		}
+		if ( isset($line[11]) ) {
+			$penalty = explode(":", $line[11]);
+			$custom[$match_id]['penalty'] = array( 'home' => $penalty[0], 'away' => $penalty[1] );
+		} else {
+			$custom[$match_id]['penalty'] = array( 'home' => '', 'away' => '' );
+		}
+		
 		$custom[$match_id]['halftime'] = array( 'plus' => $halftime[0], 'minus' => $halftime[1] );
-		$custom[$match_id]['overtime'] = array( 'home' => $overtime[0], 'away' => $overtime[1] );
-		$custom[$match_id]['penalty'] = array( 'home' => $penalty[0], 'away' => $penalty[1] );
 
 		return $custom;
 	}

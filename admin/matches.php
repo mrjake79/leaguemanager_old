@@ -1,3 +1,5 @@
+<div class="league-block">
+
 <?php if ( !empty($season['num_match_days']) ) : ?>
 <!-- Bulk Editing of Matches -->
 <form action="admin.php" method="get" style="float: right;">
@@ -16,9 +18,10 @@
 </form>
 <?php endif; ?>
 
-<form id="competitions-filter" action="" method="post">
+<form id="competitions-filter" action="admin.php?page=leaguemanager&subpage=show-league&league_id=<?php echo $league->id ?>" method="post">
 <?php wp_nonce_field( 'matches-bulk' ) ?>
 
+	<input type="hidden" name="current_match_day" value="<?php echo $matchDay ?>" />
 	<div class="tablenav" style="margin-bottom: 0.1em; clear: none;">
 		<!-- Bulk Actions -->
 		<select name="action2" size="1">
@@ -56,8 +59,8 @@
 		<th><?php _e( 'Match','leaguemanager' ) ?></th>
 		<th><?php _e( 'Location','leaguemanager' ) ?></th>
 		<th><?php _e( 'Begin','leaguemanager' ) ?></th>
-		<th style="text-align: center;"><?php _e( 'Score', 'leaguemanager' ) ?></th>
 		<?php do_action( 'matchtable_header_'.(isset($league->sport) ? $league->sport : '' )); ?>
+		<th style="text-align: center;"><?php _e( 'Score', 'leaguemanager' ) ?></th>
 	</tr>
 	</thead>
 	<tbody id="the-list-matches-<?php echo $group ?>" class="form-table">
@@ -77,10 +80,10 @@
 			<td><a href="admin.php?page=leaguemanager&amp;subpage=match&amp;league_id=<?php echo $league->id ?>&amp;edit=<?php echo $match->id ?>&amp;season=<?php echo $season['name'] ?><?php if(isset($group)) echo '&amp;group=' . $group; ?>"><?php echo $leaguemanager->getMatchTitle($match->id) ?></a></td>
 			<td><?php echo ( empty($match->location) ) ? 'N/A' : $match->location ?></td>
 			<td><?php echo ( '00:00' == $match->hour.":".$match->minutes ) ? 'N/A' : mysql2date(get_option('time_format'), $match->date) ?></td>
+			<?php do_action( 'matchtable_columns_'.(isset($league->sport) ? $league->sport : '' ), $match ) ?>
 			<td style="text-align: center;">
 				<input class="points" type="text" size="2" style="text-align: center;" id="home_points_<?php echo $match->id ?>_regular" name="home_points[<?php echo $match->id ?>]" value="<?php echo (isset($match->home_points) ? $match->home_points : '') ?>" /> : <input class="points" type="text" size="2" style="text-align: center;" id="away_points[<?php echo $match->id ?>]" name="away_points[<?php echo $match->id ?>]" value="<?php echo (isset($match->away_points) ? $match->away_points : '') ?>" />
 			</td>
-			<?php do_action( 'matchtable_columns_'.(isset($league->sport) ? $league->sport : '' ), $match ) ?>
 		</tr>
 	<?php endforeach; ?>
 	<?php endif; ?>
@@ -89,8 +92,8 @@
 
 	<?php do_action ( 'leaguemanager_match_administration_descriptions' ) ?>
 
-	<?php if ( isset($league->mode) && $league->mode != "championship" && $leaguemanager->getPageLinks() ) : ?>
 	<div class="tablenav">
+		<?php if ( isset($league->mode) && $league->mode != "championship" && $leaguemanager->getPageLinks() ) : ?>
 		<div class="tablenav-pages">
 		<?php $page_links_text = sprintf( '<span class="displaying-num">' . __( 'Displaying %s&#8211;%s of %s', 'leaguemanager' ) . '</span>%s',
 			number_format_i18n( ( $leaguemanager->getCurrentPage() - 1 ) * $leaguemanager->getNumMatchesPerPage() + 1 ),
@@ -99,12 +102,13 @@
 			$leaguemanager->getPageLinks()
 			); echo $page_links_text; ?>
 		</div>
+		<?php endif; ?>
+		
+		<?php if ( $matches ) : ?>
+			<input type="hidden" name="league_id" value="<?php echo $league->id ?>" />
+			<input type="hidden" name="updateLeague" value="results" />
+			<p style="float: left; margin: 0; padding: 0;"><input type="submit" name="updateResults" value="<?php _e( 'Update Results','leaguemanager' ) ?>" class="button button-primary" /></p>
+		<?php endif; ?>
 	</div>
-	<?php endif; ?>
-	
-	<?php if ( $matches ) : ?>
-		<input type="hidden" name="league_id" value="<?php echo $league->id ?>" />
-		<input type="hidden" name="updateLeague" value="results" />
-		<p style="margin: 0;" class="submit"><input type="submit" name="updateResults" value="<?php _e( 'Update Results','leaguemanager' ) ?> &raquo;" class="button button-primary" /></p>
-	<?php endif; ?>
 </form>
+</div>

@@ -15,6 +15,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: sports/gymnastics
+msgid "Floor"
+msgstr "Boden"
+
+msgid "Pommelhorse"
+msgstr "Pferd"
+
+msgid "Rings"
+msgstr "Ringe"
+
+msgid "Vault"
+msgstr "Sprung"
+
+msgid "Parallel bars"
+msgstr "Barren"
+
+msgid "High bars"
+msgstr "Reck"
+
+msgid "T"
+msgstr "U"
+
 #: admin/admin.php:24
 msgid "Match-Report"
 msgstr "Spielbericht"

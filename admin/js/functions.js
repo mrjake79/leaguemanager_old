@@ -1,8 +1,43 @@
 jQuery(document).ready(function($) {
-
+	/* jQuery UI tooltips */
+	/*jQuery( ".tooltip").tooltip({
+		track: true,
+		show: {
+			effect: "slideDown",
+			delay: 250
+		},
+		hide: {
+			effect: "slideUp",
+			delay: 250
+		}
+	});*/
+	
 	// Tabs
-	$('#tabs').tabs();
+	$('#tabs').tabs({
+		collapsible: true,
+	});
+	jQuery("#tabs>#tablist").css("display", "block");
+	jQuery(".settings-block-container>h2").css("display", "none");
 
+	jQuery(".import-block-container>h2").css("display", "none");
+	
+	/* Add event listener to get active tab */
+	jQuery( "#tabs.form").on('tabsactivate', function(event, ui) {
+		var index = ui.newTab.index();
+		jQuery("#tabs.form>.active-tab").val(index);
+	});
+	
+	/* jQuery UI accordion list */	
+	/*jQuery( ".league-blocks" ).accordion({
+		header: "h2",
+		collapsible: true,
+		heightStyle: "content"
+	});
+	*/
+	
+	/* hide top-links in documentation */
+	jQuery(".top-link").css("display", "none");
+	
 	// Datepicker
 	$('.mydatepicker').datepicker({
 		numberOfMonths: 3,
@@ -12,6 +47,21 @@ jQuery(document).ready(function($) {
 		changeYear: true
 	});
 
+	// Enable iris colorpicker
+	jQuery(document).ready(function() {
+		jQuery('.leaguemanager-colorpicker').iris();
+	});
+
+	// make formfield table sortable and add nice css cursor
+	jQuery(".standings-table.sortable").sortable({
+		axis: "y"
+	});
+	jQuery(".sortable").css("cursor", "move");
+	
+	// disable rank input fields
+	jQuery("input.rank-input").prop('disabled', 'true');
+	// Set js-active value to 1
+	jQuery("#teams-filter>input.js-active").val(1);
 });
 
 if(typeof Leaguemanager == "undefined") {

@@ -188,6 +188,7 @@ class LeagueManagerRugby extends LeagueManager
 		global $wpdb, $leaguemanager;
 
 		$team = $wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d'", $team_id) );
+		$team = $team[0];
 		$custom = maybe_unserialize($team->custom);
 		$custom = $this->getStandingsData($team_id, $custom);
 
@@ -308,7 +309,7 @@ class LeagueManagerRugby extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'Tries', 'leaguemanager' )."\t".__('Conversions','leaguemanager')."\t".__('Penaltykicks','leaguemanager')."\t";
+		$content .= "\t".utf8_decode(__( 'Tries', 'leaguemanager' ))."\t".utf8_decode(__('Conversions','leaguemanager'))."\t".utf8_decode(__('Penaltykicks','leaguemanager'));
 		return $content;
 	}
 
@@ -344,9 +345,9 @@ class LeagueManagerRugby extends LeagueManager
 	{
 		$match_id = intval($match_id);
 		
-		$tries = explode(":",$line[8]);
-		$conversions = explode(":",$line[9]);
-		$penalties = explode(":",$line[10]);
+		$tries = isset($line[9]) ? explode(":",$line[9]) : array('','');
+		$conversions = isset($line[10]) ? explode(":",$line[10]) : array('','');
+		$penalties = isset($line[11]) ? explode(":",$line[11]) : array('','');
 
 		$custom[$match_id]['tries'] = array( 'home' => $tries[0], 'away' => $tries[1] );
 		$custom[$match_id]['conversions'] = array( 'home' => $conversions[0], 'away' => $conversions[1] );
@@ -396,7 +397,7 @@ class LeagueManagerRugby extends LeagueManager
 	 */
 	function importTeams( $custom, $line )
 	{
-		$gamepoints = explode(":", $line[8]);
+		$gamepoints = isset($line[16]) ? explode(":", $line[16]) : array('','');
 		$custom['gamepoints'] = array( 'plus' => $gamepoints[0], 'minus' => $gamepoints[1] );
 
 		return $custom;

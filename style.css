@@ -36,6 +36,65 @@
 	vertical-align: middle;
 }
 
+/* 
+ * Global Settings Page
+ */
+.colorbox {
+	display: inline-block;
+	margin-left: 5px;
+	width: 15px;
+	height: 15px;
+	border: 1px solid #000;
+}
+
+/*
+ * League page
+ */
+.subsubsub:after {
+	content: " ";
+	clear: both;
+	display: block;
+}
+.subsubsub {
+	margin-bottom: 1.5em;
+}
+.league-blocks {
+	clear: both;
+}
+.league-blocks h2.header {
+	margin-bottom: 0;
+}
+.championship-blocks {
+	clear: both;
+}
+
+/*
+ * sortable tables 
+ */
+tbody.sortable tr:hover th,
+tbody.sortable tr:hover td {
+	border-top: 1px solid #585858;
+	border-bottom: 1px solid #585858;
+}
+tbody.sortable th,
+tbody.sortable td {
+	background-color: #fff;
+}
+tbody.sortable tr.alternate th,
+tbody.sortable tr.alternate td {
+	background-color: #f9f9f9;
+}
+
+/*
+ * Admin Crosstable
+ */
+.widefat.crosstable {
+	margin-top: 1em;
+}
+.widefat.crosstable th {
+	font-weight: bold;
+}
+
 /*--- Documentation ---*/
 dl.leaguemanager {
 	}
@@ -46,7 +105,26 @@ dl.leaguemanager dt {
 dl.leaguemanager dd {
 	text-indent: 1.5em;
 	}
-
+ul.doc-import-structure {
+	list-style: none;
+	margin-left: 0;
+}
+ul.doc-import-structure li {
+	float: left;
+	border: 1px solid #585858;
+	margin-right: 0.2em;
+	background: #f1f1f1;
+	padding: 0.5em;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	font-weight: bold;
+}
+ul.doc-import-structure:after {
+	content: " ";
+	clear: both;
+	display: block;
+}
 p.match_info {
 	font-size: 0.9em;
 	margin-top: 1.5em;
@@ -134,24 +212,31 @@ div.leaguemanager_widget_control select {
 /*
 * @section: Frontend Tables
 */
-table.leaguemanager {
+table.leaguemanager,
+div.matchlist table.leaguemanager {
 	text-align: left;
 	border: 0;
 	border-collapse: collapse;
 	width: 100%;
 	margin: 1em auto 1.5em auto;
 }
-table.leaguemanager th {
+table.leaguemanager th,
+div.matchlist table.leaguemanager {
 	padding: 2px 3px;
 	margin: 0;
 	border-bottom: 1px solid;
 	}
-table.leaguemanager td {
+table.leaguemanager td,
+div.matchlist table.leaguemanager {
 	vertical-align: middle;
 	padding: 3px;
 	border: 0;
 	margin: 0;
 	}
+table.leaguemanager.matchtable a,
+table.leaguemanager .last5 a {
+	border: 0;
+}
 
 table.leaguemanager a.W { background-position:0 -150px; }
 table.leaguemanager a.D { background-position:0 -200px; }
@@ -163,7 +248,7 @@ table.leaguemanager a.D:hover { background-position:0 -350px; }
 table.leaguemanager a.L:hover { background-position:0 -400px; }
 table.leaguemanager a.N:hover { background-position:0 -700px; }
 
-table.leaguemanager .last5Icon a { background-image: url(images/last5.png); position: relative; top: 0px; }
+table.leaguemanager .last5Icon a { border: 0; background-image: url(images/last5.png); position: relative; top: 0px; }
 
 table.leaguemanager .last5-bg { float:left; width:20px; height:17px; }
 
@@ -185,6 +270,7 @@ table.leaguemanager .logo img {
 table.leaguemanager .rank {
 	text-align: center;
 	padding: 0;
+	font-weight: bold;
 	width: 1.2em;
 	}
 table.leaguemanager .home {
@@ -204,60 +290,231 @@ table.leaguemanager a {
 	text-decoration: none;
 }
 
+
 /*--- Crosstable Popup---*/
 div#leaguemanager_crosstable div { text-align: center; padding-top: 1em;}
 
+table.leaguemanager.crosstable {
+}
+table.leaguemanager.crosstable th {
+	border: 1px solid;
+}
+table.leaguemanager.crosstable td {
+	border: 1px solid;
+}
+
+
 /*--- Archive ---*/
+.jquery-ui-tab,
+.jquery-ui-tabs .tab-content {
+	overflow: auto;
+}
 div#leaguemanager_archive_selections { margin-bottom: 1em; }
 
 /*--- Single Match ---*/
-div.match h3 { clear: none; text-align: center;}
-div.match p.score, div.match p.matchdate { font-weight: bold; font-size: 1.2em; text-align: center; margin-top: 2em; }
-div.match .home_logo img, div.match .away_logo img { font-size: 1em; vertical-align: middle; }
-div.match span.home_logo { margin-right: 1em; }
-div.match span.away_logo { margin-left: 1em; }
-
-div.match table { width: 100%; margin-top: 1.5em; clear: both; }
-div.match table, div.match table th, div.match table td { border: 0; background: transparent; }
-div.match table th, div.match table td { vertical-align: top; margin: 0; }
-
-/*--- Team Page ---*/
-div.teampage {
-	position: relative;
+div.match .match-content:after {
+	content: " ";
+	display: block;
+	clear: both;
 }
-div.teampage .logo {
-	position: absolute;
-	right: 0;
-	top: 0;
+div.match h4 {
+	clear: both;
+	text-align: center;
+	}
+div.match p.score,
+div.match p.matchdate {
+	font-weight: bold;
+	font-size: 1.2em;
+	text-align: center;
+	margin-top: 2em;
+}
+div.match .home_logo img,
+div.match .away_logo img {
+	font-size: 1em;
+	vertical-align: middle;
+}
+div.match span.home_logo {
+	margin-right: 1em;
+}
+div.match span.away_logo {
+	margin-left: 1em;
+}
+
+div.match table {
+	width: 100%;
+	margin-top: 1.5em;
+	clear: both;
+}
+div.match table,
+div.match table th,
+div.match table td {
+	border: 0;
+	background: transparent;
+}
+div.match table th,
+div.match table td {
+	vertical-align: top;
+	margin: 0;
+}
+div.match .match_day,
+div.match .date,
+div.match .location,
+div.match .report {
+	text-align: center;
+	margin: 0;
+}
+div.match .match-stats {
+	clear: both;
+}
+
+/*
+ * Match List
+ */
+div.matchlist {
 	margin-bottom: 1em;
 }
-div.teampage dl {
+div.matchlist h3.header {
+	cursor: pointer;
+}
+div.matchlist h3.header.ui-accordion-header {
+	padding-left: 2em !important;
+}
+div.matchlist table.leaguemanager  th {
+	padding: 4px;
+	margin: 0;
+	border: 1px solid;
+}
+
+/*--- Team Page ---*/
+div.teampage,
+div.teamlist {
+	position: relative;
+	clear: both;
+	margin-bottom: 1em;
+}
+div.teamlist h3.header {
+	cursor: pointer;
+}
+div.teamlist h3.header.ui-accordion-header {
+	padding-left: 2em !important;
+}
+div.team-content .prev_match,
+div.team-content .next_match {
+	margin-bottom: 1em;
+}
+div.team-content:after {
+	content: " ";
+	display: block;
+	clear: both;
+}
+div.teampage h3.header,
+div.teamlist h3.header,
+div.match h3.header,
+div.team-content .prev_match .header,
+div.team-content .next_match .header {
+	margin: 0;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	padding: 0.5em;
+	-moz-border-top-left-radius: 4px;
+	-moz-border-top-right-radius: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	border: 1px solid;
+	border-bottom: 0;
+	font-weight: bold;
+	-webkit-box-shadow:0 1px 1px rgba(0,0,0,1);
+	-moz-box-shadow:0 1px 1px rgba(0,0,0,1);
+	-ms-box-shadow:0 1px 1px rgba(0,0,0,1);
+	-o-box-shadow:0 1px 1px rgba(0,0,0,1);
+	box-shadow:0 1px 1px rgba(0,0,0,1);
+}
+div.team-content .prev_match .header,
+div.team-content .next_match .header {
+	font-size: 1em;
+}
+div.team-content,
+div.match .match-content,
+div.team-content .prev_match .content,
+div.team-content .next_match .content {
+	position: relative;
+	padding: 0.5em;
+	-webkit-box-shadow:0 1px 1px rgba(0,0,0,1);
+	-moz-box-shadow:0 1px 1px rgba(0,0,0,1);
+	-ms-box-shadow:0 1px 1px rgba(0,0,0,1);
+	-o-box-shadow:0 1px 1px rgba(0,0,0,1);
+	box-shadow:0 1px 1px rgba(0,0,0,1);
+	margin: 0 0 2px 0;
+}
+div.team-content,
+.ui-accordion-content {
+	padding: 0.5em !important;
+}
+div.team-content .matches {
+}
+div.team-content .teamlogo:after {
+	content: " ";
+	clear: both;
+	display: table;
+}
+div.team-content .teamlogo img {
+	/*position: absolute;
+	right: 1em;
+	top: 1em;*/
+	display: block;
+	margin: 0 0 1em auto;
+}
+div.team-content dl.team {
 	margin: 1em 0;
 	float: left;
 }
-div.teampage dl dt {
+div.team-content dl.team dt {
 	float: left;
 	font-weight: bold;
 	width: 9em;
 	clear: both;
 	padding: 0.3em 0;
 }
-div.teampage dl dd {
+div.team-content dl.team dd {
 	padding: 0.3em 0;
 	float: left;
 }
-div.teampage .matches {
-	margin-top: 90px;
-	float: right;
+div.team-content .matches {
+	/*margin-top: 90px;*/
+	/*float: right;*/
 }
-div.teampage .next_match {
+div.team-content .next_match {
+	
 }
-div.teampage .prev_match {
+div.team-content .prev_match {
+	margin-right: 0 !important;
 }
-div.teampage .prev_match .score {
+div.team-content .prev_match p,
+div.team-content .next_match p {
+	margin: 0;
+	padding: 0.3em 0;
+}
+div.team-content .prev_match .score,
+div.team-content .next_match .score {
 	font-size: 1.3em;
+	text-align: center;
 	font-weight: bold;
-	margin-top: 0.5em;
+}
+div.team-content .team-projectmanager {
+	clear: both;
+	position: relative;
+}
+
+
+div.teamlist .header .ui-icon {
+/*	background-image: none;*/
+}
+
+.tablist a {
+	border: 0;
 }
 
 
@@ -348,6 +605,37 @@ div.teampage .prev_match .score {
 	background-color: transparent;
 	}
 
+/*--- Fancy Slideshow Overlay ---*/
+.fancy-slideshow .slide-overlay.leaguemanager,
+.fancy-slideshow .cycle-overlay.leaguemanager {
+}
+.fancy-slideshow .slide-overlay.leaguemanager .title,
+.fancy-slideshow .cycle-overlay.leaguemanager .title {
+	font-size: 1.5em;
+}
+.fancy-slideshow .slide-overlay.leaguemanager .title .match_title,
+.fancy-slideshow .cycle-overlay.leaguemanager .title .match_title {
+	margin: 0;
+}
+.fancy-slideshow .slide-overlay.leaguemanager .title .logos,
+.fancy-slideshow .cycle-overlay.leaguemanager .title .logos {
+	margin: 0;
+}
+.fancy-slideshow .slide-overlay.leaguemanager .title .logos .result,
+.fancy-slideshow .cycle-overlay.leaguemanager .title .logos .result {
+	margin: 0 0.5em;
+}
+.fancy-slideshow .slide-overlay.leaguemanager .title img.logo,
+.fancy-slideshow .cycle-overlay.leaguemanager .title img.logo {
+	display: inline;
+	width: auto !important;
+	height: auto !important;
+}
+.fancy-slideshow .slide-overlay.leaguemanager .description p,
+.fancy-slideshow .cycle-overlay.leaguemanager .description p {
+	margin: 0;
+	padding: 0;
+}
 
 /* Pagination */
 

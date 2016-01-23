@@ -38,6 +38,34 @@ function leaguemanager_display_prev_match_box( $number, $instance ) {
 
 
 /**
+ * get last N matches of given team
+ *
+ * @param int $team_id
+ * @param int $ne number of matches
+ */
+function get_last_matches( $team_id, $n = 1 ) {
+	global $leaguemanager;
+	
+	$matches = $leaguemanager->getMatches( array( 'time' => 'prev', 'team_id' => intval($team_id), 'limit' => intval($n) ) );
+	return $matches;
+}
+
+
+/**
+ * get next N matches of given team
+ *
+ * @param int $team_id
+ * @param int $ne number of matches
+ */
+function get_next_matches( $team_id, $n = 1 ) {
+	global $leaguemanager;
+	
+	$matches = $leaguemanager->getMatches( array( 'time' => 'next', 'team_id' => intval($team_id), 'limit' => intval($n) ) );
+	return $matches;
+}
+
+
+/**
  * display standings table manually
  *
  * @param int $league_id League ID
@@ -66,7 +94,7 @@ function get_latest_results($id_team, $limit = 5) {
              FROM {$wpdb->leaguemanager_matches}
              WHERE (home_team = %d OR away_team = %d)
              AND (DATEDIFF(NOW(), `date`) >= 0)
-             AND (home_points IS NOT NULL OR away_points IS NOT NULL)
+             AND (home_points != '' OR away_points != '')
              ORDER BY date DESC
              LIMIT %d", $id_team, $id_team, $limit) );
 

@@ -106,7 +106,7 @@ else :
 				$form_title = $submit_title = __( 'Add Matches', 'leaguemanager' );
 				$max_matches = ceil($leaguemanager->getNumTeams($league->id, $group)); // set number of matches to add to half the number of teams per match day
 			}
-			//$match_day = 1;
+			$match_day = 1;
 			$matches[] = new stdClass();
 			$matches[0]->year = ( isset($_GET['season']) && is_numeric($_GET['season']) ) ? intval($_GET['season']) : date("Y");
 		}
@@ -116,6 +116,11 @@ else :
 
 		for ( $h = 0; $h < $max_matches; $h++ ) {
 			$matches[] = new stdClass();
+			$matches[$h]->day = '';
+			$matches[$h]->month = '';
+			$matches[$h]->year = '';
+			$matches[$h]->location = '';
+			$matches[$h]->match_day = 1;
 			$matches[$h]->hour = $league->default_match_start_time['hour'];
 			$matches[$h]->minutes = $league->default_match_start_time['minutes'];
 		}
@@ -141,7 +146,8 @@ else :
 
 <div class="wrap">
   <p class="leaguemanager_breadcrumb"><a href="admin.php?page=leaguemanager"><?php _e( 'LeagueManager', 'leaguemanager' ) ?></a> &raquo; <a href="admin.php?page=leaguemanager&amp;subpage=show-league&amp;league_id=<?php echo $league->id ?>"><?php echo $league->title ?></a> &raquo; <?php echo $form_title ?></p>
-    <h2><?php echo $form_title ?></h2>
+	<h1><?php printf( "%s &mdash; %s",  $league->title, $form_title ); ?></h1>
+    
       <?php if ( has_action( 'leaguemanager_edit_match_'.$league->sport ) ) : ?>
         <?php do_action( 'leaguemanager_edit_match_'.$league->sport, $league, $teams, $season, $max_matches, $matches, $submit_title, $mode ) ?>
       <?php else : ?>
@@ -257,7 +263,7 @@ else :
 			<input type="hidden" name="final" value="<?php echo $finalkey ?>" />
 			<input type="hidden" name="updateLeague" value="match" />
 
-			<p class="submit"><input type="submit" value="<?php echo $submit_title ?> &raquo;" class="button button-primary" /></p>
+			<p class="submit"><input type="submit" value="<?php echo $submit_title ?>" class="button button-primary" /></p>
 		</form>
 		<?php endif; ?>
 

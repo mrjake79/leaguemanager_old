@@ -13,54 +13,82 @@ The following variables are usable:
 */
 ?>
 
+<?php if ( isset($team->single) && $team->single ) : ?>
 <div class="teampage">
+<?php endif; ?>
 
-	<h3><?php echo $team->title ?></h3>
+	<h3 class="header"><?php echo $team->title ?></h3>
 
-	<?php if ( isset($_GET['show']) ) : ?>
-		<!-- Single Team Member -->
-		<?php dataset($_GET['show']); ?>
-	<?php else : ?>
+	<div class="team-content">
+		<dl class="team">
+			<dt><?php _e( 'Rank', 'leaguemanager' ) ?></dt><dd><?php echo $team->rank ?></dd>
+			<dt><?php _e( 'Matches', 'leaguemanager' ) ?></dt><dd><?php echo $team->done_matches ?></dd>
+			<dt><?php _e( 'Won', 'leaguemanager' ) ?></dt><dd><?php echo $team->won_matches ?></dd>
+			<dt><?php _e( 'Tied', 'leaguemanager' ) ?></dt><dd><?php echo $team->draw_matches ?></dd>
+			<dt><?php _e( 'Lost', 'leaguemanager' ) ?></dt><dd><?php echo $team->lost_matches ?></dd>
+			<?php if ( !empty($team->coach) ) : ?>
+			<dt><?php _e( 'Coach', 'leaguemanager' ) ?></dt><dd><?php echo $team->coach ?></dd>
+			<?php endif; ?>
+			<?php if ( !empty($team->website) ) : ?>
+			<dt><?php _e( 'Website', 'leaguemanager' ) ?></dt><dd><a href="<?php echo $team->website ?>" target="_blank"><?php echo $team->website ?></a></dd>
+			<?php endif; ?>
+		</dl>
 
-	<p class="logo"><img src="<?php echo $team->logo ?>" alt="<?php _e( 'Logo', 'leaguemanager' ) ?>" /></p>
+		<?php if ( !empty($team->logo) ) : ?>
+		<p class="teamlogo alignright"><img src="<?php echo $team->logo ?>" alt="<?php _e( 'Logo', 'leaguemanager' ) ?>" /></p>
+		<?php endif; ?>
+		
+		<div class="alignright matches">			
+			<?php if ( $team->next_match ) : ?>
+			<div class="next_match alignleft">
+				<h4 class="header"><?php _e( 'Next Match','leaguemanager' ) ?></h4>
+				<div class="content">
+					<p class="match"><?php echo $team->next_match->match ?></p>
+					<p class='match_day'><?php printf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $team->next_match->match_day); ?></p>
+					<p class='match_date'><?php echo mysql2date("j. F Y", $team->next_match->date) ?>&#160;<span class='time'><?php echo $team->next_match->time ?></span> <span class='location'><<?php echo $team->next_match->location ?></span></p>
+					<p class="score">&#160;</p>
+				</div>
+			</div>
+			<?php endif; ?>
+
+			<?php if ( $team->prev_match ) : ?>
+			<div class="prev_match alignleft">
+				<h4 class="header"><?php _e( 'Last Match','leaguemanager' ) ?></h4>
+				<div class="content">
+					<p class="match"><?php echo $team->prev_match->match ?></p>
+					<p class='match_day'><?php printf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $team->prev_match->match_day); ?></p>
+					<p class='match_date'><?php echo mysql2date("j. F Y", $team->prev_match->date) ?>&#160;<span class='time'><?php echo $team->prev_match->time ?></span> <span class='location'><?php echo $team->prev_match->location ?></span></p>
+					<p class="score"><?php echo $team->prev_match->score ?></p>
+				</div>
+			</div>
+			<?php endif; ?>
+		</div>
+
+		<?php if ( function_exists('project') ) : ?>
+		<div class="team-projectmanager<?php if ( $team->projects_tabs ) echo ' jquery-ui-tabs'; ?>">
+			<ul class="tablist" style="display: none";>
+				<li><a href="#roster-<?php echo $team->id ?>"><?php _e( 'Team Roster', 'leaguemanaager' ) ?></a></li>
+				<li><a href="#profile-<?php echo $team->id ?>"><?php _e( 'Team Profile', 'leaguemanaager' ) ?></a></li>
+			</ul>
+			
+			<?php if ( !empty($team->roster['id']) ) : ?>
+			<div id="roster-<?php echo $team->id ?>" class="tab">
+				<h4 class="header"><?php _e( 'Team Roster', 'leaguemanager' ) ?></h4>
+				<?php $cat_id = ( isset($team->roster['cat_id']) && $team->roster['cat_id'] > 0 ) ? intval($team->roster['cat_id']) : false; ?>
+				<?php project( $team->roster['id'], array('cat_id' => $cat_id, 'template' => 'gallery', 'show_title' => false, 'selections' => false, 'searchform' => false) ); ?>
+			</div>
+			<?php endif; ?>
+			
+			<?php if ( !empty($team->profile) ) : ?>
+			<div id="profile-<?php echo $team->id ?>" class="tab">
+				<h4 class="header"><?php _e( 'Team Profile', 'leaguemanager' ) ?></h4>
+				<?php dataset( $team->profile, array('template' => 'leaguemanager-teamprofile') ); ?>
+			</div>
+			<?php endif; ?>
+		</div>
+		<?php endif; ?>
+	</div>
 	
-	<dl>
-		<dt><?php _e( 'Rank', 'leaguemanager' ) ?></dt><dd><?php echo $team->rank ?></dd>
-		<dt><?php _e( 'Matches', 'leaguemanager' ) ?></dt><dd><?php echo $team->done_matches ?></dd>
-		<dt><?php _e( 'Won', 'leaguemanager' ) ?></dt><dd><?php echo $team->won_matches ?></dd>
-		<dt><?php _e( 'Tied', 'leaguemanager' ) ?></dt><dd><?php echo $team->draw_matches ?></dd>
-		<dt><?php _e( 'Lost', 'leaguemanager' ) ?></dt><dd><?php echo $team->lost_matches ?></dd>
-		<dt><?php _e( 'Coach', 'leaguemanager' ) ?></dt><dd><?php echo $team->coach ?></dd>
-		<dt><?php _e( 'Website', 'leaguemanager' ) ?></dt><dd><a href="http://<?php echo $team->website ?>" target="_blank"><?php echo $team->website ?></a></dd>
-	</dl>
-
-	<div class="matches">
-	<?php if ( $next_match ) : ?>
-	<div class="next_match">
-		<h4><?php _e( 'Next Match','leaguemanager' ) ?></h4>
-		<p class="match"><?php echo $next_match->match ?></p>
-		<p class='match_day'><?php printf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $next_match->match_day); ?></p>
-
-		<?php $time = ( '00:00' == $next_match->hour.":".$next_match->minutes ) ? '' : mysql2date(get_option('time_format'), $next_match->date); ?>
-		<p class='match_date'><?php echo mysql2date("j. F Y", $next_match->date) ?>&#160;<span class='time'><?php echo $time ?></span> <span class='location'><?php echo $next_match->location ?></span></p>
-	</div>
-	<?php endif; ?>
-
-	<?php if ( $prev_match ) : ?>
-	<div class="prev_match">
-		<h4><?php _e( 'Last Match','leaguemanager' ) ?></h4>
-		<p class="match"><?php echo $prev_match->match ?></p>
-		<p class='match_day'><?php printf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $prev_match->match_day); ?></p>
-		<p class="score"><?php echo $prev_match->score ?></p>
-	</div>
-	<?php endif; ?>
-	</div>
-
-	<?php if ( !empty($team->roster['id']) && function_exists('project') ) : ?>
-<!--		<h4 style="clear: both;"><?php _e( 'Team Roster', 'leaguemanager' ) ?></h4>-->
-		<?php project($team->roster['id'], array('selections' => false, 'searchform' => false) ); ?>
-	<?php endif; ?>
-	
-	<?php endif; ?>
+<?php if ( isset($team->single) && $team->single ) : ?>
 </div>
-<br style="clear: both;" />
+<?php endif; ?>

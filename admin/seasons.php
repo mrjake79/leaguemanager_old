@@ -36,7 +36,8 @@ else :
 
 	<div class="narrow">
 
-	<h2><?php _e( 'Seasons', 'leaguemanager' ) ?></h2>
+	<h1><?php printf( "%s &mdash; %s",  $league->title, __( 'Seasons', 'leaguemanager' ) ); ?></h1>
+	
 	<form id="seaons-filter" action="" method="post">
 		<?php wp_nonce_field( 'seasons-bulk' ) ?>
 		
@@ -72,13 +73,12 @@ else :
 		</table>
 	</form>
 	
-
-	<h3>
+	<h2>
 		<?php if ( $season_id ) _e('Edit Season', 'leaguemanager'); else _e( 'Add new Season', 'leaguemanager' ) ?>
 		<?php if ( $season_id ) : ?>
 		(<a href="admin.php?page=leaguemanager&amp;subpage=seasons&amp;league_id=<?php echo $league->id ?>"><?php _e( 'Add New', 'leaguemanager') ?></a>)
 		<?php endif; ?>
-	</h3>
+	</h2>
 	<form action="admin.php?page=leaguemanager&amp;subpage=seasons&amp;league_id=<?php echo $league->id ?>" method="post">
 		<table class="form-table">
 			<tr valign="top">
@@ -90,7 +90,7 @@ else :
 			<tr valign="top">
 				<th scope="row"><label for="num_match_days"><?php _e( 'Number of Match Days', 'leaguemanager' ) ?></label></th>
 				<td>
-					<input type="text" name="num_match_days" id="num_match_days" value="<?php echo $season_data['num_match_days'] ?>" size="2" />
+					<input type="number" min="1" step="1" class="small-text" name="num_match_days" id="num_match_days" value="<?php echo $season_data['num_match_days'] ?>" size="2" />
 				</td>
 			</tr>
 			<?php if ( !$season_id ) : ?>

@@ -103,6 +103,25 @@ class LeagueManager
 	
 	
 	/**
+	 * recursively remove directory
+	 *
+	 * @param string $dir
+	 *
+	 */
+	function removeDir($dir)
+	{
+		$files = array_diff(scandir($dir), array('.','..'));
+		foreach ($files AS $file) {
+			if (is_dir("$dir/$file"))
+				$this->removeDir("$dir/$file");
+			else
+				@unlink("$dir/$file");
+		}
+		@rmdir($dir);
+	}
+	
+	
+	/**
 	 * load options
 	 *
 	 * @param none
@@ -287,15 +306,28 @@ class LeagueManager
 	 * returns image directory
 	 *
 	 * @param string|false $file
+	 * @param boolean $root
 	 * @return string
 	 */
-	function getImagePath( $file = false )
+	function getImagePath( $file = false, $root = false )
 	{
+		if ($root || $this->getLeagueID() == 0)
+			$base = WP_CONTENT_DIR.'/uploads/leagues';
+		else
+			$base = WP_CONTENT_DIR.'/uploads/leagues/League-'.$this->getLeagueID();
+			
+		if ( $file ) {
+			return $base .'/'. basename($file);
+		} else {
+			return $base;
+		}
+		/*
 		$league = $this->getCurrentLeague();
 		if ( $file )
 			return trailingslashit($_SERVER['DOCUMENT_ROOT']) . substr($file,strlen($_SERVER['HTTP_HOST'])+8, strlen($file));
 		 else 
 			return ABSPATH . $league->upload_dir;
+		*/
 	}
 	
 	
@@ -303,15 +335,31 @@ class LeagueManager
 	 * returns url of image directory
 	 *
 	 * @param string|false $file image file
+	 * @param boolean $root
 	 * @return string
 	 */
-	function getImageUrl( $file = false )
+	function getImageUrl( $file = false, $root = false )
 	{
+		if ($root || $this->getLeagueID() == 0)
+			$base = WP_CONTENT_URL.'/uploads/leagues';
+		else
+			$base = WP_CONTENT_URL.'/uploads/leagues/League-'.$this->getLeagueID();
+			
+		if ( $file ) {
+			if (file_exists($this->getImagePath($file, $root)))
+				return esc_url($base .'/'. basename($file));
+			else
+				return false;
+		} else {
+			return esc_url($base);
+		}
+		/*
 		$league = $this->getCurrentLeague();
 		if ( $file )
 			return trailingslashit(get_option('siteurl')) . trailingslashit($league->upload_dir) . $file;
 		else
 			return trailingslashit(get_option('siteurl')) . $league->upload_dir;
+		*/
 	}
 
 	
@@ -324,9 +372,9 @@ class LeagueManager
 	function getThumbnailUrl( $file )
 	{
 		if ( file_exists($this->getThumbnailPath($file)) )
-			return trailingslashit(dirname($file)) . 'thumb_' . basename($file);
+			return $this->getImageUrl('thumb_'.basename($file));//trailingslashit(dirname($file)) . 'thumb_' . basename($file);
 		else
-			return trailingslashit(dirname($file)) . 'thumb.' . basename($file);
+			return $this->getImageUrl('thumb.'.basename($file));//return trailingslashit(dirname($file)) . 'thumb.' . basename($file);
 	}
 
 	
@@ -338,7 +386,8 @@ class LeagueManager
 	 */
 	function getThumbnailPath( $file )
 	{
-		return trailingslashit($_SERVER['DOCUMENT_ROOT']) . dirname(substr($file,strlen($_SERVER['HTTP_HOST'])+8, strlen($file))) . '/thumb_' . basename($file);
+		return $this->getImagePath("thumb_" . basename($file));
+		//return trailingslashit($_SERVER['DOCUMENT_ROOT']) . dirname(substr($file,strlen($_SERVER['HTTP_HOST'])+8, strlen($file))) . '/thumb_' . basename($file);
 	}
 	
 	
@@ -565,7 +614,9 @@ class LeagueManager
 		if ( !isset($league->num_descend) ) $league->num_descend = "";
 		if ( !isset($league->num_relegation) ) $league->num_relegation = "";
 		if ( !isset($league->num_matches_per_page) ) $league->num_matches_per_page = 10;
+		if ( !isset($league->teamprofiles) ) $league->teamprofiles = array('project_id' => 0, 'cat_id' => 0);
 		if ( !isset($league->use_stats) ) $league->use_stats = 0;
+		if ( !isset($league->slideshow) ) $league->slideshow = array( 'season' => 'latest', 'num_matches' => 0, 'show_logos' => 1 );
 		
 		return $league;
 		}
@@ -619,25 +670,28 @@ class LeagueManager
 		}
 		$orderby = $orderby_string;
 		
-		$teamlist = $wpdb->get_results( "SELECT `title`, `website`, `coach`, `stadium`, `logo`, `home`, `group`, `roster`, `points_plus`, `points_minus`, `points2_plus`, `points2_minus`, `add_points`, `done_matches`, `won_matches`, `draw_matches`, `lost_matches`, `diff`, `league_id`, `id`, `season`, `rank`, `status`, `custom` FROM {$wpdb->leaguemanager_teams} $search ORDER BY $orderby" );
-		$teams = array(); $i = 0;
+		$teamlist = $wpdb->get_results( "SELECT `title`, `website`, `coach`, `stadium`, `logo`, `home`, `group`, `roster`, `profile`, `points_plus`, `points_minus`, `points2_plus`, `points2_minus`, `add_points`, `done_matches`, `won_matches`, `draw_matches`, `lost_matches`, `diff`, `league_id`, `id`, `season`, `rank`, `status`, `custom` FROM {$wpdb->leaguemanager_teams} $search ORDER BY $orderby" );
+		$teams = array(); $i = 0; $class = '';
 		foreach ( $teamlist AS $team ) {
+			$class = ( 'alternate' == $class ) ? '' : 'alternate'; 
 			$team->custom = stripslashes_deep(maybe_unserialize($team->custom));
 			if ( 'ARRAY' == $output ) {
 				$teams[$team->id]['title'] = htmlspecialchars(stripslashes($team->title), ENT_QUOTES);
 				$teams[$team->id]['rank'] = $team->rank;
 				$teams[$team->id]['status'] = $team->status;
 				$teams[$team->id]['season'] = $team->season;
-				$teams[$team->id]['website'] = $team->website;
+				$teams[$team->id]['website'] = esc_url($team->website);
 				$teams[$team->id]['coach'] = stripslashes($team->coach);
 				$teams[$team->id]['stadium'] = stripslashes($team->stadium);
-				$teams[$team->id]['logo'] = $team->logo;
+				$teams[$team->id]['logo'] = ( !empty($team->logo) ) ? $this->getImageUrl(basename($team->logo)) : false;
 				$teams[$team->id]['home'] = $team->home;
 				$teams[$team->id]['group'] = $team->group;
+				$teams[$team->id]['class'] = $class;
 				$teams[$team->id]['roster'] = maybe_unserialize($team->roster);
 				if ( $this->hasBridge() ) {
 					global $lmBridge;
 					$teams[$team->id]['teamRoster'] = $lmBridge->getTeamRoster(maybe_unserialize($team->roster));
+					$teams[$team->id]['profileData'] = $lmBridge->getTeamProfile($team->profile);
 				}
 				$teams[$team->id]['points'] = array( 'plus' => $team->points_plus, 'minus' => $team->points_minus );
 				$teams[$team->id]['points2'] = array( 'plus' => $team->points2_plus, 'minus' => $team->points2_minus );
@@ -645,14 +699,18 @@ class LeagueManager
 				foreach ( (array)$team->custom AS $key => $value )
 					$teams[$team->id][$key] = stripslashes_deep($value);
 			} else {
+				$teamlist[$i]->logo = ( !empty($team->logo) ) ? $this->getImageUrl(basename($team->logo)) : false;
 				$teamlist[$i]->roster = maybe_unserialize($team->roster);
 				if ( $this->hasBridge() ) {
 					global $lmBridge;
 					$teamlist[$i]->teamRoster = $lmBridge->getTeamRoster(maybe_unserialize($team->roster));
+					$teamlist[$i]->profileData = $lmBridge->getTeamProfile($team->profile);
 				}
 				$teamlist[$i]->title = htmlspecialchars(stripslashes($team->title), ENT_QUOTES);
+				$teamlist[$i]->website = esc_url($team->website);
 				$teamlist[$i]->coach = stripslashes($team->coach);
 				$teamlist[$i]->stadium = stripslashes($team->stadium);
+				$teamlist[$i]->class = $class;
 				$teamlist[$i] = (object)array_merge((array)$team, (array)$team->custom);
 			}
 
@@ -677,7 +735,7 @@ class LeagueManager
 	{
 		global $wpdb;
 
-		$team = $wpdb->get_results( $wpdb->prepare("SELECT `title`, `website`, `coach`, `stadium`, `logo`, `home`, `group`, `roster`, `points_plus`, `points_minus`, `points2_plus`, `points2_minus`, `add_points`, `done_matches`, `won_matches`, `draw_matches`, `lost_matches`, `diff`, `league_id`, `id`, `season`, `rank`, `status`, `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d' ORDER BY `rank` ASC, `id` ASC", intval($team_id)) );
+		$team = $wpdb->get_results( $wpdb->prepare("SELECT `title`, `website`, `coach`, `stadium`, `logo`, `home`, `group`, `roster`, `profile`, `points_plus`, `points_minus`, `points2_plus`, `points2_minus`, `add_points`, `done_matches`, `won_matches`, `draw_matches`, `lost_matches`, `diff`, `league_id`, `id`, `season`, `rank`, `status`, `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d' ORDER BY `rank` ASC, `id` ASC", intval($team_id)) );
 		
 		if (!isset($team[0])) return false;
 		
@@ -685,12 +743,15 @@ class LeagueManager
 
 		$team->title = htmlspecialchars(stripslashes($team->title), ENT_QUOTES);
 		$team->coach = stripslashes($team->coach);
+		$team->website = esc_url($team->website);
 		$team->stadium = stripslashes($team->stadium);
 		$team->custom = stripslashes_deep(maybe_unserialize($team->custom));
 		$team->roster = maybe_unserialize($team->roster);
+		$team->logo = ( !empty($team->logo) ) ? $this->getImageUrl(basename($team->logo)) : false;
 		if ( $this->hasBridge() ) {
 			global $lmBridge;
 			$team->teamRoster = $lmBridge->getTeamRoster($team->roster);
+			$team->profileData = $lmBridge->getTeamProfile($team->profile);
 		}
 
 		$team = (object)array_merge((array)$team,(array)$team->custom);
@@ -882,7 +943,7 @@ class LeagueManager
 	{
 	 	global $wpdb;
 	
-		$defaults = array( 'league_id' => false, 'count' => false, 'season' => false, 'group' => false, 'final' => false, 'match_day' => false, 'time' => false, 'home_only' => false, 'winner_id' => false, 'loser_id' => false, 'team_id' => false, 'home_team' => false, 'away_team' => false, 'home_points' => false, 'away_points' => false, 'limit' => true, 'orderby' => array("date" => "ASC"));
+		$defaults = array( 'league_id' => false, 'count' => false, 'season' => false, 'group' => false, 'final' => false, 'match_day' => false, 'time' => false, 'home_only' => false, 'winner_id' => false, 'loser_id' => false, 'team_id' => false, 'home_team' => false, 'away_team' => false, 'home_points' => false, 'away_points' => false, 'limit' => true, 'orderby' => array("date" => "ASC", "id" => "ASC"));
 		$args = array_merge($defaults, (array)$args);
 		extract($args, EXTR_SKIP);
 		
@@ -998,7 +1059,12 @@ class LeagueManager
 			$matches[$i]->custom = $match->custom = stripslashes_deep(maybe_unserialize($match->custom));
 			$matches[$i] = (object)array_merge((array)$match, (array)$match->custom);
 		//	unset($matches[$i]->custom);
+		
+			$matches[$i]->hadOvertime = ( isset($match->overtime) && $match->overtime['home'] != '' && $match->overtime['away'] != '' ) ? true : false;
+			$matches[$i]->hadPenalty = ( isset($match->penalty) && $match->penalty['home'] != '' && $match->penalty['away'] != '' ) ? true : false;
 
+			$matches[$i]->time = ( '00:00' == $match->hour.":".$match->minutes ) ? '' : mysql2date(get_option('time_format'), $match->date);
+			
 			$i++;
 		}
 		return $matches;
@@ -1021,6 +1087,7 @@ class LeagueManager
 		$match->location = stripslashes($match->location);
 		$match->custom = stripslashes_deep(maybe_unserialize($match->custom));
 		$match = (object)array_merge((array)$match, (array)$match->custom);
+		$match->time = ( '00:00' == $match->hour.":".$match->minutes ) ? '' : mysql2date(get_option('time_format'), $match->date);
 		//unset($match->custom);
 
 		return $match;
@@ -1034,9 +1101,9 @@ class LeagueManager
 	 * @param boolean show_logo
 	 *
 	 */
-	function getMatchTitle( $match_id, $show_logo = true)
+	function getMatchTitle( $match_id, $show_logo = true, $match = false)
 	{
-		$match = $this->getMatch($match_id);
+		if ( !$match ) $match = $this->getMatch($match_id);
 		$league = $this->getLeague($match->league_id);
 		$teams = $this->getTeams( array("league_id" => $match->league_id, "season" => $match->season), 'ARRAY');
 
@@ -1085,7 +1152,7 @@ class LeagueManager
 	 * @param string $base
 	 * @return string
 	 */
-	function getPageLinks($current_page = false, $base = 'paged')
+	function getPageLinks($current_page = false, $base = 'match_paged')
 	{
 		if (!$current_page) $current_page = $this->getCurrentPage();
 		
@@ -1122,11 +1189,11 @@ class LeagueManager
 		
 		if (!$league_id) $league_id = $this->getLeagueID();
 		
-		$key = "paged_".$league_id;
-		if (isset($_GET['paged']))
-			$this->current_page = intval($_GET['paged']);
-		elseif (isset($wp->query_vars['paged']))
-			$this->current_page = max(1, intval($wp->query_vars['paged']));
+		$key = "match_paged_".$league_id;
+		if (isset($_GET['match_paged']))
+			$this->current_page = intval($_GET['match_paged']);
+		elseif (isset($wp->query_vars['match_paged']))
+			$this->current_page = max(1, intval($wp->query_vars['match_paged']));
 		elseif (isset($_GET[$key]))
 			$this->current_page = intval($_GET[$key]);
 		elseif (isset($wp->query_vars[$key]))
@@ -1173,6 +1240,71 @@ class LeagueManager
 	{
 		$this->num_max_pages = ( 0 == $this->getNumMatchesPerPage() ) ? 1 : ceil( $this->getNumMatchesQuery()/$this->getNumMatchesPerPage() );
 		return $this->num_max_pages;
+	}
+	
+	
+		/**
+	 * get specific field for crosstable
+	 *
+	 * @param int $curr_team_id
+	 * @param int $opponent_id
+	 * @param int $home
+	 * @return string
+	 */
+	function getCrosstableField($curr_team_id, $opponent_id, $home)
+	{
+		$match = $this->getMatches( array("home_team" => $curr_team_id, "away_team" => $opponent_id) );
+		if ($match) $match = $match[0];
+
+ 		if ( $match ) {
+			$score = $this->getScore($curr_team_id, $opponent_id, $match, $home);
+		} else {
+			$match = $this->getMatches( array("home_team" => $opponent_id, "away_team" => $curr_team_id) );
+			if ($match) $match = $match[0];
+			$score = $this->getScore($curr_team_id, $opponent_id, $match, $home);
+		}
+		
+		return $score;
+	}
+
+
+	/**
+	 * get score for specific field of crosstable
+	 *
+	 * @param int $curr_team_id
+	 * @param int $opponent_id
+	 * @param int $home
+	 * @return string
+	 */
+	function getScore($curr_team_id, $opponent_id, $match, $home = 0)
+	{
+		if ($match) {
+			if ( !empty($match->penalty['home']) && !empty($match->penalty['away']) ) {
+				$match->overtime = maybe_unserialize($match->overtime);
+				$match->penalty = maybe_unserialize($match->penalty);
+				$points = array( 'home' => $match->overtime['home']+$match->penalty['home'], 'away' => $match->overtime['away']+$match->penalty['away']);
+			} elseif ( !empty($match->overtime['home']) && !empty($match->overtime['away']) ) {
+				$match->overtime = maybe_unserialize($match->overtime);
+				$points = array( 'home' => $match->overtime['home'], 'away' => $match->overtime['away']);
+			} else {
+				$points = array( 'home' => $match->home_points, 'away' => $match->away_points );
+			}
+		}
+		
+		// unplayed match
+		if ( !$match || (NULL == $match->home_points && NULL == $match->away_points) )
+			$out = "-:-";
+		// match at home
+		elseif ( $curr_team_id == $match->home_team )
+			$out = sprintf("%s:%s", $points['home'], $points['away']);
+		// match away
+		elseif ( $opponent_id == $match->home_team )
+			$out = sprintf("%s:%s", $points['away'], $points['home']);
+		
+		if ( $home == 1 ) $out = "<strong>".$out."</strong>";
+		
+		$out = "<td class='num'>".$out."</td>";
+		return $out;
 	}
 	
 	

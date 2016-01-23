@@ -1,3 +1,47 @@
+jQuery(document).ready(function($) {
+	/* jQuery UI accordion list */	
+	jQuery( ".teamlist, .matchlist" ).accordion({
+		header: "h3.header",
+		collapsible: true,
+		heightStyle: "content"
+	});
+	
+	// Tabs
+	$('#tabs').tabs({
+		collapsible: true,
+	});
+	jQuery("#tabs>#tablist").css("display", "block");
+	jQuery("#tabs .header").css("display", "none");
+	
+	
+	/*
+	 * Make sure that jQuery UI Tab content containers have correct IDs based on tablist links
+	 */
+	var i = 0;
+	// get all tablist a elements
+	jQuery('.jquery-ui-tabs>.tablist a').each(function() {
+		// get href attribute of current link and remove leading #
+		var tab_id = jQuery(this).attr('href');
+		tab_id = tab_id.substring(1, tab_id.length);
+		// get corresponding tab container
+		var tab = jQuery('.jquery-ui-tabs .tab-content').eq(i);
+		// set ID of tab container
+		tab.attr('id', tab_id);
+		
+		// increment item count
+		i = i + 1;
+	});
+	
+	/*
+	 * Acivate Tabs
+	 */
+	jQuery('.jquery-ui-tabs').tabs({
+		collapsible: true,
+	});
+	jQuery(".jquery-ui-tabs>.tablist").css("display", "block");
+	jQuery(".jquery-ui-tabs .tab-header").css("display", "none");
+});
+
 var Leaguemanager = new Object();
 
 Leaguemanager.setMatchBox = function( requestURL, curr_index, operation, element, league_id, match_limit, widget_number, season, group, home_only, date_format ) {

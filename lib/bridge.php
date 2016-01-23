@@ -60,6 +60,7 @@ class LeagueManagerBridge extends LeagueManager
 			$projectmanager->init(intval($roster['id']));
 			$projectmanager->setCatID($cat_id);
 
+			/*
 			$search = "`project_id` = ".intval($roster['id']);
 			if ( $cat_id ) $search .= $projectmanager->getCategorySearchString();
 
@@ -75,13 +76,30 @@ class LeagueManagerBridge extends LeagueManager
 				$datasets[$i] = (object) array_merge( (array) $dataset, (array) $meta_data );
 				$i++;
 			}
-
+			*/
+			$datasets = $projectmanager->getDatasets( array('limit' => false) );
 			return $datasets;
 		}
 
 		return false;
 	}
 	
+	
+	/**
+	 * get team profile
+	 * 
+	 * @param int $profile (Dataset ID containing team profile)
+	 * @return object/boolean
+	 */
+	function getTeamProfile( $dataset_id )
+	{
+		global $projectmanager;
+		
+		if ( empty($dataset_id) || !isset($projectmanager) ) return false;
+		
+		$dataset = $projectmanager->getDataset($dataset_id);
+		return $dataset;
+	}
 	
 	/**
 	 * get team roster

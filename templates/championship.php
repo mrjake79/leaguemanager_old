@@ -54,48 +54,68 @@ The following variables are usable:
 
 
 <h3><?php _e( 'Final Matches', 'leaguemanager' ) ?></h3>
-<?php foreach ( $finals AS $final ) : ?>
-<h4><?php echo $final->name ?></h4>
-<table class="widefat">
-<thead>
-<tr>
-	<th><?php _e( '#', 'leaguemanager' ) ?></th>
-	<th><?php _e( 'Date','leaguemanager' ) ?></th>
-	<th><?php _e( 'Match','leaguemanager' ) ?></th>
-	<th><?php _e( 'Location','leaguemanager' ) ?></th>
-	<th><?php _e( 'Begin','leaguemanager' ) ?></th>
-	<th><?php _e( 'Score', 'leaguemanager' ) ?></th>
-</tr>
-</thead>
-<tbody id="the-list-<?php echo $final->key ?>" class="form-table">
-<?php foreach ( (array)$final->matches AS $no => $match ) : ?>
-<tr class="<?php echo $match->class ?>">
-	<td><?php echo $no ?></td>
-	<td><?php echo $match->date ?></td> 
-	<td><?php echo $match->title ?></td>
-	<td><?php echo $match->location ?></td>
-	<td><?php echo $match->time ?></td>
-	<td><?php echo $match->score ?></td>
-</tr>
-<?php endforeach; ?>
-</tbody>
-</table>
-<?php endforeach; ?>
-
+<div class="jquery-ui-tabs">
+	<ul class="tablist">
+	<?php foreach ( $finals AS $final ) : ?>
+		<li><a href="#final-<?php echo $final->key ?>"><?php echo $final->name ?></a></li>
+	<?php endforeach; ?>
+	</ul>
+	
+	<?php foreach ( $finals AS $final ) : ?>
+	<div id="final-<?php echo $final->key ?>">
+		<h4 class="header"><?php echo $final->name ?></h4>
+		<table class="widefat">
+		<thead>
+		<tr>
+			<th><?php _e( '#', 'leaguemanager' ) ?></th>
+			<th><?php _e( 'Date','leaguemanager' ) ?></th>
+			<th><?php _e( 'Match','leaguemanager' ) ?></th>
+			<th><?php _e( 'Location','leaguemanager' ) ?></th>
+			<th><?php _e( 'Begin','leaguemanager' ) ?></th>
+			<th><?php _e( 'Score', 'leaguemanager' ) ?></th>
+		</tr>
+		</thead>
+		<tbody id="the-list-<?php echo $final->key ?>" class="form-table">
+		<?php foreach ( (array)$final->matches AS $no => $match ) : ?>
+		<tr class="<?php echo $match->class ?>">
+			<td><?php echo $no ?></td>
+			<td><?php echo $match->date ?></td> 
+			<td><?php echo $match->title ?></td>
+			<td><?php echo $match->location ?></td>
+			<td><?php echo $match->time ?></td>
+			<td><?php echo $match->score ?></td>
+		</tr>
+		<?php endforeach; ?>
+		</tbody>
+		</table>
+	</div>
+	<?php endforeach; ?>
+</div>
 
 <h3><?php _e( 'Preliminary Rounds', 'leaguemanager' ) ?></h3>
-<?php foreach ( $championship->getGroups() AS $key => $group ) : ?>
-<?php $teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $league->season, "group" => $group) ); ?>
-<?php $matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $league->season, "final" => '', "group" => $group) ); ?>
+<div class="jquery-ui-tabs">
+	<ul class="tablist">
+		<?php foreach ( $championship->getGroups() AS $key => $group ) : ?>
+		<li><a href="#group-<?php echo $group ?>"><?php printf(__('Group %s', 'leaguemanager'), $group) ?></a></li>
+		<?php endforeach ?>
+		<li><a href="#intergroup-matches"><?php _e( 'Inter Group Matches', 'leaguemanager' ) ?></a></li>
+	</ul>
+	<?php foreach ( $championship->getGroups() AS $key => $group ) : ?>
+	<?php $teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $league->season, "group" => $group) ); ?>
+	<?php $matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $league->season, "final" => '', "group" => $group) ); ?>
 
-<h4><?php printf(__('Group %s', 'leaguemanager'), $group) ?></h4>
-<h5><?php _e( 'Standings', 'leaguemanager' ) ?></h5>
-<?php leaguemanager_standings( $league->id, array('season' => $league->season, 'group' => $group) ); ?>
+	<div id="group-<?php echo $group ?>">
+		<h4 class="header"><?php printf(__('Group %s', 'leaguemanager'), $group) ?></h4>
+		<h5><?php _e( 'Standings', 'leaguemanager' ) ?></h5>
+		<?php leaguemanager_standings( $league->id, array('season' => $league->season, 'group' => $group) ); ?>
 
-<h5><?php _e( 'Match Plan', 'leaguemanager' ) ?></h5>
-<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'limit' => 'false', 'group' => $group) ); ?>
+		<h5><?php _e( 'Match Plan', 'leaguemanager' ) ?></h5>
+		<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'limit' => 'false', 'group' => $group) ); ?>
+	</div>
+	<?php endforeach; ?>
 
-<?php endforeach; ?>
-
-<h5><?php _e( 'Inter Group Matches', 'leaguemanager' ) ?></h5>
-<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'group' => '', 'limit' => 'false') ); ?>
+	<div id="intergroup-matches">
+		<h4 class="header"><?php _e( 'Inter Group Matches', 'leaguemanager' ) ?></h5>
+		<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'group' => '', 'limit' => 'false') ); ?>
+	</div>
+</div>

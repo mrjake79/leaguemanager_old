@@ -15,6 +15,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: sports/gymnastics
+msgid "Floor"
+msgstr "Boden"
+
+msgid "Pommelhorse"
+msgstr "Pferd"
+
+msgid "Rings"
+msgstr "Ringe"
+
+msgid "Vault"
+msgstr "Sprung"
+
+msgid "Parallel bars"
+msgstr "Barren"
+
+msgid "High bars"
+msgstr "Reck"
+
+msgid "T"
+msgstr "U"
+
 #: admin/admin.php:24
 msgid "Match-Report"
 msgstr "Wettkampfbericht"
@@ -73,8 +95,8 @@ msgstr "Einstellungen"
 
 #: admin/admin.php:80
 #: admin/team.php:12
-msgid "Add Team"
-msgstr "Mannschaft hinzufügen"
+#msgid "Add Team"
+#msgstr "Mannschaft hinzufügen"
 
 #: admin/admin.php:81
 #: admin/match.php:96
@@ -307,7 +329,7 @@ msgstr "Heim Team"
 #: view/standings-pool.php:24
 #: view/standings-slim.php:20
 msgid "Pld"
-msgstr "Sp"
+msgstr "WK"
 
 #: admin/admin.php:1328
 #: view/standings-baseball.php:25
@@ -1442,7 +1464,7 @@ msgid "Won Games"
 msgstr "Gewonnene Wettkämpfe"
 
 msgid "Tie Games"
-msgstr "Unentsciedene Wettkämpfe"
+msgstr "Unentschiedene Wettkämpfe"
 
 msgid "Lost Games"
 msgstr "Verlorene Wettkämpfe"

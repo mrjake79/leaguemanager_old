@@ -8,7 +8,6 @@
 */
 class LeagueManagerBasketball extends LeagueManager
 {
-
 	/**
 	 * sports keys
 	 *
@@ -36,6 +35,8 @@ class LeagueManagerBasketball extends LeagueManager
 		add_action( 'matchtable_columns_'.$this->key, array(&$this, 'displayMatchesColumns') );
 		add_action( 'leaguemanager_standings_header_'.$this->key, array(&$this, 'displayStandingsHeader') );
 		add_action( 'leaguemanager_standings_columns_'.$this->key, array(&$this, 'displayStandingsColumns'), 10, 2 );
+		
+		add_action( 'leaguemanager_update_results_'.$this->key, array(&$this, 'updateResults') );
 	}
 	function LeagueManagerBasketball()
 	{
@@ -204,7 +205,7 @@ class LeagueManagerBasketball extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'Quarters', 'leaguemanager' )."\t\t\t\t".__('Overtime', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'Quarters', 'leaguemanager' ))."\t\t\t\t".utf8_decode(__('Overtime', 'leaguemanager'));
 		return $content;
 	}
 
@@ -220,13 +221,13 @@ class LeagueManagerBasketball extends LeagueManager
 	{
 		if ( isset($match->quarters) ) {
 			for ( $i = 1; $i <= 4; $i++ )
-				$content .= "\t".sprintf("%d-%d", $match->quarters[$i]['plus'], $match->quarters[$i]['minus']);
+				$content .= "\t".sprintf("%d:%d", $match->quarters[$i]['plus'], $match->quarters[$i]['minus']);
 		} else {
 			$content .= "\t\t\t\t";
 		}
 
 		if ( isset($match->overtime) )
-			$content .= "\t".sprintf("%d-%d", $match->overtime['home'], $match->overtime['away']);
+			$content .= "\t".sprintf("%d:%d", $match->overtime['home'], $match->overtime['away']);
 		else
 			$content .= "\t";
 
@@ -245,8 +246,8 @@ class LeagueManagerBasketball extends LeagueManager
 	function importMatches( $custom, $line, $match_id )
 	{
 		$match_id = intval($match_id);
-		$quarters = array( explode("-", $line[8]), explode("-", $line[9]), explode("-", $line[10]), explode("-", $line[11]) );
-		$overtime = explode("-", $line[12]);
+		$quarters = ( isset($line[9]) && isset($line[10]) && isset($line[11]) && isset($line[12]) ) ? array( explode(":", $line[9]), explode(":", $line[10]), explode(":", $line[11]), explode(":", $line[12]) ) : array( array("", ""), array("", ""), array("", ""), array("", ""));
+		$overtime = isset($line[13]) ? explode(":", $line[13]) : array("", "");
 
 		foreach ( $quarters AS $i => $quarter ) {
 			$x = $i+1;
@@ -257,6 +258,32 @@ class LeagueManagerBasketball extends LeagueManager
 		$custom[$match_id]['overtime'] = array( 'home' => $overtime[0], 'away' => $overtime[1] );
 
 		return $custom;
+	}
+	
+	
+	/**
+	 * update match results and automatically calculate match score
+	 *
+	 * @param int $match_id
+	 * @return none
+	 */
+	function updateResults( $match_id )
+	{
+		global $wpdb, $leaguemanager;
+		
+		$match = $leaguemanager->getMatch( $match_id );
+		
+		if ( $match->home_points == "" && $match->away_points == "" ) {
+			$score = array( 'home' => 0, 'guest' => 0 );
+			foreach ( $match->quarters AS $quarter ) {
+				$score['home'] += intval($quarter['plus']);
+				$score['guest'] += intval($quarter['minus']);
+			}
+			$score['home'] += intval($match->overtime['home']);
+			$score['guest'] += intval($match->overtime['away']);			
+			
+			$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
+		}
 	}
 }
 

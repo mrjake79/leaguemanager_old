@@ -2,13 +2,32 @@
 if ( !current_user_can( 'manage_leaguemanager' ) ) :
      echo '<p style="text-align: center;">'.__("You do not have sufficient permissions to access this page.").'</p>';
 else :
+
+if ( isset($_POST['leaguemanager_export']) ) {
+	$options = get_option('leaguemanager');
+	if ($_POST['exportkey'] ==	$options['exportkey']) {
+		ob_end_clean();
+		$this->export((int)$_POST['league_id'], $_POST['mode']);
+		unset($options['exportkey']);
+		update_option('projectmanager', $options);
+	} else {
+		ob_end_flush();
+		$this->setMessage( __("You don't have permission to perform this task", 'projectmanager'), true );
+		$this->printMessage();
+	}
+}
+
+$options = get_option('leaguemanager');
+$options['exportkey'] = uniqid(rand(), true);
+update_option('leaguemanager', $options);
 ?>
 <div class="wrap narrow">
-	<h2><?php _e('LeagueManager Export', 'leaguemanager') ?></h2>
+	<h1><?php _e('LeagueManager Export', 'leaguemanager') ?></h1>
 	<p><?php _e( 'Here you can export teams and matches for a specific league.', 'leaguemanager' ) ?></p>
 	<p><?php _e('Once you&#8217;ve saved the download file, you can use the Import function on another WordPress blog to import this blog.'); ?></p>
 	<form action="" method="post">
-	<?php wp_nonce_field( 'leaguemanager_export-datasets' ) ?>
+		<input type="hidden" name="exportkey" value="<?php echo $options['exportkey'] ?>" />
+		<?php wp_nonce_field( 'leaguemanager_export-datasets' ) ?>
 		<h3><?php _e('Options'); ?></h3>
 		<table class="form-table">
 		<tr>

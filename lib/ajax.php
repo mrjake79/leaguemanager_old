@@ -192,10 +192,15 @@ class LeagueManagerAJAX
 
 		$roster = (int)$_POST['roster'];
 		$project = $projectmanager->getProject($roster);
-		$category = $project->category;
 
-		if ( !empty($category) ) {
-			$html = wp_dropdown_categories(array('hide_empty' => 0, 'name' => 'roster_group', 'orderby' => 'name', 'echo' => 0, 'show_option_none' => __('Select Group (Optional)', 'leaguemanager'), 'child_of' => $category ));
+		if ( $projectmanager->hasCategories($project->id) ) {
+			$html = '<select size="1" name="roster_group" id="roster_group">';
+			$html .= '<option value="-1">'.__( 'Select Group (Optional)', 'leaguemanager' ).'</option>';
+			foreach ( $projectmanager->getCategories( $project->id ) AS $category ) {
+				$html .= '<option value="'.$category->id.'">'.$category->title.'</option>';
+			}
+			$html .= '</select>';
+			//$html = wp_dropdown_categories(array('hide_empty' => 0, 'name' => 'roster_group', 'orderby' => 'name', 'echo' => 0, 'show_option_none' => __('Select Group (Optional)', 'leaguemanager'), 'child_of' => $category ));
 			$html = str_replace("\n", "", $html);
 		} else {
 			$html = "";

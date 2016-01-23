@@ -12,8 +12,8 @@ The following variables are usable:
 	You can check the content of a variable when you insert the tag <?php var_dump($variable) ?>
 */
 ?>
-<?php if (isset($_GET['match']) ) : ?>
-	<?php leaguemanager_match(intval($_GET['match'])); ?>
+<?php if (isset($_GET['match_'.$league->id]) ) : ?>
+	<?php leaguemanager_match(intval($_GET['match_'.$league->id])); ?>
 <?php else : ?>
 
 <?php if ( ($league->show_match_day_selection || $league->show_team_selection) && $league->mode != 'championship' ) : ?>
@@ -42,7 +42,7 @@ The following variables are usable:
 		<?php endforeach; ?>
 		</select>
 		<?php endif; ?>
-		<input type='submit' value='<?php _e('Show') ?>' />
+		<input type='submit' class="button" value='<?php _e('Show') ?>' />
 	</div>
 	</form>
 </div>

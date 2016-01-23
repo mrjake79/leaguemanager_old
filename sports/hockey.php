@@ -42,6 +42,8 @@ class LeagueManagerHockey extends LeagueManager
 			add_action( 'matchtable_columns_'.$key, array(&$this, 'displayMatchesColumns') );
 			add_action( 'leaguemanager_standings_header_'.$key, array(&$this, 'displayStandingsHeader') );
 			add_action( 'leaguemanager_standings_columns_'.$key, array(&$this, 'displayStandingsColumns'), 10, 2 );
+			
+			add_action( 'leaguemanager_update_results_'.$key, array(&$this, 'updateResults') );
 		}
 	}
 	function LeagueManagerHockey()
@@ -303,7 +305,12 @@ class LeagueManagerHockey extends LeagueManager
 	 */
 	function displayMatchesColumns( $match )
 	{
-		if (!isset($match->thirds)) $match->thirds = array(1 => array('plus' => '', 'minus' => ''), 2 => array('plus' => '', 'minus' => ''), 3 => array('plus' => '', 'minus' => ''));
+		if (!isset($match->thirds))
+			$match->thirds = array(1 => array('plus' => '', 'minus' => ''), 2 => array('plus' => '', 'minus' => ''), 3 => array('plus' => '', 'minus' => ''));
+		if (!isset($match->overtime))
+			$match->overtime = array('home' => '', 'away' => '');
+		if (!isset($match->penalty))
+			$match->penalty = array('home' => '', 'away' => '');
 		
 		echo '<td>';
 		for ( $i = 1; $i <= 3; $i++ )
@@ -323,7 +330,7 @@ class LeagueManagerHockey extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'Thirds', 'leaguemanager' )."\t\t\t".__('Overtime', 'leaguemanager')."\t".__('Penalty', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'Thirds', 'leaguemanager' ))."\t\t\t".utf8_decode(__('Overtime', 'leaguemanager'))."\t".utf8_decode(__('Penalty', 'leaguemanager'));
 		return $content;
 	}
 
@@ -339,13 +346,13 @@ class LeagueManagerHockey extends LeagueManager
 	{
 		if ( isset($match->thirds) ) {
 			for ( $i = 1; $i <= 3; $i++ )
-				$content .= "\t".sprintf("%d-%d", $match->thirds[$i]['plus'], $match->thirds[$i]['minus']);
+				$content .= "\t".sprintf("%d:%d", $match->thirds[$i]['plus'], $match->thirds[$i]['minus']);
 		} else {
 			$content .= "\t\t\t";
 		}
 
 		if ( isset($match->overtime) )
-			$content .= "\t".sprintf("%d-%d", $match->overtime['home'], $match->overtime['away'])."\t".sprintf("%d-%d", $match->penalty['home'], $match->penalty['away']);
+			$content .= "\t".sprintf("%d:%d", $match->overtime['home'], $match->overtime['away'])."\t".sprintf("%d:%d", $match->penalty['home'], $match->penalty['away']);
 		else
 			$content .= "\t\t";
 
@@ -365,9 +372,9 @@ class LeagueManagerHockey extends LeagueManager
 	{
 		$match_id = intval($match_id);
 		
-		$thirds = array( explode("-", $line[8]), explode("-", $line[9]), explode("-", $line[10]) );
-		$overtime = explode("-", $line[11]);
-		$penalty = explode("-", $line[12]);
+		$thirds = ( isset($line[9]) && isset($line[10]) && isset($line[11]) ) ? array( explode(":", $line[9]), explode(":", $line[10]), explode(":", $line[11]) ) : array( array('',''), array('',''), array('','') );
+		$overtime = isset($line[12]) ? explode(":", $line[12]) : array('','');
+		$penalty = iset($line[13]) ? explode(":", $line[13]) : array('','');
 
 		foreach ( $thirds AS $i => $third ) {
 			$x = $i+1;
@@ -379,6 +386,30 @@ class LeagueManagerHockey extends LeagueManager
 		$custom[$match_id]['penalty'] = array( 'home' => $penalty[0], 'away' => $penalty[1] );
 
 		return $custom;
+	}
+	
+	
+	/**
+	 * update match results and automatically calculate score
+	 *
+	 * @param int $match_id
+	 * @return none
+	 */
+	function updateResults( $match_id )
+	{
+		global $wpdb, $leaguemanager;
+		
+		$match = $leaguemanager->getMatch( $match_id );
+		
+		$score = array( 'home' => 0, 'guest' => '' );
+		foreach ( $match->thirds AS $third ) {
+			$score['home'] += intval($third['plus']);
+			$score['guest'] += intval($third['minus']);
+		}
+		$score['home'] = $score['home'] + intval($match->overtime['home']) + intval($match->penalty['home']);
+		$score['guest'] = $score['guest'] + intval($match->overtime['away']) + intval($match->penalty['away']);			
+		
+		$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
 	}
 }
 

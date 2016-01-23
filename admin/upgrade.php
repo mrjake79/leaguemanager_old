@@ -406,6 +406,56 @@ function leaguemanager_upgrade() {
 		$options['dashboard_widget']['show_summary'] = 1;
 	}
 	
+	if (version_compare($installed, '3.7.2', '<')) {
+		$wpdb->query( "ALTER TABLE {$wpdb->leaguemanager_teams} ADD `profile` int( 11 ) NOT NULL default '0'");
+	}
+	
+	// Re-enable logo copying, wich was present in 3.7.3 upgrade
+	if (version_compare($installed, '3.7.4', '<')) {
+		$files = array();
+		// create new upload directory
+		wp_mkdir_p($leaguemanager->getImagePath(false, true));
+		foreach ( $leaguemanager->getLeagues() AS $league ) {
+			$leaguemanager->setLeagueID( $league->id );
+			$base = WP_CONTENT_URL.'/uploads/leagues/League-'.$league->id;
+			
+			// create new subdirectory
+			wp_mkdir_p($leaguemanager->getImagePath());
+			
+			$teams = $leaguemanager->getTeams( array( 'league_id' => $league->id ) );
+			foreach ( $teams AS $team ) {
+				if ( !empty($team->logo) ) {
+					if ( !isset($league->upload_dir) ) $league->upload_dir = 'wp-content/uploads';
+					
+					$old_logo_file = ABSPATH . $league->upload_dir .'/'. basename($team->logo);
+					$old_thumb = dirname($old_logo_file) . "/thumb_" . basename($old_logo_file);
+					$new_logo_file = $leaguemanager->getImagePath(basename($team->logo));
+					$new_thumb = $leaguemanager->getThumbnailPath(basename($team->logo));
+					$new_logo_url = esc_url($base .'/'. basename($team->logo));
+					
+					// If old logo file exists, copy it to new location
+					if ( file_exists($old_logo_file) ) {
+						// copy logo to new destination
+						copy($old_logo_file, $new_logo_file);
+						copy($old_thumb, $new_thumb);
+						// save logo path for subsequent deletion
+						$files[] = $old_logo_file;
+					}
+					// Update team logo in database
+					$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_teams} SET `logo` = '%s' WHERE `id` = '%d'", basename($new_logo_url), $team->id) );
+				}
+			}
+		}
+		
+		$files = array_unique($files);
+		// delete old logo files
+		foreach ( $files AS $file ) {
+			$thumb = dirname($file) . "/thumb_" . basename($file);
+			@unlink($file);
+			@unlink($thumb);
+		}
+	}
+	
 	/*
 	* Update version and dbversion
 	*/
@@ -427,7 +477,7 @@ function leaguemanager_upgrade() {
 function leaguemanager_upgrade_page()  {	
 	$filepath    = admin_url() . 'admin.php?page=' . htmlspecialchars($_GET['page']);
 
-	if ($_GET['upgrade'] == 'now') {
+	if (isset($_GET['upgrade']) && $_GET['upgrade'] == 'now') {
 		leaguemanager_do_upgrade($filepath);
 		return;
 	}

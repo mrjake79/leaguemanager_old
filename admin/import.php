@@ -11,7 +11,7 @@ if ( isset($_POST['import']) ) {
 ?>
 
 <div class="wrap narrow">
-	<h2><?php _e('LeagueManager Import') ?></h2>
+	<h1><?php _e('LeagueManager Import') ?></h1>
 	
 	<p><?php _e( 'Choose a CSV file to upload and import data from', 'leaguemanager') ?></p>
 	
@@ -50,5 +50,7 @@ if ( isset($_POST['import']) ) {
 
 	<p class="submit"><input type="submit" name="import" value="<?php _e( 'Upload file and import' ); ?>" class="button button-primary" /></p>
 	</form>
+	
+	<p><?php printf(__( "The required structure of the file to import is described in the <a href='%s'>Documentation</a>", 'leaguemanager' ), 'admin.php?page=leaguemanager-doc' ) ?></p>
 </div>
 <?php endif; ?>

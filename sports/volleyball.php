@@ -26,6 +26,9 @@ class LeagueManagerVolleyball extends LeagueManager
 	function __construct()
 	{
 		add_filter( 'leaguemanager_sports', array(&$this, 'sports') );
+		add_filter( 'leaguemanager_point_rules_list', array(&$this, 'getPointRuleList') );
+		add_filter( 'leaguemanager_point_rules',  array(&$this, 'getPointRules') );
+		add_filter( 'team_points_'.$this->key, array(&$this, 'calculatePoints'), 10, 3 );
 		add_filter( 'rank_teams_'.$this->key, array(&$this, 'rankTeams') );
 
 		add_filter( 'leaguemanager_export_matches_header_'.$this->key, array(&$this, 'exportMatchesHeader') );
@@ -63,6 +66,104 @@ class LeagueManagerVolleyball extends LeagueManager
 
 
 	/**
+	 * get Point Rule list
+	 *
+	 * @param array $rules
+	 * @return array
+	 */
+	function getPointRuleList( $rules )
+	{
+		$rules[$this->key] = __( 'Volleyball', 'leaguemanager' );
+
+		return $rules;
+	}
+	
+	
+	/**
+	 * get Point rules
+	 *
+	 * @param array $rules
+	 * @return array
+	 */
+	function getPointRules( $rules )
+	{
+		$rules[$this->key] = array( 'forwin' => 3, 'fordraw' => 0, 'forloss' => 0, 'forwin_3_2' => 2, 'forloss_3_2' => 1 );
+		
+		return $rules;
+	}
+	
+	
+	/**
+	 * re-calculate points
+	 *
+	 * @param array $points
+	 * @param int $team_id
+	 * @param array $rule
+	 * @return array with modified points
+	 */
+	function calculatePoints( $points, $team_id, $rule )
+	{
+		extract($rule);
+
+		$num_won_3_2 = $this->getNumWonMatches3_2( $team_id );
+		$num_lost_3_2 = $this->getNumLostMatches3_2( $team_id );
+
+		$points['plus'] = $points['plus'] - $num_won_3_2 * $forwin + $num_won_3_2 * $forwin_3_2 + $num_lost_3_2 * $forloss_3_2;
+		$points['minus'] = $points['minus'] - $num_lost_3_2 * $forwin + $num_won_3_2 * $forloss_3_2 + $num_lost_3_2 * $forwin_3_2;
+
+		return $points;
+	}
+	
+	
+	/**
+	 * get number of won matches after overtime
+	 *
+	 * @param int $team_id
+	 * @return int
+	 */
+	function getNumWonMatches3_2( $team_id )
+	{
+		global $wpdb;
+		$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_team`, `away_team`, `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `winner_id` = '%d'", $team_id) );
+		$num = 0;
+		foreach ( $matches AS $match ) {
+			$custom = maybe_unserialize($match->custom);
+			// Home match won 3:2
+			if ( $match->home_team == $team_id && $match->home_points == 3 && $match->away_points == 2 )
+				$num++;
+			// Away match won 3:2
+			if ( $match->away_team == $team_id && $match->home_points == 2 && $match->away_points == 3 )
+				$num++;
+		}
+		return $num;
+	}
+
+
+	/**
+	 * get number of lost matches after overtime
+	 *
+	 * @param int $team_id
+	 * @return int
+	 */
+	function getNumLostMatches3_2( $team_id )
+	{
+		global $wpdb;
+		$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_team`, `away_team`, `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `loser_id` = '%d'", $team_id) );
+		$num = 0;
+		foreach ( $matches AS $match ) {
+			$custom = maybe_unserialize($match->custom);
+			// Home match lost 3:2
+			if ( $match->away_team == $team_id && $match->home_points == 3 && $match->away_points == 2 )
+				$num++;
+			// Away match lost 3:2
+			if ( $match->home_team == $team_id && $match->home_points == 2 && $match->away_points == 3 )
+				$num++;
+		}
+		return $num;
+	}
+	
+	
+	/**
 	 * rank Teams
 	 *
 	 * @param array $teams
@@ -72,8 +173,8 @@ class LeagueManagerVolleyball extends LeagueManager
 	{
 		foreach ( $teams AS $key => $row ) {
 			$points[$key] = $row->points['plus']+$row->add_points;
-			$set_diff[$key] = $row->sets['plus']-$row->sets['minus'];
-			$won_sets[$key] = $row->sets['plus'];
+			$set_diff[$key] = $row->sets['won']-$row->sets['lost'];
+			$won_sets[$key] = $row->sets['won'];
 			$ballpoints_diff[$key] = $row->ballpoints['plus']-$row->ballpoints['minus'];
 			$ballpoints[$key] = $row->ballpoints['plus'];
 		}
@@ -94,6 +195,7 @@ class LeagueManagerVolleyball extends LeagueManager
 		global $wpdb, $leaguemanager;
 
 		$team = $wpdb->get_results( $wpdb->prepare("SELECT `custom` FROM {$wpdb->leaguemanager_teams} WHERE `id` = '%d'", $team_id) );
+		$team = $team[0];
 		$custom = maybe_unserialize($team->custom);
 		$custom = $this->getStandingsData($team_id, $custom);
 
@@ -231,7 +333,7 @@ class LeagueManagerVolleyball extends LeagueManager
 	 */
 	function exportMatchesHeader( $content )
 	{
-		$content .= "\t".__( 'Sets', 'leaguemanager' )."\t\t\t\t";
+		$content .= "\t".utf8_decode(__( 'Sets', 'leaguemanager' ))."\t\t\t\t";
 		return $content;
 	}
 
@@ -268,8 +370,8 @@ class LeagueManagerVolleyball extends LeagueManager
 	function importMatches( $custom, $line, $match_id )
 	{
 		$match_id = intval($match_id);
-		for( $x = 8; $x <= 12; $x++ ) {
-			$set = explode(":",$line[$x]);
+		for( $x = 9; $x <= 13; $x++ ) {
+			$set = isset($line[$x]) ? explode(":",$line[$x]) : array('','');
 			$custom[$match_id]['sets'][] = array( 'home' => $set[0], 'away' => $set[1] );
 		}
 
@@ -285,7 +387,7 @@ class LeagueManagerVolleyball extends LeagueManager
 	 */
 	function exportTeamsHeader( $content )
 	{
-		$content .= "\t".__( 'Sets', 'leaguemanager' )."\t".__('Ballpoints', 'leaguemanager');
+		$content .= "\t".utf8_decode(__( 'Sets', 'leaguemanager' ))."\t".utf8_decode(__('Ballpoints', 'leaguemanager'));
 		return $content;
 	}
 
@@ -317,8 +419,8 @@ class LeagueManagerVolleyball extends LeagueManager
 	 */
 	function importTeams( $custom, $line )
 	{
-		$sets = explode(":", $line[8]);
-		$ballpoints = explode(":", $line[9]);
+		$sets = isset($line[16]) ? explode(":", $line[16]) : array('','');
+		$ballpoints = isset($line[17]) ? explode(":", $line[17]) : array('','');
 		$custom['sets'] = array( 'won' => $sets[0], 'lost' => $sets[1] );
 		$custom['ballpoints'] = array( 'plus' => $ballpoints[0], 'minus' => $ballpoints[1] );
 

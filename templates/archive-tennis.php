@@ -30,12 +30,21 @@ The following variables are usable:
 	</form>
 </div>
 
-<!-- Standings Table -->
-<h4><?php _e('Standings', 'leaguemanager') ?></h4>
-<?php leaguemanager_standings( $league_id, array( 'season' => $league->season ) ) ?>
-
-<?php if ( !isset($_GET['team']) ) : ?>
-<!-- Match Overview -->
-<h4><?php _e('Matches', 'leaguemanager') ?></h4>
-<?php leaguemanager_matches( $league_id, array('season' => $league->season, 'archive' => true) ) ?>
-<?php endif; ?>
+<div class="jquery-ui-tabs">
+	<ul class="tablist">
+		<li><a href="#standings-archive"><?php _e( 'Standings', 'leaguemanager' ) ?></a></li>
+		<li><a href="#matches-archive"><?php _e( 'Matches', 'leaguemanager' ) ?></a></li>
+	</ul>
+	
+	<!-- Standings Table -->
+	<div id="standings-archive">
+		<h4 class="header"><?php _e('Standings', 'leaguemanager') ?></h4>
+		<?php leaguemanager_standings( $league_id, array( 'season' => $league->season ) ) ?>
+	</div>
+	
+	<!-- Match Overview -->
+	<div id="matches-archive">
+		<h4 class="header"><?php _e('Matches', 'leaguemanager') ?></h4>
+		<?php leaguemanager_matches( $league_id, array('season' => $league->season, 'archive' => true) ) ?>
+	</div>
+</div>

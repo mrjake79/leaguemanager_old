@@ -10,23 +10,26 @@ else :
 	if ( isset( $_GET['edit'] ) ) {
 		$edit = true;
 		$team = $leaguemanager->getTeam(intval($_GET['edit']));
+		if ( !isset($team->roster['id']) ) $team->roster = array('id' => '', 'cat_id' => '');
+		
 		$league_id = intval($team->league_id);
 		$form_title = __( 'Edit Team', 'leaguemanager' );
 	} else {
 		$form_title = __( 'Add Team', 'leaguemanager' );
 		$league_id = intval($_GET['league_id']);
-		$team = (object)array( 'title' => '', 'home' => 0, 'id' => '', 'logo' => '', 'website' => '', 'coach' => '', 'stadium' => '' );
+		$team = (object)array( 'title' => '', 'home' => 0, 'id' => '', 'logo' => '', 'website' => '', 'coach' => '', 'stadium' => '', 'roster' => array('id' => '', 'cat_id' => '') );
 	}
 	$league = $leaguemanager->getLeague( $league_id );
 	$season = isset($_GET['season']) ? htmlspecialchars($_GET['season']) : '';
 
+	
 	if ( !wp_mkdir_p( $leaguemanager->getImagePath() ) )
 		echo "<div class='error'><p>".sprintf( __( 'Unable to create directory %s. Is its parent directory writable by the server?' ), $leaguemanager->getImagePath() )."</p></div>";
 	?>
 
-	<div class="wrap">
+	<div class="wrap league-block">
 		<p class="leaguemanager_breadcrumb"><a href="admin.php?page=leaguemanager"><?php _e( 'LeagueManager', 'leaguemanager' ) ?></a> &raquo; <a href="admin.php?page=leaguemanager&amp;subpage=show-league&amp;league_id=<?php echo $league->id ?>"><?php echo $league->title ?></a> &raquo; <?php echo $form_title ?></p>
-		<h2><?php echo $form_title ?></h2>
+		<h1><?php printf( "%s &mdash; %s",  $league->title, $form_title ); ?></h1>
 
 		<form action="admin.php?page=leaguemanager&amp;subpage=show-league&amp;league_id=<?php echo $league_id ?>&amp;season=<?php echo $season ?><?php if(isset($myGroup)) echo '&amp;group=' . $myGroup; ?>" method="post" enctype="multipart/form-data" name="team_edit">		
 		
@@ -77,7 +80,7 @@ else :
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="website"><?php _e( 'Website', 'leaguemanager' ) ?></label></th><td>http://<input type="text" name="website" id="website" value="<?php echo $team->website ?>" size="30" /></td>
+				<th scope="row"><label for="website"><?php _e( 'Website', 'leaguemanager' ) ?></label></th><td><input type="text" name="website" id="website" value="<?php echo $team->website ?>" size="30" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="coach"><?php _e( 'Coach', 'leaguemanager' ) ?></label></th><td><input type="text" name="coach" id="coach" value="<?php echo $team->coach ?>" size="40" /></td>
@@ -85,9 +88,7 @@ else :
 			<tr valign="top">
 				<th scope="row"><label for="stadium"><?php _e( 'Stadium', 'leaguemanager' ) ?></label></th><td><input type="text" name="stadium" id="stadium" value="<?php echo $team->stadium ?>" size="50" /></td>
 			</tr>
-
-
-			<tr valign="top">
+			<!--<tr valign="top">
 				<th scope="row"><label for="team_default_start_time"><?php _e( 'Default Team Match Start Time', 'leaguemanager' ) ?></label></th>
 				<td>
 					<select size="1" name="team_default_start_time">
@@ -103,7 +104,7 @@ else :
 					<?php endfor; ?>
 					</select>
 				</td>
-			</tr>
+			</tr>-->
 			<tr valign="top">
 				<th scope="row"><label for="home"><?php _e( 'Home Team', 'leaguemanager' ) ?></label></th><td><input type="checkbox" name="home" id="home"<?php if ($team->home == 1) echo ' checked="checked""' ?>/></td>
 			</tr>
@@ -125,6 +126,20 @@ else :
 			<?php endif; ?>
 			<?php global $projectmanager; ?>
 			<?php if ( $leaguemanager->hasBridge() && isset($projectmanager) ) : ?>
+			<?php if ( isset($league->teamprofiles) && $league->teamprofiles['project_id'] > 0 ) : $projectmanager->init($league->teamprofiles['project_id']); ?>
+			<tr valign="top">
+				<th scope="row"><label for="profile"><?php _e( 'Team Profile', 'leaguemanager' ) ?></label></th>
+				<td>
+					<select size="1" name="profile" id="profile">
+						<option value=""><?php _e('None','leaguemanager') ?></option>
+						<?php $datasets = $projectmanager->getDatasets( array( "limit" => false ) ); ?>
+						<?php foreach ( $datasets AS $dataset ) : ?>
+						<option value="<?php echo $dataset->id ?>"<?php selected($dataset->id, $team->profile) ?>><?php echo $dataset->name ?></option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+			<?php endif; ?>
 			<tr valign="top">
 				<th scope="row"><label for="roster"><?php _e( 'Team Roster', 'leaguemanager' ) ?></label></th>
 				<td>
@@ -137,7 +152,13 @@ else :
 					<span id="team_roster_groups">
 					<?php if ( isset($team->roster['cat_id']) && !empty($team->roster['id']) ) : ?>
 						<?php $project = $projectmanager->getProject($team->roster['id']) ?>
-						<?php wp_dropdown_categories(array('hide_empty' => 0, 'child_of' => $project->category,'name' => 'roster_group', 'orderby' => 'name', 'show_option_none' => __('Select Group (Optional)', 'leaguemanager'), 'selected' => $team->roster['cat_id'])); ?>
+						<select size="1" name="roster_group" id="roster_group">
+							<option value=""><?php _e( 'Select Group (Optional)', 'leaguemanager' ) ?></option>
+							<?php foreach ( $projectmanager->getCategories( $project->id ) AS $category ) : ?>
+								<option value='<?php echo $category->id ?>'<?php selected($category->id, $team->roster['cat_id']) ?>><?php echo $category->title ?></option>
+							<?php endforeach; ?>
+						</select>
+						<?php //wp_dropdown_categories(array('hide_empty' => 0, 'child_of' => $project->category,'name' => 'roster_group', 'orderby' => 'name', 'show_option_none' => __('Select Group (Optional)', 'leaguemanager'), 'selected' => $team->roster['cat_id'])); ?>
 					<?php endif; ?>
 					</span>
 				</td>
@@ -153,7 +174,7 @@ else :
 			<input type="hidden" name="updateLeague" value="team" />
 			<input type="hidden" name="season" value="<?php echo $season ?>" />
 
-			<p class="submit"><input type="submit" value="<?php echo $form_title ?> &raquo;" class="button button-primary" /></p>
+			<p class="submit"><input type="submit" value="<?php echo $form_title ?>" class="button button-primary" /></p>
 		</form>
 	</div>
 <?php endif; ?>
