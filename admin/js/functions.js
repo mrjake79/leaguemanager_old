@@ -64,6 +64,7 @@ jQuery(document).ready(function($) {
 	jQuery("#teams-filter>input.js-active").val(1);
 });
 
+
 if(typeof Leaguemanager == "undefined") {
 	var Leaguemanager = new Object();
 }
@@ -142,7 +143,6 @@ Leaguemanager.removeField = function(id, parent_id) {
 Leaguemanager.reInit = function() {
 	tb_init('a.thickbox, area.thickbox, input.thickbox');
 }
-
 
 /*
 *  Color Picker

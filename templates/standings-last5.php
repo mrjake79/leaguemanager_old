@@ -89,7 +89,7 @@ The following variables are usable:
             $awayTeamName = $awayTeam->title;
             $myMatchDate = mysql2date(get_option('date_format'), $next_result->date);
             $tooltipTitle = 'Next Match: '.$homeTeamName.' - '.$awayTeamName.' ['.$myMatchDate.']';
-            $last5 .= '<a href="?match='."$next_result->id".'"  class="N last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
+            $last5 .= '<a href="?match_'.$league->id.'='."$next_result->id".'"  class="N last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
         }
     } else {
         $last5 .= '<a class="N last5-bg" title="Next Match: No Game Scheduled">&nbsp;</a>';
@@ -125,30 +125,30 @@ The following variables are usable:
         {
             if ($result->homeScore > $result->awayScore)
             {
-                $last5 .= '<a href="?match='."$result->id".'"  class="W last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
+                $last5 .= '<a href="?match_'.$league->id.'='."$result->id".'"  class="W last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
             }
             elseif ($result->homeScore < $result->awayScore)
             {
-                $last5 .= '<a href="?match='."$result->id".'"  class="L last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
+                $last5 .= '<a href="?match_'.$league->id.'='."$result->id".'"  class="L last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
             }
             elseif ($result->homeScore == $result->awayScore)
             {
-                $last5 .= '<a href="?match='."$result->id".'"  class="D last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
+                $last5 .= '<a href="?match_'.$league->id.'='."$result->id".'"  class="D last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
             }
         }
         elseif ($team->id == $result->away_team)
         {
             if ($result->homeScore < $result->awayScore)
             {
-                $last5 .= '<a href="?match='."$result->id".'"  class="W last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
+                $last5 .= '<a href="?match_'.$league->id.'='."$result->id".'"  class="W last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
             }
             elseif ($result->homeScore > $result->awayScore)
             {
-                $last5 .= '<a href="?match='."$result->id".'"  class="L last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
+                $last5 .= '<a href="?match_'.$league->id.'='."$result->id".'"  class="L last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
             }
             elseif ($result->homeScore == $result->awayScore)
             {
-                $last5 .= '<a href="?match='."$result->id".'"  class="D last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
+                $last5 .= '<a href="?match_'.$league->id.'='."$result->id".'"  class="D last5-bg" title="'.$tooltipTitle.'">&nbsp;</a>';
             }
         }
     }

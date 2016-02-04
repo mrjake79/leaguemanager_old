@@ -74,10 +74,13 @@ function get_next_matches( $team_id, $n = 1 ) {
  */
 function leaguemanager_standings( $league_id, $args = array() ) {
 	global $lmShortcodes;
-	$defaults = array( 'season' => false, 'template' => 'extend', 'logo' => 'true', 'group' => false, 'home' => false );
+	$defaults = array( 'season' => false, 'template' => 'last5', 'logo' => 'true', 'group' => false, 'home' => 0 );
 	$args = array_merge($defaults, $args);
-	extract($args, EXTR_SKIP);
-	echo $lmShortcodes->showStandings( array('league_id' => $league_id, 'logo' => $logo, 'season' => $season, 'template' => $template, 'group' => $group, 'home' => $home) );
+	$args['league_id'] = intval($league_id);
+	echo $lmShortcodes->showStandings( $args );
+	
+	//extract($args, EXTR_SKIP);
+	//echo $lmShortcodes->showStandings( array('league_id' => $league_id, 'logo' => $logo, 'season' => $season, 'template' => $template, 'group' => $group, 'home' => $home) );
 }
 
 /**
@@ -140,10 +143,12 @@ function get_next_match($id_team, $limit = 1) {
  */
 function leaguemanager_crosstable( $league_id, $args = array() ) {
 	global $lmShortcodes;
-	$defaults = array('season' => false, 'template' => '', 'mode' => '');
+	$defaults = array('season' => false, 'logo' => 'true', 'group' => '', 'template' => '', 'mode' => '');
 	$args = array_merge($defaults, $args);
-	extract($args, EXTR_SKIP);
-	echo $lmShortcodes->showCrosstable( array('league_id' => $league_id, 'mode' => $mode, 'template' => $template, 'season' => $season) );
+	$args['league_id'] = intval($league_id);
+	echo $lmShortcodes->showCrosstable( $args );
+	//extract($args, EXTR_SKIP);
+	//echo $lmShortcodes->showCrosstable( array('league_id' => $league_id, 'mode' => $mode, 'template' => $template, 'season' => $season) );
 }
 
 
@@ -156,10 +161,13 @@ function leaguemanager_crosstable( $league_id, $args = array() ) {
  */
 function leaguemanager_matches( $league_id, $args = array() ) {
 	global $lmShortcodes;
-	$defaults = array('season' => false, 'template' => '', 'mode' => '', 'limit' => 'true', 'archive' => false, 'match_day' => false, 'group' => false, 'roster' => false, 'order' => false);
+	$defaults = array('season' => '', 'template' => '', 'mode' => '', 'limit' => 'true', 'archive' => false, 'match_day' => -1, 'group' => false, 'roster' => false, 'order' => false, 'show_match_day_selection' => '', 'show_team_selection' => '', 'time' => '', 'team' => 0, 'home_only' => 'false', 'match_date' => false, 'dateformat' => '', 'timeformat' => '');
 	$args = array_merge($defaults, $args);
-	extract($args, EXTR_SKIP);
-	echo $lmShortcodes->showMatches( array('league_id' => $league_id, 'limit' => $limit, 'mode' => $mode, 'season' => $season, 'archive' => $archive, 'template' => $template, 'roster' => $roster, 'order' => $order, 'match_day' => $match_day, 'group' => $group) );
+	$args['league_id'] = intval($league_id);
+	
+	//extract($args, EXTR_SKIP);
+	echo $lmShortcodes->showMatches($args);
+	//echo $lmShortcodes->showMatches( array('league_id' => $league_id, 'limit' => $limit, 'mode' => $mode, 'season' => $season, 'archive' => $archive, 'template' => $template, 'roster' => $roster, 'order' => $order, 'match_day' => $match_day, 'group' => $group) );
 }
 
 
@@ -189,11 +197,13 @@ function leaguemanager_match( $match_id, $args = array() ) {
  */
 function leaguemanager_teams( $league_id, $args = array() ) {
 	global $lmShortcodes;
-	$defaults = array('season' => false, 'template' => '');
+	$defaults = array('season' => false, 'template' => '', 'group' => false);
 	$args = array_merge($defaults, $args);
-	extract($args, EXTR_SKIP);
+	$args['league_id'] = intval($league_id);
+	echo $lmShortcodes->showTeams( $args );
+	//extract($args, EXTR_SKIP);
 
-	echo $lmShortcodes->showTeams( array('league_id' => $league_id, 'season' => $season, 'template' => $template) );
+	//echo $lmShortcodes->showTeams( array('league_id' => $league_id, 'season' => $season, 'template' => $template) );
 }
 
 
@@ -210,7 +220,7 @@ function leaguemanager_team( $team_id, $args = array() ) {
 	$args = array_merge($defaults, $args);
 	extract($args, EXTR_SKIP);
 
-	echo $lmShortcodes->showTeam( array('id' => $team_id, 'template' => $template) );
+	echo $lmShortcodes->showTeam( array('id' => intval($team_id), 'template' => $template) );
 }
 
 
@@ -227,7 +237,41 @@ function leaguemanager_championship( $league_id, $args = array() ) {
 	$args = array_merge($defaults, $args);
 	extract($args, EXTR_SKIP);
 
-	echo $lmShortcodes->showChampionship( array('league_id' => $league_id, 'template' => $template, 'season' => $season) );
+	echo $lmShortcodes->showChampionship( array('league_id' => intval($league_id), 'template' => $template, 'season' => $season) );
+}
+
+
+/**
+ * display championship manually
+ *
+ * @param int $league_id
+ * @param array $args additional arguments as associative array (optional)
+ * @return void
+ */
+function leaguemanager_archive( $league_id, $args = array() ) {
+	global $lmShortcodes;
+	$defaults = array('template' => '');
+	$args = array_merge($defaults, $args);
+	//extract($args, EXTR_SKIP);
+
+	echo $lmShortcodes->showArchive( $args );
+}
+
+
+/**
+ * display championship manually
+ *
+ * @param int $league_id
+ * @param array $args additional arguments as associative array (optional)
+ * @return void
+ */
+function leaguemanager_league( $league_id, $args = array() ) {
+	global $lmShortcodes;
+	$defaults = array('season' => false, 'template' => '');
+	$args = array_merge($defaults, $args);
+	//extract($args, EXTR_SKIP);
+
+	echo $lmShortcodes->showLeague( $args );
 }
 
 

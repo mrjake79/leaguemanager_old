@@ -6,14 +6,6 @@ jQuery(document).ready(function($) {
 		heightStyle: "content"
 	});
 	
-	// Tabs
-	$('#tabs').tabs({
-		collapsible: true,
-	});
-	jQuery("#tabs>#tablist").css("display", "block");
-	jQuery("#tabs .header").css("display", "none");
-	
-	
 	/*
 	 * Make sure that jQuery UI Tab content containers have correct IDs based on tablist links
 	 */

@@ -109,13 +109,13 @@ class LeagueManagerImage extends LeagueManager
 		$thumb = $leaguemanager->getThumbnailPath($this->image);
 
 		$thumbnail = new Thumbnail($image);
-		$thumbnail->resize( 60, 60 );
+		$thumbnail->resize( 150, 150 );
 		$thumbnail->save($image);
 		$thumbnail->resize( 30, 30 );
 		$thumbnail->save($thumb);
 
-		chmod($image, 0644);
-		chmod($thumb, 0644);	
+		//chmod($image, 0644);
+		//chmod($thumb, 0644);	
 	}
 }
 

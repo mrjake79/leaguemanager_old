@@ -9,7 +9,13 @@
 <?php foreach ( $teams AS $rank => $team ) : ?>
 <?php if ( 1 == $team->home ) $team->title = '<strong>'.$team->title.'</strong>'; ?>
 <tr class="<?php echo $team->class ?>">
-	<th scope='row' class='rank'><?php echo $rank + 1 ?></th><td><?php echo $team->title ?></td>
+	<th scope='row' class='rank'><?php echo $rank + 1 ?></th>
+	<td>
+		<?php if ( $team->logo != '' ) : ?>
+		<img src='<?php echo $leaguemanager->getThumbnailUrl($team->logo) ?>' alt='<?php _e('Logo','leaguemanager') ?>' title='<?php _e('Logo','leaguemanager')." ".$team->title ?>' />
+		<?php endif; ?>
+		<?php echo $team->title ?>
+	</td>
 	<?php for ( $i = 0; $i < count($teams); $i++ ) : ?>
 		
 	<?php if ( ($rank == $i) ) : ?>

@@ -598,16 +598,18 @@ class LeagueManagerTennis extends LeagueManager
 		global $wpdb, $leaguemanager;
 		
 		$match = $leaguemanager->getMatch( $match_id );
-		$score = array( 'home' => 0, 'guest' => '' );
-		foreach ( $match->sets AS $set ) {
-			if ( $set['player1'] > $set['player2'] ) {
-				$score['home'] += 1;
-			} else {
-				$score['guest'] += 1;
+		if ( $match->home_points == "" && $match->away_points == "" ) {
+			$score = array( 'home' => 0, 'guest' => '' );
+			foreach ( $match->sets AS $set ) {
+				if ( $set['player1'] > $set['player2'] ) {
+					$score['home'] += 1;
+				} else {
+					$score['guest'] += 1;
+				}
 			}
+			
+			$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
 		}
-		
-		$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
 	}
 }
 

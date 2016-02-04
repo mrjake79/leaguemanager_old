@@ -462,7 +462,6 @@ class LeagueManager
 		global $wpdb;
 		
 		$league_id = $this->getCurrentLeagueID();
-		
 		$season = isset($this->season['name']) ? $this->season['name'] : '';
 		if ( isset($_GET['match_day']) ) {
 			$match_day = intval($_GET['match_day']);
@@ -480,6 +479,7 @@ class LeagueManager
 		} elseif ( $select == "next" ) {
 			$sql = "SELECT `match_day`, DATEDIFF(NOW(), `date`) AS datediff FROM {$wpdb->leaguemanager_matches} WHERE `league_id` = '%d' AND `season` = '%s' AND DATEDIFF(NOW(), `date`) < 0 ORDER BY datediff DESC";
 			$matches = $wpdb->get_results( $wpdb->prepare($sql, $this->getLeagueID(), $season) );
+
 			if ($matches[0]) $match_day = $matches[0]->match_day;
 			else $match_day = -1;
 		} elseif ( $select == "current" || $select == "latest") {
@@ -515,17 +515,27 @@ class LeagueManager
 	 */
 	function getSeason( $league, $season = false, $index = false )
 	{
-		if ( isset($_GET['season']) && !empty($_GET['season']) )
-			$data = $league->seasons[htmlspecialchars($_GET['season'])];
-		elseif ( isset($_GET['season_'.$league->id]) )
-			$data = $league->seasons[htmlspecialchars($_GET['season_'.$league->id])];
-		elseif ( $season )
+		
+		if ( isset($_GET['season']) && !empty($_GET['season']) ) {
+			$key = htmlspecialchars(strip_tags($_GET['season']));
+			if (!isset($league->seasons[$key]))
+				return false;
+			
+			$data = $league->seasons[$key];
+		} elseif ( isset($_GET['season_'.$league->id]) ) {
+			$key = htmlspecialchars(strip_tags($_GET['season_'.$league->id]));
+			if (!isset($league->seasons[$key]))
+				return false;
+			
+			$data = $league->seasons[$key];
+		} elseif ( $season ) {
 			$data = $league->seasons[$season];
-		elseif ( !empty($league->seasons) )
+		} elseif ( !empty($league->seasons) ) {
 			$data = end($league->seasons);
-		else
+		} else {
 			return false;
-
+		}
+		
 		if ( $index )
 			return $data[$index];
 		else
@@ -961,12 +971,12 @@ class LeagueManager
 		if ($season) {
 			if ($season == "any") 
 				$search_terms[] = "`season` != ''";
-			elseif ($this->seasonExists($league_id, htmlspecialchars($season)))
-				$search_terms[] = $wpdb->prepare("`season` = '%s'", htmlspecialchars($season));
+			elseif ($this->seasonExists($league_id, htmlspecialchars(strip_tags($season))))
+				$search_terms[] = $wpdb->prepare("`season` = '%s'", htmlspecialchars(strip_tags($season)));
 		}
 		
-		if ($final != false && $this->finalExists(htmlspecialchars($final))) $search_terms[] = $wpdb->prepare("`final` = '%s'", htmlspecialchars($final));
-		if ($group != false && $this->groupExists($league_id, htmlspecialchars($group))) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars($group));
+		if ($final != false && $this->finalExists(htmlspecialchars(strip_tags($final)))) $search_terms[] = $wpdb->prepare("`final` = '%s'", htmlspecialchars(strip_tags($final)));
+		if ($group != false && $this->groupExists($league_id, htmlspecialchars(strip_tags($group)))) $search_terms[] = $wpdb->prepare("`group` = '%s'", htmlspecialchars(strip_tags($group)));
 		if ($team_id) {
 			$search_terms[] = $wpdb->prepare("(`home_team` = '%d' OR `away_team` = '%d')", $team_id, $team_id);
 		} else {
@@ -1000,7 +1010,7 @@ class LeagueManager
 		elseif ( $time == 'today' )
 			$search_terms[] = "DATEDIFF(NOW(), `date`) = 0";
 		elseif ( $time == 'day' )
-			$search_terms[] = "DATEDIFF('". htmlspecialchars($match_date)."', `date`) = 0";
+			$search_terms[] = "DATEDIFF('". htmlspecialchars(strip_tags($match_date))."', `date`) = 0";
 		
 		$search = "";
 		if (count($search_terms) > 0) {
@@ -1049,7 +1059,7 @@ class LeagueManager
 			if ( $search != "") $sql .= " WHERE $search";
 			$sql .= " ORDER BY $order";
 			if ( $limit && intval($num_matches_per_page) > 0 ) $sql .= " LIMIT ".$offset.",".intval($num_matches_per_page)."";
-	
+
 			$matches = $wpdb->get_results( $sql, $output );
 		}
 
@@ -1082,6 +1092,9 @@ class LeagueManager
 		global $wpdb;
 
 		$match = $wpdb->get_results("SELECT `group`, `home_team`, `away_team`, DATE_FORMAT(`date`, '%Y-%m-%d %H:%i') AS date, DATE_FORMAT(`date`, '%e') AS day, DATE_FORMAT(`date`, '%c') AS month, DATE_FORMAT(`date`, '%Y') AS year, DATE_FORMAT(`date`, '%H') AS `hour`, DATE_FORMAT(`date`, '%i') AS `minutes`, `match_day`, `location`, `league_id`, `home_points`, `away_points`, `winner_id`, `loser_id`, `post_id`, `season`, `id`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `id` = '".intval($match_id)."'");
+		
+		if ( !$match ) return false;
+		
 		$match = $match[0];
 
 		$match->location = stripslashes($match->location);
@@ -1160,7 +1173,7 @@ class LeagueManager
 		else $query_args = (isset($this->query_args)) ? $this->query_args : array();
 		
 		if (isset($_POST['match_day']) && is_string($_POST['match_day'])) {
-			$query_args['match_day'] = htmlspecialchars($_POST['match_day']);
+			$query_args['match_day'] = htmlspecialchars(strip_tags($_POST['match_day']));
 		}
 		
 		$page_links = paginate_links( array(

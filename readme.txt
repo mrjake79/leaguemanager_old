@@ -4,7 +4,7 @@ Donate link:
 Tags: sport, widget, basketball, football, hockey, league, soccer, volleyball, gymnastics, tennis, baseball, rugby
 Requires at least: 2.7
 Tested up to: 4.4.1
-Stable tag: 4.0.2
+Stable tag: 4.0.5
 License: LGPLv2.1 or later
 
 Plugin to manage and present Sports Leagues
@@ -82,6 +82,23 @@ The LeagueManaager icons were designed by Yusuke Kamiyamane (http://p.yusukekami
 * TO-DO - The Match Day (Fixtures) filter on the admin standings page isn't currently working. I'm aware of the issue and importances to those using the Match Day filter to get around the PHP variable limit. I hope to have this resolved shortly.
 * TO-DO - Updating the translation code to remove the deprecated code has broken some translations due to a change in how WordPress handles multiple options. The translations files need some attention, so do the sport files...
 * Coming soon - Players, pagination for leagues, teams, matches, and players. New admin dashboard. New sport files.
+
+= 4.0.6 =
+* NEW: new shortcode [league id=ID] to display all contents of a league, i.e. standings, crosstable, matchlist and teamlist with fancy jQuery UI Tabs
+
+= 4.0.5 =
+* NEW: added logos to crosstable
+* SECURITY: fixed SQL injection and XSS vulnerabilities reported by islamoc (https://wordpress.org/support/topic/responding-to-security-problems-and-credit). I am pretty sure the SQL injection vulnerability had been already fixed before
+* BUGFIX: some style fixes
+
+= 4.0.4 =
+* BUGFIX: only automatically calculated final results scores if none are provided by the user
+* BUGFIX: fixed problem with Yoast SEO due to loading scriptaculous drag&drop
+* BUGFIX: fixed some issues with matches shortcode
+* BUGFIF: some style fixes
+
+= 4.0.3 =
+* BUGFIX: fixed some issues in matches shortcode
 
 = 4.0.2 =
 * NEW: don't automatically calculate results for basketball if a final score is submitted

@@ -149,23 +149,9 @@ else :
 					<td><?php _e( 'Yes', 'leaguemanager' ) ?></td>
 				</tr>
 				<tr class="" valign="top">
-					<td>archive</td>
-					<td><?php _e( 'If true match day will always start at 1 otherwise at current match day', 'leaguemanager' ) ?></td>
-					<td><em>boolean</em></td>
-					<td>false</td>
-					<td><?php _e( 'Yes', 'leaguemanager' ) ?></td>
-				</tr>
-				<tr class="alternate" valign="top">
 					<td>roster</td>
 					<td><?php _e( 'Only works with Racing. Display race results for given racer. Can be either ID or name, but ID is recommended.', 'leaguemanager' ) ?></td>
 					<td><em>integer</em></td>
-					<td>&#160;</td>
-					<td><?php _e( 'Yes', 'leaguemanager' ) ?></td>
-				</tr>
-				<tr class="" valign="top">
-					<td>order</td>
-					<td><?php _e( 'MySQL order string. Change ordering of matches, e.g. order="date DESC" sorts matches descending by date', 'leaguemanager' ) ?></td>
-					<td><em>string</em></td>
 					<td>&#160;</td>
 					<td><?php _e( 'Yes', 'leaguemanager' ) ?></td>
 				</tr>

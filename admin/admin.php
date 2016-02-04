@@ -231,7 +231,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 	}
 	function loadScripts()
 	{
-		wp_register_script( 'leaguemanager-functions', LEAGUEMANAGER_URL.'/admin/js/functions.js', array( 'thickbox', 'jquery', 'jquery-ui-datepicker', 'jquery-ui-tabs', 'jquery-ui-accordion', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-effects-core', 'jquery-effects-slide', 'jquery-effects-explode', 'scriptaculous-dragdrop', 'iris' ), LEAGUEMANAGER_VERSION );
+		wp_register_script( 'leaguemanager-functions', LEAGUEMANAGER_URL.'/admin/js/functions.js', array( 'thickbox', 'jquery', 'jquery-ui-datepicker', 'jquery-ui-tabs', 'jquery-ui-accordion', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-effects-core', 'jquery-effects-slide', 'jquery-effects-explode', 'iris' ), LEAGUEMANAGER_VERSION );
 		wp_enqueue_script('leaguemanager-functions');
 		wp_register_script( 'leaguemanager-ajax', LEAGUEMANAGER_URL.'/admin/js/ajax.js', array('sack'), LEAGUEMANAGER_VERSION );
 		wp_enqueue_script('leaguemanager-ajax');

@@ -409,29 +409,31 @@ class LeagueManagerGymnastics extends LeagueManager
 		
 		$match = $leaguemanager->getMatch( $match_id );
 		
-		$home_points = $match->floor['home'] + $match->pommelhorse['home'] + $match->rings['home'] + $match->vault['home'] + $match->parallelbars['home'] + $match->highbars['home'];
-		$away_points = $match->floor['guest'] + $match->pommelhorse['guest'] + $match->rings['guest'] + $match->vault['guest'] + $match->parallelbars['guest'] + $match->highbars['guest'];
-		if ( $home_points == 0 && $away_points == 0 )
-			$home_points = $away_points = '';
-		
-		$ap = array('plus' => 0, 'minus' => 0);
-		$apparatus = array( 'floor', 'pommelhorse', 'rings', 'vault', 'parallelbars', 'highbars' );
-		foreach ( $apparatus AS $key ) {
-			if ( $match->{$key}['home'] != '' && $match->{$key}['guest'] != '' ) {
-				if ( $match->{$key}['home'] > $match->{$key}['guest'] )
-					$ap['plus'] += 2;
-				else
-					$ap['minus'] += 2;
+		if ( $match->home_points == "" && $match->away_points == "" ) {
+			$home_points = $match->floor['home'] + $match->pommelhorse['home'] + $match->rings['home'] + $match->vault['home'] + $match->parallelbars['home'] + $match->highbars['home'];
+			$away_points = $match->floor['guest'] + $match->pommelhorse['guest'] + $match->rings['guest'] + $match->vault['guest'] + $match->parallelbars['guest'] + $match->highbars['guest'];
+			if ( $home_points == 0 && $away_points == 0 )
+				$home_points = $away_points = '';
+			
+			$ap = array('plus' => 0, 'minus' => 0);
+			$apparatus = array( 'floor', 'pommelhorse', 'rings', 'vault', 'parallelbars', 'highbars' );
+			foreach ( $apparatus AS $key ) {
+				if ( $match->{$key}['home'] != '' && $match->{$key}['guest'] != '' ) {
+					if ( $match->{$key}['home'] > $match->{$key}['guest'] )
+						$ap['plus'] += 2;
+					else
+						$ap['minus'] += 2;
+				}
 			}
+			if ( $ap['plus'] == 0 && $ap['minus'] == 0 ) $ap = array( 'plus' => '', 'minus' => '' );
+					
+			$custom = $match->custom;
+			
+			if ( $custom['apparatus_points']['plus'] == '' && $custom['apparatus_points']['minus'] == '' )
+				$custom['apparatus_points'] = $ap;
+			
+			$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s', `custom` = '%s' WHERE `id` = '%d'", $home_points, $away_points, maybe_serialize($custom), $match_id) );
 		}
-		if ( $ap['plus'] == 0 && $ap['minus'] == 0 ) $ap = array( 'plus' => '', 'minus' => '' );
-				
-		$custom = $match->custom;
-		
-		if ( $custom['apparatus_points']['plus'] == '' && $custom['apparatus_points']['minus'] == '' )
-			$custom['apparatus_points'] = $ap;
-		
-		$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s', `custom` = '%s' WHERE `id` = '%d'", $home_points, $away_points, maybe_serialize($custom), $match_id) );
 	}
 }
 

@@ -14,8 +14,8 @@ $class = 'alternate';
 
 ?>
 
-<?php if (isset($_GET['team_id'])) : ?>
-	<?php leaguemanager_team($_GET['team_id']); ?>
+<?php if (isset($_GET['team_'.$league->id])) : ?>
+	<?php leaguemanager_team($_GET['team_'.$league->id]); ?>
 <?php else : ?>
 
 <?php if ( $teams ) : ?>
@@ -34,7 +34,7 @@ $class = 'alternate';
 </thead>
 <tbody id="the-list">
 <?php foreach ( $teams AS $team ) : $class = ('alternate' == $class) ? '' : 'alternate'; ?>
-<?php $url = add_query_arg('team_id', $team->id, get_permalink()); ?>
+<?php $url = add_query_arg('team_'.$league->id, $team->id, get_permalink()); ?>
 <tr class="<?php echo $class ?>">
 	<td><img src="<?php echo $leaguemanager->getThumbnailUrl($team->logo); ?>" alt="" /></td>
 	<td><a href="<?php echo $url; ?>"><?php echo $team->title ?></a></td>

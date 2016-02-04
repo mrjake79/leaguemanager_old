@@ -13,9 +13,9 @@ The following variables are usable:
 */
 ?>
 
-<?php if ( isset($team->single) && $team->single ) : ?>
+<?php //if ( isset($team->single) && $team->single ) : ?>
 <div class="teampage">
-<?php endif; ?>
+<?php //endif; ?>
 
 	<h3 class="header"><?php echo $team->title ?></h3>
 
@@ -38,21 +38,24 @@ The following variables are usable:
 		<p class="teamlogo alignright"><img src="<?php echo $team->logo ?>" alt="<?php _e( 'Logo', 'leaguemanager' ) ?>" /></p>
 		<?php endif; ?>
 		
-		<div class="alignright matches">			
+		<div class="matches">			
 			<?php if ( $team->next_match ) : ?>
-			<div class="next_match alignleft">
+			<div class="matches-container">
+			<div class="next_match">
 				<h4 class="header"><?php _e( 'Next Match','leaguemanager' ) ?></h4>
 				<div class="content">
 					<p class="match"><?php echo $team->next_match->match ?></p>
 					<p class='match_day'><?php printf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $team->next_match->match_day); ?></p>
-					<p class='match_date'><?php echo mysql2date("j. F Y", $team->next_match->date) ?>&#160;<span class='time'><?php echo $team->next_match->time ?></span> <span class='location'><<?php echo $team->next_match->location ?></span></p>
+					<p class='match_date'><?php echo mysql2date("j. F Y", $team->next_match->date) ?>&#160;<span class='time'><?php echo $team->next_match->time ?></span> <span class='location'><?php echo $team->next_match->location ?></span></p>
 					<p class="score">&#160;</p>
 				</div>
+			</div>
 			</div>
 			<?php endif; ?>
 
 			<?php if ( $team->prev_match ) : ?>
-			<div class="prev_match alignleft">
+			<div class="matches-container">
+			<div class="prev_match">
 				<h4 class="header"><?php _e( 'Last Match','leaguemanager' ) ?></h4>
 				<div class="content">
 					<p class="match"><?php echo $team->prev_match->match ?></p>
@@ -60,6 +63,7 @@ The following variables are usable:
 					<p class='match_date'><?php echo mysql2date("j. F Y", $team->prev_match->date) ?>&#160;<span class='time'><?php echo $team->prev_match->time ?></span> <span class='location'><?php echo $team->prev_match->location ?></span></p>
 					<p class="score"><?php echo $team->prev_match->score ?></p>
 				</div>
+			</div>
 			</div>
 			<?php endif; ?>
 		</div>
@@ -89,6 +93,6 @@ The following variables are usable:
 		<?php endif; ?>
 	</div>
 	
-<?php if ( isset($team->single) && $team->single ) : ?>
+<?php //if ( isset($team->single) && $team->single ) : ?>
 </div>
-<?php endif; ?>
+<?php //standingstableendif; ?>

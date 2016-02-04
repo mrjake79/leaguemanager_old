@@ -25,12 +25,12 @@ if ( !empty($match->raceresult) ) {
 <form method='get' action='<?php the_permalink(get_the_ID()) ?>'>
 <div>
 	<input type='hidden' name='page_id' value='<?php the_ID() ?>' />
-	<input type="hidden" name="season" value="<?php echo $season ?>" />
+	<input type="hidden" name="season_<?php echo $league->id ?>" value="<?php echo $season ?>" />
 	<input type="hidden" name="league_id" value="<?php echo $league->id ?>" />
 
 	<?php if ($league->show_match_day_selection) : ?>
-	<select size='1' name='match_day'>
-		<?php $selected = ( isset($_GET['match_day']) && $_GET['match_day'] == -1 ) ? ' selected="selected"' : ''; ?>
+	<select size='1' name='match_day_<?php echo $league->id ?>'>
+		<?php $selected = ( isset($_GET['match_day_'.$league->id]) && $_GET['match_day_'.$league->id] == -1 ) ? ' selected="selected"' : ''; ?>
 		<option value="-1"<?php echo $selected ?>><?php _e( 'Show all Matches', 'leaguemanager' ) ?></option>
 	<?php for ($i = 1; $i <= $league->num_match_days; $i++) : ?>
 		<option value='<?php echo $i ?>'<?php if ($leaguemanager->getMatchDay() == $i) echo ' selected="selected"'?>><?php printf(__( '%d. Match Day', 'leaguemanager'), $i) ?></option>

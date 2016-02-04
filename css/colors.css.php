@@ -18,6 +18,7 @@ table.leaguemanager tr.alternate {
 table.standingstable tr.ascend td,
 table.standingstable tr.ascend.alternate td {
 	background-color: <?php echo $this->options['colors']['rows']['ascend'] ?>;
+}
 <?php endif; ?>
 <?php if ( !empty($this->options['colors']['rows']['descend']) ) : ?>
 table.standingstable .descend td,
@@ -29,6 +30,7 @@ table.standingstable .descend.alternate td {
 table.standingstable tr.relegation,
 table.standingstable tr.relegation.alternate {
 	background-color: <?php echo $this->options['colors']['rows']['relegation'] ?>;
+}
 <?php endif; ?>
 <?php if ( !empty($this->options['colors']['rows']['alternate']) ) : ?>
 table.crosstable th,

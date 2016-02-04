@@ -28,7 +28,13 @@ The following variables are usable:
 <?php foreach ( $teams AS $team ) : $rank++; ?>
 <?php if ( 1 == $team->home ) $team->title = '<strong>'.$team->title.'</strong>'; ?>
 <tr>
-	<th scope='row' class='rank'><?php echo $rank ?></th><td><?php echo $team->title ?></td>
+	<th scope='row' class='rank'><?php echo $rank ?></th>
+	<td>
+		<?php if ( $league->show_logo && $team->logo != '' ) : ?>
+		<img src='<?php echo $leaguemanager->getThumbnailUrl($team->logo) ?>' alt='<?php _e('Logo','leaguemanager') ?>' title='<?php _e('Logo','leaguemanager')." ".$team->title ?>' />
+		<?php endif; ?>
+		<?php echo $team->title ?>
+	</td>
 	<?php for ( $i = 1; $i <= count($teams); $i++ ) : ?>
 		
 	<?php if ( ($rank == $i) ) : ?>

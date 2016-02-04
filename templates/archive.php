@@ -13,7 +13,7 @@ $archive = true;
 $tab = 0;
 
 if ( isset($_GET['match_day_'.$curr_league->id]) || isset($_GET['team_id_'.$curr_league->id]) ) 
-	$tab = 1;
+	$tab = 2;
 if ( isset($_GET['team_'.$curr_league->id]) )
 	$tab = 0;
 ?>
@@ -59,11 +59,11 @@ if ( isset($_GET['team_'.$curr_league->id]) )
 	</form>
 </div>
 
-<?php if ( isset($_GET['team_'.$curr_league->id]) ) : ?>
-	<?php leaguemanager_team(intval($_GET['team_'.$curr_league->id])); ?>
-<?php elseif ( isset($_GET['match_'.$curr_league->id]) ) : ?>
-	<?php leaguemanager_match(intval($_GET['match_'.$curr_league->id])); ?>
-<?php else : ?>
+<?php //if ( isset($_GET['team_'.$curr_league->id]) ) : ?>
+	<?php //leaguemanager_team(intval($_GET['team_'.$curr_league->id])); ?>
+<?php //elseif ( isset($_GET['match_'.$curr_league->id]) ) : ?>
+	<?php //leaguemanager_match(intval($_GET['match_'.$curr_league->id])); ?>
+<?php //else : ?>
 	<?php //$league = $leaguemanager->getLeague($curr_league->id); ?>
 	<?php if ( $curr_league->mode == 'championship' ) : ?>
 		<?php leaguemanager_championship( $curr_league->id, array('season' => $curr_league->season) ); ?>
@@ -71,20 +71,15 @@ if ( isset($_GET['team_'.$curr_league->id]) )
 		<div class="jquery-ui-tabs">
 			<ul class="tablist">
 				<li><a href="#standings-archive"><?php _e( 'Standings', 'leaguemanager' ) ?></a></li>
-				<li><a href="#matches-archive"><?php _e( 'Matches', 'leaguemanager' ) ?></a></li>
 				<li><a href="#crosstable-archive"><?php _e( 'Crosstable', 'leaguemanager' ) ?></a></li>
+				<li><a href="#matches-archive"><?php _e( 'Matches', 'leaguemanager' ) ?></a></li>
+				<li><a href="#teams-archive"><?php _e( 'Teams', 'leaguemanager' ) ?></a></li>
 			</ul>
 		
 			<!-- Standings Table -->
 			<div id="standings-archive" class="jquery-ui-tab">
 				<h4 class="header"><?php _e('Standings', 'leaguemanager') ?></h4>
-				<?php leaguemanager_standings( $curr_league->id, array( 'season' => $curr_league->season ) ) ?>
-			</div>
-			
-			<!-- Match Overview -->
-			<div id="matches-archive" class="jquery-ui-tab">
-				<h4 class="header"><?php _e('Matches', 'leaguemanager') ?></h4>
-				<?php leaguemanager_matches( $curr_league->id, array('season' => $curr_league->season, 'archive' => $archive) ) ?>
+				<?php leaguemanager_standings( $curr_league->id, array( 'season' => $curr_league->season, 'template' => 'last5' ) ) ?>
 			</div>
 			
 			<!-- Crosstable -->
@@ -92,10 +87,18 @@ if ( isset($_GET['team_'.$curr_league->id]) )
 				<h4 class="header"><?php _e('Crosstable', 'leaguemanager') ?></h4>
 				<?php leaguemanager_crosstable( $curr_league->id, array('season' => $curr_league->season) ) ?>
 			</div>
+			
+			<!-- Match Overview -->
+			<div id="matches-archive" class="jquery-ui-tab">
+				<h4 class="header"><?php _e('Matches', 'leaguemanager') ?></h4>
+				<?php leaguemanager_matches( $curr_league->id, array('season' => $curr_league->season, 'match_day' => 'current' , 'show_match_day_selection' => 'true') ) ?>
+			</div>
+			
+			<!-- Teamlist -->
+			<div id="teams-archive" class="jquery-ui-tab">
+				<h4 class="header"><?php _e('Teams', 'leaguemanager') ?></h4>
+				<?php leaguemanager_teams( $curr_league->id, array('season' => $curr_league->season, 'template' => 'list') ) ?>
+			</div>
 		</div>
-		
-		<!-- Teams List -->
-		<h4><?php _e('Teams', 'leaguemanager') ?></h4>
-		<?php leaguemanager_teams( $curr_league->id, array('season' => $curr_league->season, 'template' => 'list') ) ?>
 	<?php endif; ?>
-<?php endif; ?>
+<?php //endif; ?>

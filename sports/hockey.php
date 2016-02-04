@@ -401,15 +401,17 @@ class LeagueManagerHockey extends LeagueManager
 		
 		$match = $leaguemanager->getMatch( $match_id );
 		
-		$score = array( 'home' => 0, 'guest' => '' );
-		foreach ( $match->thirds AS $third ) {
-			$score['home'] += intval($third['plus']);
-			$score['guest'] += intval($third['minus']);
+		if ( $match->home_points == "" && $match->away_points == "" ) {
+			$score = array( 'home' => 0, 'guest' => '' );
+			foreach ( $match->thirds AS $third ) {
+				$score['home'] += intval($third['plus']);
+				$score['guest'] += intval($third['minus']);
+			}
+			$score['home'] = $score['home'] + intval($match->overtime['home']) + intval($match->penalty['home']);
+			$score['guest'] = $score['guest'] + intval($match->overtime['away']) + intval($match->penalty['away']);			
+			
+			$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
 		}
-		$score['home'] = $score['home'] + intval($match->overtime['home']) + intval($match->penalty['home']);
-		$score['guest'] = $score['guest'] + intval($match->overtime['away']) + intval($match->penalty['away']);			
-		
-		$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
 	}
 }
 

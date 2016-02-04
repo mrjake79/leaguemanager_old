@@ -215,7 +215,7 @@ div.leaguemanager_widget_control select {
 table.leaguemanager,
 div.matchlist table.leaguemanager {
 	text-align: left;
-	border: 0;
+	border: 1px solid;
 	border-collapse: collapse;
 	width: 100%;
 	margin: 1em auto 1.5em auto;
@@ -227,10 +227,10 @@ div.matchlist table.leaguemanager {
 	border-bottom: 1px solid;
 	}
 table.leaguemanager td,
-div.matchlist table.leaguemanager {
+div.matchlist table.leaguemanager td {
 	vertical-align: middle;
-	padding: 3px;
 	border: 0;
+	padding: 5px;
 	margin: 0;
 	}
 table.leaguemanager.matchtable a,
@@ -291,7 +291,12 @@ table.leaguemanager a {
 }
 
 
-/*--- Crosstable Popup---*/
+/*--- Standings table ---*/
+.standingstable {
+	border: 1px solid !important;
+}
+
+/*--- Crosstable Popup ---*/
 div#leaguemanager_crosstable div { text-align: center; padding-top: 1em;}
 
 table.leaguemanager.crosstable {
@@ -373,6 +378,9 @@ div.match .match-stats {
 div.matchlist {
 	margin-bottom: 1em;
 }
+.matchlist .match {
+	margin-bottom: 1em;
+}
 div.matchlist h3.header {
 	cursor: pointer;
 }
@@ -448,12 +456,11 @@ div.team-content .next_match .content {
 	-o-box-shadow:0 1px 1px rgba(0,0,0,1);
 	box-shadow:0 1px 1px rgba(0,0,0,1);
 	margin: 0 0 2px 0;
+	border: 1px solid;
 }
 div.team-content,
 .ui-accordion-content {
 	padding: 0.5em !important;
-}
-div.team-content .matches {
 }
 div.team-content .teamlogo:after {
 	content: " ";
@@ -485,12 +492,20 @@ div.team-content dl.team dd {
 div.team-content .matches {
 	/*margin-top: 90px;*/
 	/*float: right;*/
+	width: 100%;
+	display: block;
+	clear: both;
+}
+div.team-content .matches-container {
+	height: auto;
+	width: 50%;
+	float: left;
 }
 div.team-content .next_match {
-	
+	margin-right: 0.5em;
 }
 div.team-content .prev_match {
-	margin-right: 0 !important;
+	margin-left: 0.5em;
 }
 div.team-content .prev_match p,
 div.team-content .next_match p {
@@ -515,6 +530,14 @@ div.teamlist .header .ui-icon {
 
 .tablist a {
 	border: 0;
+}
+
+/*
+ * jQuery accordion lists
+ */
+.ui-accordion .teampage,
+.ui-accordion .match {
+	margin-bottom: 0 !important;
 }
 
 
@@ -620,6 +643,7 @@ div.teamlist .header .ui-icon {
 .fancy-slideshow .slide-overlay.leaguemanager .title .logos,
 .fancy-slideshow .cycle-overlay.leaguemanager .title .logos {
 	margin: 0;
+	width: 100%;
 }
 .fancy-slideshow .slide-overlay.leaguemanager .title .logos .result,
 .fancy-slideshow .cycle-overlay.leaguemanager .title .logos .result {
@@ -628,7 +652,8 @@ div.teamlist .header .ui-icon {
 .fancy-slideshow .slide-overlay.leaguemanager .title img.logo,
 .fancy-slideshow .cycle-overlay.leaguemanager .title img.logo {
 	display: inline;
-	width: auto !important;
+	width: auto;
+	max-width: 25% !important;
 	height: auto !important;
 }
 .fancy-slideshow .slide-overlay.leaguemanager .description p,
