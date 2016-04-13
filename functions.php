@@ -41,13 +41,20 @@ function leaguemanager_display_prev_match_box( $number, $instance ) {
  * get last N matches of given team
  *
  * @param int $team_id
- * @param int $ne number of matches
+ * @param int $n number of matches
+ * @param boolean $logos
+ * @return $matches
  */
-function get_last_matches( $team_id, $n = 1 ) {
+function get_last_matches( $team_id, $n = 1, $logos = true ) {
 	global $leaguemanager;
+	$matches = $leaguemanager->getMatches( array("time" => "prev", "team_id" => $team_id, "limit" => $n, "logos" => $logos) );
+	if ( empty($matches) )
+		return false;
 	
-	$matches = $leaguemanager->getMatches( array( 'time' => 'prev', 'team_id' => intval($team_id), 'limit' => intval($n) ) );
-	return $matches;
+	if ( $n == 1 )
+		return $matches[0];
+	else
+		return $matches;
 }
 
 
@@ -55,13 +62,20 @@ function get_last_matches( $team_id, $n = 1 ) {
  * get next N matches of given team
  *
  * @param int $team_id
- * @param int $ne number of matches
+ * @param int $n number of matches
+ * @param boolean $logos
+ * @return $matches
  */
-function get_next_matches( $team_id, $n = 1 ) {
+function get_next_matches( $team_id, $n = 1, $logos = true ) {
 	global $leaguemanager;
+	$matches = $leaguemanager->getMatches( array("time" => "next", "team_id" => $team_id, "limit" => $n, "logos" => $logos) );
+	if ( empty($matches) )
+		return false;
 	
-	$matches = $leaguemanager->getMatches( array( 'time' => 'next', 'team_id' => intval($team_id), 'limit' => intval($n) ) );
-	return $matches;
+	if ( $n == 1 )
+		return $matches[0];
+	else
+		return $matches;
 }
 
 
@@ -113,14 +127,8 @@ function get_latest_results($id_team, $limit = 5) {
     return $latest_results;
 }
 
-/**
- * get next game for Last 5 function
- *
- * @param int $id_team
- * @param int $limit additional argument (optional)
- * @return $next_results
- */
 
+ /*
 function get_next_match($id_team, $limit = 1) {
      global $wpdb;
      $next_results = $wpdb->get_results( $wpdb->prepare("SELECT `id`, `date`, `home_team`, `away_team`
@@ -132,7 +140,7 @@ function get_next_match($id_team, $limit = 1) {
 
              return $next_results;
 }
-
+*/
 
 /**
  * display crosstable table manually

@@ -44,6 +44,7 @@ class LeagueManagerHockey extends LeagueManager
 			add_action( 'leaguemanager_standings_columns_'.$key, array(&$this, 'displayStandingsColumns'), 10, 2 );
 			
 			add_action( 'leaguemanager_update_results_'.$key, array(&$this, 'updateResults') );
+			add_action( 'leaguemanager_get_standings_'.$key, array(&$this, 'getStandingsFilter'), 10, 3 );
 		}
 	}
 	function LeagueManagerHockey()
@@ -120,20 +121,38 @@ class LeagueManagerHockey extends LeagueManager
 
 
 	/**
+	 * get standings table data
+	 *
+	 * @param object $team
+	 * @param array $matches
+	 */
+	function getStandingsFilter( $team, $matches, $point_rule )
+	{
+		/*
+		 * analogue to team_points2_$sport filter
+		 */
+		$goals = $this->calculateGoalStatistics( $team->id, $matches );
+		$team->points2_plus = $goals['plus'];
+		$team->points2_minus = $goals['minus'];
+		
+		return $team;
+	}
+	
+	
+	/**
 	 * calculate goals. Penalty is not counted in statistics
 	 *
 	 * @param int $team_id
 	 * @param string $option
 	 * @return int
 	 */
-	function calculateGoalStatistics( $team_id )
+	function calculateGoalStatistics( $team_id, $matches = false )
 	{
 		global $wpdb, $leaguemanager;
 
 		$goals = array( 'plus' => 0, 'minus' => 0 );
 
-		//$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '".$team_id."'" );
-		$matches = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
+		if ( !$matches ) $matches =  $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
@@ -143,28 +162,15 @@ class LeagueManagerHockey extends LeagueManager
 				} else {
 					$home_goals = $match->home_points;
 					$away_goals = $match->away_points;
-				}
-
-				$goals['plus'] += $home_goals;
-				$goals['minus'] += $away_goals;
-			}
-		}
-
-		//$matches = $wpdb->get_results( "SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '".$team_id."'" );
-		$matches = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
-		if ( $matches ) {
-			foreach ( $matches AS $match ) {
-				$custom = maybe_unserialize($match->custom);
-				if ( !empty($custom['overtime']['home']) && !empty($custom['overtime']['away']) ) {
-					$home_goals = $custom['overtime']['home'];
-					$away_goals = $custom['overtime']['away'];
+				} 
+				
+				if ( $match->home_team == $team_id ) {
+					$goals['plus'] += $home_goals;
+					$goals['minus'] += $away_goals;
 				} else {
-					$home_goals = $match->home_points;
-					$away_goals = $match->away_points;
+					$goals['plus'] += $away_goals;
+					$goals['minus'] += $home_goals;
 				}
-
-				$goals['plus'] += $away_goals;
-				$goals['minus'] += $home_goals;
 			}
 		}
 
@@ -399,16 +405,20 @@ class LeagueManagerHockey extends LeagueManager
 	{
 		global $wpdb, $leaguemanager;
 		
-		$match = $leaguemanager->getMatch( $match_id );
+		$match = $leaguemanager->getMatch( $match_id, false );
 		
 		if ( $match->home_points == "" && $match->away_points == "" ) {
-			$score = array( 'home' => 0, 'guest' => '' );
+			$score = array( 'home' => '', 'guest' => '' );
 			foreach ( $match->thirds AS $third ) {
-				$score['home'] += intval($third['plus']);
-				$score['guest'] += intval($third['minus']);
+				if ( $third['plus'] != '' && $third['minus'] != '' ) {
+					$score['home'] += intval($third['plus']);
+					$score['guest'] += intval($third['minus']);
+				}
 			}
-			$score['home'] = $score['home'] + intval($match->overtime['home']) + intval($match->penalty['home']);
-			$score['guest'] = $score['guest'] + intval($match->overtime['away']) + intval($match->penalty['away']);			
+			if ($match->overtime['home'] != '' && $match->overtime['away'] != '') {
+				$score['home'] = $score['home'] + intval($match->overtime['home']) + intval($match->penalty['home']);
+				$score['guest'] = $score['guest'] + intval($match->overtime['away']) + intval($match->penalty['away']);			
+			}
 			
 			$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
 		}

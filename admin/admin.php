@@ -366,38 +366,6 @@ class LeagueManagerAdminPanel extends LeagueManager
 
 
 	/**
-	 * get point rule depending on selection.
-	 * For details on point rules see http://de.wikipedia.org/wiki/Drei-Punkte-Regel (German)
-	 *
-	 * @param int $rule
-	 * @return array of points
-	 */
-	function getPointRule( $rule )
-	{
-		$rule = maybe_unserialize($rule);
-
-		// Manual point rule
-		if ( is_array($rule) ) {
-			return $rule;
-		} else {
-			$point_rules = array();
-			// One point rule
-			$point_rules['one'] = array( 'forwin' => 1, 'fordraw' => 0, 'forloss' => 0 );
-			// Two point rule
-			$point_rules['two'] = array( 'forwin' => 2, 'fordraw' => 1, 'forloss' => 0 );
-			// Three-point rule
-			$point_rules['three'] = array( 'forwin' => 3, 'fordraw' => 1, 'forloss' => 0 );
-			// Score. One point for each scored goal
-			$point_rules['score'] = 'score';
-
-			$point_rules = apply_filters( 'leaguemanager_point_rules', $point_rules );
-
-			return $point_rules[$rule];
-		}
-	}
-
-
-	/**
 	 * get available point formats
 	 *
 	 * @param none
@@ -423,7 +391,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 		$league = $leaguemanager->getCurrentLeague();
 
 		//$num_matches = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE (`home_team` = '%d' OR `away_team` = '%d') AND `home_points` IS NOT NULL AND `away_points` IS NOT NULL", $team_id, $team_id) );
-		$num_matches = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE (`home_team` = '%d' OR `away_team` = '%d') AND `home_points` != '' AND `away_points` != ''", $team_id, $team_id) );
+		$num_matches = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE `final` = '' AND (`home_team` = '%d' OR `away_team` = '%d') AND `home_points` != '' AND `away_points` != ''", $team_id, $team_id) );
 		$num_matches = apply_filters( 'leaguemanager_done_matches_'.$league->sport, $num_matches, $team_id );
 		return $num_matches;
 	}
@@ -440,7 +408,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 		global $wpdb, $leaguemanager;
 		$league = $leaguemanager->getCurrentLeague();
 
-		$num_win = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE `winner_id` = '%d'", $team_id) );
+		$num_win = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE `final` = '' AND `winner_id` = '%d'", $team_id) );
 		$num_win = apply_filters( 'leaguemanager_won_matches_'.$league->sport, $num_win, $team_id );
 		return $num_win;
 	}
@@ -457,7 +425,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 		global $wpdb, $leaguemanager;
 		$league = $leaguemanager->getCurrentLeague();
 
-		$num_draw = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE `winner_id` = -1 AND `loser_id` = -1 AND (`home_team` = '%d' OR `away_team` = '%d')", $team_id, $team_id) );
+		$num_draw = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE `final` = '' AND `winner_id` = -1 AND `loser_id` = -1 AND (`home_team` = '%d' OR `away_team` = '%d')", $team_id, $team_id) );
 		$num_draw = apply_filters( 'leaguemanager_tie_matches_'.$league->sport, $num_draw, $team_id );
 		return $num_draw;
 	}
@@ -474,7 +442,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 		global $wpdb, $leaguemanager;
 		$league = $leaguemanager->getCurrentLeague();
 
-		$num_lost = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE `loser_id` = '%d'", $team_id) );
+		$num_lost = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_matches} WHERE `final` = '' AND `loser_id` = '%d'", $team_id) );
 		$num_lost = apply_filters( 'leaguemanager_lost_matches_'.$league->sport, $num_lost, $team_id );
 		return $num_lost;
 	}
@@ -523,35 +491,35 @@ class LeagueManagerAdminPanel extends LeagueManager
 	 */
 	function calculatePoints( $team_id, $option )
 	{
-		global $wpdb;
+		global $wpdb, $leaguemanager;
 
 		$league = $this->league;
 
-		$rule = $this->getPointRule( $league->point_rule );
+		$rule = $leaguemanager->getPointRule( $league->point_rule );
 		$team_id = intval($team_id);
 		$points = array( 'plus' => 0, 'minus' => 0 );
 		$team_points = 0;
 		
 		if ( 'score' == $rule ) {
-			$home = $this->getMatches( array("home_team" => $team_id) );
+			$home = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
 			foreach ( $home AS $match ) {
 				$points['plus'] += $match->home_points;
 				$points['minus'] += $match->away_points;
 			}
 
-			$away = $this->getMatches( array("away_team" => $team_id) );
+			$away = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
 			foreach ( $away AS $match ) {
 				$points['plus'] += $match->away_points;
 				$points['minus'] += $match->home_points;
 			}
 		} else {
 			extract( (array)$rule );
-			$home = $this->getMatches( array("home_team" => $team_id) );
+			$home = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
 			foreach ( $home AS $match ) {
 				$team_points += $match->home_points;
 			}
 			
-			$away = $this->getMatches( array("away_team" => $team_id) );
+			$away = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
 			foreach ( $away AS $match ) {
 				$team_points += $match->away_points;
 			}
@@ -623,6 +591,9 @@ class LeagueManagerAdminPanel extends LeagueManager
 			$this->delTeam( $team->id );
 		}
 
+		// remove remaining matches
+		$wpdb->query( $wpdb->prepare("DELETE FROM {$wpdb->leaguemanager_matches} WHERE `league_id` = '%d'", $league_id) );
+		
 		// remove statistics
 		$wpdb->query( $wpdb->prepare("DELETE FROM {$wpdb->leaguemanager_stats} WHERE `league_id` = '%d'", $league_id) );
 		$wpdb->query( $wpdb->prepare("DELETE FROM {$wpdb->leaguemanager} WHERE `id` = '%d'", $league_id) );
@@ -758,7 +729,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 		global $wpdb, $leaguemanager;
 
 		$sql = "INSERT INTO {$wpdb->leaguemanager_teams} (`title`, `website`, `coach`, `stadium`, `home`, `group`, `roster`, `profile`, `season`, `custom`, `logo`, `league_id`) VALUES ('%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%d')";
-		$wpdb->query( $wpdb->prepare ( $sql, $title, $website, $coach, $stadium, $home, $group, maybe_serialize($roster), $profile, $season, maybe_serialize($custom), $logo, $league_id ) );
+		$wpdb->query( $wpdb->prepare ( $sql, $title, $website, $coach, $stadium, $home, $group, maybe_serialize($roster), $profile, $season, maybe_serialize($custom), basename($logo), $league_id ) );
 		$team_id = $wpdb->insert_id;
 
 		if ( isset($_FILES['logo']) && $_FILES['logo']['name'] != '' )
@@ -817,7 +788,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 	{
 		global $wpdb, $leaguemanager;
 
-		$wpdb->query( $wpdb->prepare ( "UPDATE {$wpdb->leaguemanager_teams} SET `title` = '%s', `website` = '%s', `coach` = '%s', `stadium` = '%s', `logo` = '%s', `home` = '%d', `group` = '%s', `roster`= '%s', `profile` = '%d', `custom` = '%s' WHERE `id` = %d", $title, $website, $coach, $stadium, $logo, $home, $group, maybe_serialize($roster), $profile, maybe_serialize($custom), $team_id ) );
+		$wpdb->query( $wpdb->prepare ( "UPDATE {$wpdb->leaguemanager_teams} SET `title` = '%s', `website` = '%s', `coach` = '%s', `stadium` = '%s', `logo` = '%s', `home` = '%d', `group` = '%s', `roster`= '%s', `profile` = '%d', `custom` = '%s' WHERE `id` = %d", $title, $website, $coach, $stadium, basename($logo), $home, $group, maybe_serialize($roster), $profile, maybe_serialize($custom), $team_id ) );
 
 		// Delete Image if options is checked
 		if ($del_logo || $overwrite_image) {
@@ -826,8 +797,8 @@ class LeagueManagerAdminPanel extends LeagueManager
 		}
 
 		if ( !empty($logo) && !$del_logo ) {
-			$logo_image = new LeagueManagerImage($logo);
-			$logo_image->createThumbnail();
+			//$logo_image = new LeagueManagerImage($logo);
+			//$logo_image->createThumbnail();
 		}
 
 		if ( isset($_FILES['logo']) && $_FILES['logo']['name'] != '' )
@@ -901,6 +872,242 @@ class LeagueManagerAdminPanel extends LeagueManager
 
 
 	/**
+	 * crop image
+	 *
+	 * @param string $imagepath
+	 * @return string image url
+	 */
+	function resizeImage ( $imagepath, $dest_size, $size, $crop = false, $force_resize = false )
+	{
+		global $leaguemanager;
+		
+		$options = get_option('leaguemanager');
+		
+		// load image editor
+		$image = wp_get_image_editor( $imagepath );
+		
+		$imageurl = $leaguemanager->getImageUrl( $imagepath );
+		
+		// editor will return an error if the path is invalid - save original image url
+		if ( is_wp_error( $image ) ) {
+			return $imageurl;
+		} else {
+			// create destination file name
+			$destination_file = $leaguemanager->getImagePath($imagepath, false, $size);
+			$this->destination_file = $destination_file;
+
+			// resize only if the image does not exists
+			if ( !file_exists($destination_file) || $force_resize ) {			
+				// resize image, optionally with cropping enabled
+				$image->resize( $dest_size['width'], $dest_size['height'], $crop );
+				// save image
+				$saved = $image->save( $destination_file );
+				// return original url if an error occured
+				 if ( is_wp_error( $saved ) ) {
+					return $imageurl;
+				}
+			}
+			
+			$new_img_url = dirname($imageurl) . '/' . basename($destination_file);
+			
+			// record resized images with key using md5 hash of path to original image
+			if ( isset($saved) && !in_array(basename($new_img_url), $options['resized_images'][$this->league->id][md5($imagepath)]) )
+				$options['resized_images'][$this->league->id][md5($imagepath)][] = basename($new_img_url);
+			
+			update_option('leaguemanager', $options);
+			
+			return esc_url($new_img_url);
+		}
+	}
+	
+	
+	/**
+	 * Create different thumbnail sizes
+	 *
+	 * @param string $filename
+	 * @param string $filename
+	 */
+	function createThumbnails($filename, $force_resize = false)
+	{
+		global $leaguemanager;
+		
+		$this->league = $league = $leaguemanager->getCurrentLeague();
+		
+		$options = get_option('leaguemanager');
+		/*
+		 * create resized image records
+		 */
+		if ( !isset($options['resized_images']) )
+			$options['resized_images'] = array();
+	
+		if ( !isset($options['resized_images'][$league->id]) ) {
+			$options['resized_images'][$league->id] = array();
+		}
+		
+		if ( !isset($options['resized_images'][$league->id][md5($filename)]) ) {
+			$options['resized_images'][$league->id][md5($filename)] = array();
+		}
+		update_option('leaguemanager', $options);
+		
+		//require_once (PROJECTMANAGER_PATH . '/lib/image.php');
+		//$image = new ProjectManagerImage($filename);
+		
+		// create different thumbnails
+		$sizes = array( 'tiny' => $league->tiny_size, 'thumb' => $league->thumb_size, 'large' => $league->large_size );
+		foreach ( $sizes AS $size => $dest_size ) {
+			$crop = ( $league->crop_image[$size] == 1 ) ? true : false;
+			$imageurl = $this->resizeImage( $filename, $dest_size, $size, $crop, $force_resize );
+		}
+	}
+	
+	
+	/**
+	 * get supported file types
+	 *
+	 * @param none
+	 * @return array
+	 */
+	function getSupportedImageTypes()
+	{
+		return array( "jpg", "jpeg", "png", "gif" );
+	}
+	
+
+	/**
+	 * check if image type is supported
+	 *
+	 * @param none
+	 * @return boolean
+	 */
+	function isSupportedImage( $image )
+	{
+		if ( in_array($this->getImageType($image), $this->getSupportedImageTypes()) )
+			return true;
+		
+		return false;
+	}
+	
+	
+	/**
+	 * get image type of supplied image
+	 *
+	 * @param none
+	 * @return file extension
+	 */
+	function getImageType( $image )
+	{
+		global $leaguemanager;
+		$file = $leaguemanager->getImagePath($image);
+		$file_info = pathinfo($file);
+		return strtolower($file_info['extension']);
+	}
+	
+	
+	/**
+	 * regenerate all thumbnails of current project
+	 *
+	 * @param none
+	 */
+	function regenerateThumbnails()
+	{
+		global $wpdb, $leaguemanager;
+		
+		$league = $leaguemanager->getCurrentLeague();
+		
+		/*
+		 * regenerate dataset image thumbnails
+		 */
+		$teams = $leaguemanager->getTeams( array('league_id' => $league->id) );
+		foreach ( $teams AS $team ) {
+			if ( $team->logo != "" ) {
+				$this->createThumbnails($leaguemanager->getImagePath($team->logo), true);
+			}
+		}
+	}
+	
+	
+	/*
+	 * list or remove unused media files
+	 *
+	 * @param none
+	 */
+	function cleanUnusedMediaFiles( )
+	{
+		global $wpdb, $leaguemanager;
+		
+		$league = $leaguemanager->getCurrentLeague();
+		
+		$dir = $leaguemanager->getImagePath();
+		$files = array_diff(scandir($dir), array('.','..'));
+		$img_sizes = array( 'tiny', 'thumb', 'large' );
+		// get all thumbnail images
+		$thumbs = array();
+		foreach ( $img_sizes AS $size ) {
+			$thumbs = array_merge($thumbs, preg_grep("/".$size."\_/", $files));
+		}
+		// remove thumbnail images from filelist
+		$files = array_diff($files, $thumbs);
+		
+		// check if file is used
+		foreach ( $files AS $key => $file ) {
+			$query = $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `logo` = '%s'", basename($file));
+			$num = $wpdb->get_var( $query );
+			
+			if ( $num > 0 ) {
+				$file_info = pathinfo( $leaguemanager->getImagePath($file) );
+				// remove file from list
+				unset($files[$key]);
+				// remove fancy slideshow widget thumbnails
+				$files = array_diff($files, preg_grep("/".str_replace(".{$file_info['extension']}", "", basename($file))."-\d+x\d+.+/", $files));
+			}
+			
+			$query = $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `logo` = '%s'", $leaguemanager->getImageUrl(basename($file)));
+			$num = $wpdb->get_var( $query );
+			
+			if ( $num > 0 ) {
+				$file_info = pathinfo( $leaguemanager->getImagePath($file) );
+				// remove file from list
+				unset($files[$key]);
+				// remove fancy slideshow widget thumbnails
+				$files = array_diff($files, preg_grep("/".str_replace(".{$file_info['extension']}", "", basename($file))."-\d+x\d+.+/", $files));
+			}
+		}
+		
+		if ( isset($_POST['delete_unused_files']) ) {
+			check_admin_referer('leaguemanager_delete-unused-media-files');
+			
+			foreach ( $files AS $file ) {
+				//@unlink($leaguemanager->getImagePath($file));
+				$this->delLogo($file);
+			}
+			echo "<div class='box success updated fade'>";
+			echo "<p>".__( 'Unused media files deleted', 'leaguemanager' )."</p>";
+			echo "</div>";
+		} else {
+			echo "<div class='box fade'>";
+			if ( count($files) == 0 ) {
+				echo "<p>".__( 'Congratulations! This league has no orphaned media files.', 'leaguemanager' )."</p>";
+			} else {
+				echo "<p>".__( 'The following files do not do not seem to be used. If this is true you can subsequently delete them.', 'leaguemanager' )."</p>";
+				echo "<ul>";
+				foreach ( $files AS $file ) {
+					echo "<li style='margin-left: 2em;'>".$leaguemanager->getImagePath($file)."</li>";
+				}
+				echo "</ul>";
+				echo "<form action='' method='post'>";
+				echo "<input type='submit' class='button-primary' value='".__('Delete unused media files', 'leaguemanager')."' />";
+				wp_nonce_field( 'leaguemanager_delete-unused-media-files' ); 
+				echo "<input type='hidden' name='delete_unused_files' value='yes' />";
+				echo "</form>";
+			}
+			echo "</div>";
+		}
+		
+		//return $files;
+	}
+	
+	
+	/**
 	 * set image path in database and upload image to server
 	 *
 	 * @param int  $team_id
@@ -913,23 +1120,28 @@ class LeagueManagerAdminPanel extends LeagueManager
 	{
 		global $wpdb, $leaguemanager;
 
-		$new_file = $leaguemanager->getImagePath().'/'. basename($file['name']);
-		$logo = new LeagueManagerImage(basename($file['name']));
-		if ( $logo->supported() ) {
+		$new_file = $leaguemanager->getImagePath( basename($file['name']) );
+		$info = pathinfo( $new_file );
+		// make sure that file extension is lowercase
+		$new_file = str_replace($info['extension'], strtolower($info['extension']), $new_file);
+		
+		//$logo = new LeagueManagerImage(basename($file['name']));
+		if ( $this->isSupportedImage($new_file) ) {
 			if ( $file['size'] > 0 ) {
 				if ( file_exists($new_file) && !$overwrite ) {
-					$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_teams} SET `logo` = '%s' WHERE id = '%d'", $leaguemanager->getImageUrl(basename($file['name'])), $team_id ) );
+					$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_teams} SET `logo` = '%s' WHERE id = '%d'", basename($file['name']), $team_id ) );
 					parent::setMessage( __('Logo exists and is not uploaded. Set the overwrite option if you want to replace it.','leaguemanager'), true );
 				} else {
 					if ( move_uploaded_file($file['tmp_name'], $new_file) ) {
 						$team = $this->getTeam( $team_id );
 						$logo_file = $team->logo;
 
-						$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_teams} SET `logo` = '%s' WHERE id = '%d'", $leaguemanager->getImageUrl(basename($file['name'])), $team_id ) );
+						$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_teams} SET `logo` = '%s' WHERE id = '%d'", basename($file['name']), $team_id ) );
 						
 						$this->delLogo($logo_file);
 
-						$logo->createThumbnail();
+						$this->createThumbnails($new_file, $overwrite);
+						//$logo->createThumbnail();
 					} else {
 						parent::setMessage( sprintf( __('The uploaded file could not be moved to %s.' ), $leaguemanager->getImagePath() ), true );
 					}
@@ -952,10 +1164,14 @@ class LeagueManagerAdminPanel extends LeagueManager
 	{
 		global $wpdb, $leaguemanager;
 		
-		$num = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `logo` = '%s'", $image) );
+		$num = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(ID) FROM {$wpdb->leaguemanager_teams} WHERE `logo` = '%s'", basename($image)) );
 		if ( $num == 0 ) {
-			@unlink( $leaguemanager->getImagePath($image) );
-			@unlink( $leaguemanager->getThumbnailPath($image) );
+			$sizes = array( 'tiny', 'thumb', 'large', 'full' );
+			foreach ($sizes AS $size) {
+				@unlink( $leaguemanager->getImagePath($image, false, $size) );
+			}
+			//@unlink( $leaguemanager->getImagePath($image) );
+			//@unlink( $leaguemanager->getThumbnailPath($image) );
 		}
 	}
 
@@ -1009,7 +1225,6 @@ class LeagueManagerAdminPanel extends LeagueManager
 	{
 	 	global $wpdb;
 		$this->league_id = $league_id;
-
 		$home_points = (!isset($home_points)) ? 'NULL' : $home_points;
 		$away_points = (!isset($away_points)) ? 'NULL' : $away_points;
 
@@ -1070,7 +1285,7 @@ class LeagueManagerAdminPanel extends LeagueManager
 				$winner = $this->getMatchResult( $points['home'], $points['away'], $home_team[$match_id], $away_team[$match_id], 'winner' );
 				$loser = $this->getMatchResult($points['home'], $points['away'], $home_team[$match_id], $away_team[$match_id], 'loser' );
 
-				$m = $leaguemanager->getMatch( $match_id );
+				$m = $leaguemanager->getMatch( $match_id, false );
 				$cv = isset($custom[$match_id]) ? $custom[$match_id] : array();
 				$c = array_merge( (array)$m->custom, (array)$cv );
 				$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = ".$home_points[$match_id].", `away_points` = ".$away_points[$match_id].", `winner_id` = '%d', `loser_id` = '%d', `custom` = '%s' WHERE `id` = '%d'", intval($winner), intval($loser), maybe_serialize($c), $match_id) );
@@ -1092,11 +1307,11 @@ class LeagueManagerAdminPanel extends LeagueManager
 			/*
 			 * Initialize finals if championship mode is activated and all matches have results
 			 */
-			$matches = $leaguemanager->getMatches( array("league_id" => $league_id, "season" => $season['name'], "final" => '', "home_points" => "null", "away_points" => "null") );
+			/*$matches = $leaguemanager->getMatches( array("league_id" => $league_id, "season" => $season['name'], "final" => '', "home_points" => "null", "away_points" => "null") );
 			if ( !$matches && $league->mode == 'championship' ) {
 				global $championship;
 				$championship->proceed( false, $championship->getFinalKeys(1), $league_id );
-			}
+			}*/
 		}
 
 		if ( $message )
@@ -1362,19 +1577,6 @@ class LeagueManagerAdminPanel extends LeagueManager
 					$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_matches} SET `post_id` = 0 WHERE `id` = '%d'", $curr_match_ID ) );
 			}
 		}
-	}
-
-
-	/**
-	 * get supported image types
-	 *
-	 * @param none
-	 * @return array
-	 */
-	function getSupportedImageTypes()
-	{
-		//return LeagueManagerImage::getSupportedImageTypes();
-		return array( "jpg", "jpeg", "png", "gif" );
 	}
 
 
@@ -1748,6 +1950,25 @@ class LeagueManagerAdminPanel extends LeagueManager
 			}   
 		}
 		return $rs;
+	}
+	
+	
+	function showDatabaseColumns()
+	{
+		global  $wpdb;
+		
+		$tables = array($wpdb->leaguemanager, $wpdb->leaguemanager_teams, $wpdb->leaguemanager_matches, $wpdb->leaguemanager_stats);
+		
+		foreach( $tables AS $table ) {
+			$results = $wpdb->get_results("SHOW COLUMNS FROM {$table}");
+			$columns = array();
+			foreach ( $results AS $result ) {
+				$columns[] = "<li>".$result->Field." ".$result->Type.", NULL: ".$result->Null.", Default: ".$result->Default.", Extra: ".$result->Extra."</li>";
+			}
+			echo "<p>Table ".$table."<ul>";
+			echo implode("", $columns);
+			echo "</ul></p>";
+		}
 	}
 }
 ?>

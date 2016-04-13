@@ -15,6 +15,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Current Table"
+msgstr "Aktuelle Tabelle"
+
+msgid "Hometable"
+msgstr "Heimtabelle"
+
+msgid "Awaytable"
+msgstr "Auswärtstabelle"
+
+msgid "Final Results"
+msgstr "Finalergebnisse"
+
+msgid "Third Place"
+msgstr "Spiel um Platz 3"
+
+msgid "Final Matches"
+msgstr "Finalrundenspiele"
+
+msgid "Preliminary Rounds"
+msgstr "Vorrunde"
+
+msgid "Last 5"
+msgstr "Letzte 5"
+
+msgid "Group %s"
+msgstr "Gruppe %s"
+
+msgid "After the preliminary rounds are complete carefully check your results and then "
+msgstr "Nachdem die Vorrundenspiele komplett fertig sind, überprüfe genau deine Ergebnisse und dann "
+
+msgid "Proceed to Final Rounds"
+msgstr "Starte die Finalrunden"
+
+msgid "Afterwards changes to preliminary results will NOT affect the final results"
+msgstr "Danach werden Änderungen bei den Vorrundenergebnissen keine Auswirkung auf die Finalrunden haben"
+
+
 #: sports/gymnastics
 msgid "Floor"
 msgstr "Boden"
@@ -1107,14 +1144,14 @@ msgstr "Bericht"
 #: lib/shortcodes.php:266
 #: lib/shortcodes.php:365
 #: lib/widget.php:318
-msgid "o.P.|on penalty"
+msgid "o.P."
 msgstr "i. E."
 
 #: lib/shortcodes.php:200
 #: lib/shortcodes.php:268
 #: lib/shortcodes.php:367
 #: lib/widget.php:320
-msgid "AET|after extra time"
+msgid "AET"
 msgstr "n. V."
 
 #: lib/shortcodes.php:544

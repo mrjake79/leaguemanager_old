@@ -1,4 +1,7 @@
-var Leaguemanager = new Object();
+//var Leaguemanager = new Object();
+if(typeof Leaguemanager == "undefined") {
+  var Leaguemanager = new Object();
+}
 
 Leaguemanager.reInit = function() {
 	tb_init('a.thickbox, area.thickbox, input.thickbox');

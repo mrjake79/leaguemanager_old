@@ -18,13 +18,15 @@ class LeagueManagerAJAX
 	{
 		add_action( 'wp_ajax_leaguemanager_add_team_from_db', array(&$this, 'addTeamFromDB') );
 		add_action( 'wp_ajax_leaguemanager_set_team_roster_groups', array(&$this, 'setTeamRosterGroups') );
-		add_action( 'wp_ajax_leaguemanager_get_match_box', array(&$this, 'getMatchBox') );
 		add_action( 'wp_ajax_leaguemanager_save_team_standings', array(&$this, 'saveTeamStandings') );
 		add_action( 'wp_ajax_leaguemanager_save_add_points', array(&$this, 'saveAddPoints') );
 		add_action( 'wp_ajax_leaguemanager_insert_logo_from_library', array(&$this, 'insertLogoFromLibrary') );
 		add_action( 'wp_ajax_leaguemanager_insert_home_stadium', array(&$this, 'insertHomeStadium') );
 		add_action( 'wp_ajax_leaguemanager_set_match_day_popup', array(&$this, 'setMatchDayPopUp') );
 		add_action( 'wp_ajax_leaguemanager_set_match_date', array(&$this, 'setMatchDate') );
+		
+		add_action( 'wp_ajax_leaguemanager_get_match_box', array(&$this, 'getMatchBox') );
+		add_action( 'wp_ajax_nopriv_leaguemanager_get_match_box', array(&$this, 'getMatchBox') );
 	}
 	function LeagueManagerAJAX()
 	{

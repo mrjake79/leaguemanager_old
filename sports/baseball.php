@@ -42,6 +42,7 @@ class LeagueManagerBaseball extends LeagueManager
 		add_action( 'team_edit_form_'.$this->key, array(&$this, 'editTeam') );
 
 		add_action( 'leaguemanager_save_standings_'.$this->key, array(&$this, 'saveStandings') );
+		add_action( 'leaguemanager_get_standings_'.$this->key, array(&$this, 'getStandingsFilter'), 10, 3 );
 
 	}
 	function LeagueManagerBaseball()
@@ -106,6 +107,25 @@ class LeagueManagerBaseball extends LeagueManager
 
 
 	/**
+	 * get standings table data
+	 *
+	 * @param object $team
+	 * @param array $matches
+	 */
+	function getStandingsFilter( $team, $matches, $point_rule )
+	{
+		/*
+		 * analogue to leaguemanager_save_standings_$sport filter
+		 */
+		$team->runs = $this->getRuns($team->id);
+		$team->gb = $this->getGamesBehind($team->id);
+		$team->shutouts = $this->getShutouts($team->id);
+		
+		return $team;
+	}
+	
+	
+	/**
 	 * get number of runs for team
 	 *
 	 * @param int $team_id
@@ -117,18 +137,18 @@ class LeagueManagerBaseball extends LeagueManager
 		
 		$runs = array( 'for' => 0, 'against' => 0 );
 
-		$home = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
-		foreach ( $home AS $match ) {
-			$runs['for'] += $match->runs['for'];
-			$runs['against'] += $match->runs['against'];
+		$matches =  $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
+		foreach ( $matches AS $match ) {
+			if ( $match->home_team == $team_id ) {
+				$runs['for'] += $match->runs['for'];
+				$runs['against'] += $match->runs['against'];
+			}
+			if ( $match->away_team == $team_id ) {
+				$runs['for'] += $match->runs['against'];
+				$runs['against'] += $match->runs['for'];
+			}
 		}
 
-		$away = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
-		foreach ( $away AS $match ) {
-			$runs['for'] += $match->runs['against'];
-			$runs['against'] += $match->runs['for'];
-		}
-		
 		return $runs;
 	}
 
@@ -166,14 +186,13 @@ class LeagueManagerBaseball extends LeagueManager
 		
 		$shutouts = 0;
 
-		$home = $leaguemanager->getMatches( array("home_team" => $team_id) );
-		foreach ( $home AS $match ) {
-			$shutouts += $match->shutouts['home'];
-		}
-
-		$away = $leaguemanager->getMatches( array("away_team" => $team_id) );
-		foreach ( $away AS $match ) {
-			$shutouts += $match->shutouts['away'];
+		$matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
+		foreach ( $matches AS $match ) {
+			if ( $match->home_team == $team_id ) {
+				$shutouts += $match->shutouts['home'];
+			} else {
+				$shutouts += $match->shutouts['away'];
+			}
 		}
 		
 		return $shutouts;

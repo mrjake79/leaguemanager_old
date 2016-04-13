@@ -42,19 +42,19 @@ if ( isset($_GET['match_'.$league->id]) )
 		
 		<!-- Standings Table -->
 		<div id="standings-archive" class="jquery-ui-tab">
-			<h4 class="header"><?php _e('Standings', 'leaguemanager') ?></h4>
+			<h4 class="tab-header"><?php _e('Standings', 'leaguemanager') ?></h4>
 			<?php leaguemanager_standings( $league->id, array( 'season' => $league->season, 'template' => $league->templates['standingstable'] ) ) ?>
 		</div>
 			
 		<!-- Crosstable -->
 		<div id="crosstable-archive" class="jquery-ui-tab">
-			<h4 class="header"><?php _e('Crosstable', 'leaguemanager') ?></h4>
+			<h4 class="tab-header"><?php _e('Crosstable', 'leaguemanager') ?></h4>
 			<?php leaguemanager_crosstable( $league->id, array('season' => $league->season, 'template' => $league->templates['crosstable']) ) ?>
 		</div>
 			
 		<!-- Match Overview -->
 		<div id="matches-archive" class="jquery-ui-tab">
-			<h4 class="header"><?php _e('Matches', 'leaguemanager') ?></h4>
+			<h4 class="tab-header"><?php _e('Matches', 'leaguemanager') ?></h4>
 			<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'match_day' => 'current' , 'show_match_day_selection' => 'true', 'template' => $league->templates['matches']) ) ?>
 		</div>
 			

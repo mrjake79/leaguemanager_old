@@ -52,8 +52,7 @@ if ( isset($_POST['updateLeague']) && !isset($_POST['doaction']) && !isset($_POS
 				$custom = isset($_POST['custom']) ? $_POST['custom'][$i] : array();
 				$home_team = isset($_POST['home_team'][$i]) ? htmlspecialchars(strip_tags($_POST['home_team'][$i])) : '';
 				$away_team = isset($_POST['away_team'][$i]) ? htmlspecialchars(strip_tags($_POST['away_team'][$i])) : '';
-				$final = isset($_POST['final'][$i]) ? htmlspecialchars(strip_tags($_POST['final'][$i])) : '';
-				$this->editMatch( $date, $home_team, $away_team, $match_day, htmlspecialchars($_POST['location'][$i]), intval($_POST['league_id']), $match_id, $group, htmlspecialchars($final), $custom );
+				$this->editMatch( $date, $home_team, $away_team, $match_day, htmlspecialchars($_POST['location'][$i]), intval($_POST['league_id']), $match_id, $group, htmlspecialchars(strip_tags($_POST['final'])), $custom );
 			}
 			$leaguemanager->setMessage(sprintf(_n('%d Match updated', '%d Matches updated', $num_matches, 'leaguemanager'), $num_matches));
 		}
@@ -120,6 +119,8 @@ $league_mode = (isset($league->mode) ? ($league->mode) : '' );
 $cup = ( $league_mode == 'championship' ) ? true : false;
 
 $group = isset($_GET['group']) ? htmlspecialchars(strip_tags($_GET['group'])) : '';
+if ( empty($group) && isset($_POST['group']) ) $group = htmlspecialchars(strip_tags($_POST['group']));
+
 $team_id = isset($_POST['team_id']) ? intval($_POST['team_id']) : false;
 
 $team_list = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name'], "orderby" => array("id" => "ASC")), 'ARRAY' );
@@ -155,24 +156,39 @@ if ( empty($league->seasons)  ) {
 }
 
 if ( $league_mode != 'championship' ) {
-	$teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name']), 'OBJECT' );
+	$teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $season['name'], "cache" => false), 'OBJECT' );
 	$matches = $leaguemanager->getMatches( $match_args );
 	$leaguemanager->setNumMatches($leaguemanager->getMatches(array_merge($match_args, array('limit' => false, 'count' => true))));
 }
 
-$matches_file = apply_filters('leaguemanager_matches_file_'.$league->sport, $league, $season['name']);
-if($matches_file == null)
+if(has_filter('leaguemanager_matches_file_'.$league->sport))
+{
+    $matches_file = apply_filters('leaguemanager_matches_file_'.$league->sport, $league, $season['name']);
+}
+elseif(has_filter('leaguemanager_matches_file'))
 {
     $matches_file = apply_filters('leaguemanager_matches_file');
-    if($matches_file == null)
-    {
-        $matches_file = 'matches.php';
-    }
+}
+else
+{
+    $matches_file = 'matches.php';
 }
 
 if ( isset($_GET['match_paged']) ) 
 	$tab = 2;
 
+if ( isset($_GET['standingstable']) ) {
+	$get = $_GET['standingstable'];
+	$match_day = false;
+	$mode = 'all';
+	if ( preg_match('/match_day-\d/', $get, $hits) ) {
+		$res = explode("-", $hits[0]);
+		$match_day = $res[1];
+	} elseif ( in_array($get, array('home', 'away')) ) {
+		$mode = htmlspecialchars($get);
+	}
+	$teams = $leaguemanager->getStandings( $teams, $match_day, $mode );
+}
 /*$tmp = $leaguemanager->getTeams( array('league_id' => $league->id) );
 foreach ( $tmp AS $t )
 	$this->delTeam($t->id);*/
@@ -233,6 +249,16 @@ if ( !wp_mkdir_p( $leaguemanager->getImagePath() ) ) : ?>
 			
 			<div id="standings-table" class="league-block-container">
 				<h2 class="header"><?php _e( 'Table', 'leaguemanager' ) ?></h2>
+				<div class="alignright">
+					<form action="admin.php" method="get">
+					<input type="hidden" name="page" value="leaguemanager" />
+					<input type="hidden" name="subpage" value="show-league" />
+					<input type="hidden" name="league_id" value="<?php echo $league->id ?>" />
+					
+					<?php echo $leaguemanager->getStandingsSelection( $league ); ?>
+					<input type="submit" class="button-secondary" value="<?php _e( 'Show', 'leaguemanager' ) ?>" />
+					</form>
+				</div>
 				<?php include_once('standings.php'); ?>
 			</div>
 			
@@ -243,7 +269,6 @@ if ( !wp_mkdir_p( $leaguemanager->getImagePath() ) ) : ?>
 		
 			<div id="matches-table" class="league-block-container">
 				<h2 class="header"><?php _e( 'Match Plan','leaguemanager' ) ?></h2>
-				<?php include('matches.php'); ?>
                 <?php include($matches_file); ?>
 			</div>
 		</div>

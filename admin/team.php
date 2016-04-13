@@ -6,7 +6,7 @@ if ( !current_user_can( 'manage_leaguemanager' ) ) :
 	echo '<p style="text-align: center;">'.__("You do not have sufficient permissions to access this page.").'</p>';
 else :
 	$edit = false;
-	$myGroup = isset($_GET['group']) ? htmlspecialchars($_GET['group']) : '';
+	$myGroup = isset($_GET['group']) ? htmlspecialchars(strip_tags($_GET['group'])) : '';
 	if ( isset( $_GET['edit'] ) ) {
 		$edit = true;
 		$team = $leaguemanager->getTeam(intval($_GET['edit']));
@@ -20,7 +20,7 @@ else :
 		$team = (object)array( 'title' => '', 'home' => 0, 'id' => '', 'logo' => '', 'website' => '', 'coach' => '', 'stadium' => '', 'roster' => array('id' => '', 'cat_id' => '') );
 	}
 	$league = $leaguemanager->getLeague( $league_id );
-	$season = isset($_GET['season']) ? htmlspecialchars($_GET['season']) : '';
+	$season = isset($_GET['season']) ? htmlspecialchars(strip_tags($_GET['season'])) : '';
 
 	
 	if ( !wp_mkdir_p( $leaguemanager->getImagePath() ) )
@@ -64,7 +64,7 @@ else :
 					</div>
 					<div class="alignright" id="logo_db_box">
 						<?php if ( '' != $team->logo ) : ?>
-						<img id="logo_image" src="<?php echo $team->logo?>" />
+						<img id="logo_image" src="<?php echo $leaguemanager->getImageUrl($team->logo, false, 'thumb'); ?>" />
 						<?php endif; ?>
 					</div>
 
@@ -73,8 +73,7 @@ else :
 					<p><?php _e( 'Supported file types', 'leaguemanager' ) ?>: <?php echo implode( ',',$this->getSupportedImageTypes() ); ?></p>
 					
 					<?php if ( '' != $team->logo ) : ?>
-					<p style="float: left;"><label for="overwrite_image"><?php _e( 'Overwrite existing image', 'leaguemanager' ) ?></label><input type="checkbox" id="overwrite_image" name="overwrite_image" value="1" style="margin-left: 1em;" /></p>
-					<p style="float: right;"><label for="del_logo"><?php _e( 'Delete Logo', 'leaguemanager' ) ?></label><input type="checkbox" id="del_logo" name="del_logo" value="1" style="margin-left: 1em;" /></p>
+					<p style="float: left;"><label for="overwrite_image"><?php _e( 'Overwrite existing image', 'leaguemanager' ) ?></label><input type="checkbox" id="overwrite_image" name="overwrite_image" value="1" style="margin-left: 1em;" /><label for="del_logo"><?php _e( 'Delete Logo', 'leaguemanager' ) ?></label><input type="checkbox" id="del_logo" name="del_logo" value="1" style="margin-left: 1em;" /></p>
 					<?php endif; ?>
 					<input type="hidden" name="logo_db" id="logo_db" value="<?php echo $team->logo ?>" />
 				</td>

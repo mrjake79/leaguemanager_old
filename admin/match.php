@@ -101,7 +101,7 @@ else :
 			if ( $cup ) {
 				$form_title = sprintf(__( 'Add Matches - Group %s', 'leaguemanager' ), $group);
 				$submit_title = __( 'Add Matches', 'leaguemanager' );
-				$max_matches = ceil($leaguemanager->getNumTeams($league->id, $group)); // set number of matches to add to half the number of teams per match day
+				$max_matches = ceil(($leaguemanager->getNumTeams($league->id, $group)/2) * $season['num_match_days']); // set number of matches to add to half the number of teams per match day
 			} else {
 				$form_title = $submit_title = __( 'Add Matches', 'leaguemanager' );
 				$max_matches = ceil($leaguemanager->getNumTeams($league->id, $group)); // set number of matches to add to half the number of teams per match day
@@ -129,7 +129,13 @@ else :
 	$season = $leaguemanager->getSeason( $league );
 
 	if ( $is_finals ) {
-		$teams = $championship->getFinalTeams($final);
+		/*if ( is_numeric($matches[0]->home_team) && is_numeric($matches[0]->away_team) ) {
+			$team_args = array("league_id" => $league->id, "season" => $season['name'], "orderby" => array("title" => "ASC"));
+			$teams = $leaguemanager->getTeams( $team_args );
+		} else {
+			$teams = $championship->getFinalTeams( $final );
+		}*/
+		$teams = $championship->getFinalTeams( $final );
 		$teamsHome = $teams;
 	} else {
 		$team_args = array("league_id" => $league->id, "season" => $season['name'], "orderby" => array("title" => "ASC"));

@@ -456,6 +456,42 @@ function leaguemanager_upgrade() {
 		}
 	}
 	
+	if (version_compare($installed, '3.7.5', '<')) {
+		$admin = $lmLoader->getAdminPanel();
+		foreach ( $leaguemanager->getLeagues() AS $league ) {
+			$leaguemanager->setLeague( $league );
+			$teams = $leaguemanager->getTeams( array('league_id' => $league->id) );
+			foreach ( $teams AS $team ) {
+				if ( !empty($team->logo) ) {
+					$old_file = $leaguemanager->getImagePath($team->logo);
+					$info = pathinfo( $old_file );
+					// make sure that file extension is lowercase
+					$new_file = str_replace($info['extension'], strtolower($info['extension']), $old_file);
+					// rename image file
+					@rename($old_file, $new_file);
+					
+					$query = $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_teams} SET `logo` = '%s' WHERE `id` = '%d'", basename($new_file), $team->id );
+					$wpdb->query( $query );
+				}
+			}
+			
+			$admin->regenerateThumbnails();
+		}
+	}
+	
+	if (version_compare($installed, '3.7.6', '<')) {
+		foreach ( $leaguemanager->getLeagues() AS $league ) {
+			$leaguemanager->setLeague( $league );
+			$teams = $leaguemanager->getTeams( array('league_id' => $league->id) );
+			foreach ( $teams AS $team ) {
+				if ( !empty($team->logo) ) {
+					$query = $wpdb->prepare( "UPDATE {$wpdb->leaguemanager_teams} SET `logo` = '%s' WHERE `id` = '%d'", basename($team->logo), $team->id );
+					$wpdb->query( $query );
+				}
+			}
+		}
+	}
+	
 	/*
 	* Update version and dbversion
 	*/

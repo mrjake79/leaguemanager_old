@@ -30,7 +30,7 @@ The following variables are usable:
 <?php if ( $match->winner_id == $match->away_team ) $match->title = $teams[$match->away_team]['title'] . ' &#8211; ' . $teams[$match->home_team]['title']; ?>
 
 <tr class='<?php echo $match->class ?>'>
-	<td class='match'><?php echo $match->date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $match->title ?></a> <?php echo $match->report ?></td>
+	<td class='match'><?php echo $match->match_date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $match->title ?></a> <?php echo $match->report ?></td>
 	<td class='score' valign='bottom'>
 		<?php
 			$sets = array();

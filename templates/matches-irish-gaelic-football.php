@@ -33,7 +33,7 @@ $match->awayScore = sprintf("%d&#8211;%d", $match->num_goals['away'], $match->nu
 $match->score = sprintf("(%s) &#8211; (%s)", $match->homeScore, $match->awayScore);
 ?>
 <tr class='<?php echo $match->class ?>'>
-	<td class='match'><?php echo $match->date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $match->title ?></a> <?php echo $match->report ?></td>
+	<td class='match'><?php echo $match->match_date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $match->title ?></a> <?php echo $match->report ?></td>
 	<td class='score' valign='bottom'><?php echo $match->score ?></td>
 </tr>
 

@@ -78,7 +78,7 @@ if ($match && !empty($match->raceresult)) {
 <?php if ( !$roster || ( $roster && ($roster == $id || $roster == $racer['name']) ) ) : ?>
 <?php $class = ( 'alternate' == $class ) ? '' : 'alternate'; ?>
 <tr class='<?php echo $class ?>'>
-	<td><?php echo $match->date ?></td>
+	<td><?php echo $match->match_date ?></td>
 	<?php if (!$roster) : ?>
 	<td><?php echo $racer['name'] ?></td>
 	<?php endif; ?>

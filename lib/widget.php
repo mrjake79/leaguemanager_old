@@ -178,10 +178,10 @@ class LeagueManagerWidget extends WP_Widget
 
 			$next_link = $prev_link = '';
 			if ( $curr < count($matches) - 1 ) {
-				$next_link = "<a class='next' href='#null' onclick='Leaguemanager.setMatchBox(\"".LEAGUEMANAGER_URL."/ajax.php\", ".$curr.", \"next\", \"next\", ".$instance['league'].", \"".$match_limit_js."\", ".$number.", \"".$instance['season']."\", \"".$instance['group']."\", ".intval($home_only).", \"".$instance['date_format']."\"); return false'><img src='".LEAGUEMANAGER_URL."/images/arrow_right.png' alt='&raquo;' /></a>";
+				$next_link = "<a class='next' href='#null' onclick='Leaguemanager.setMatchBox(\"".admin_url( 'admin-ajax.php' )."\", ".$curr.", \"next\", \"next\", ".$instance['league'].", \"".$match_limit_js."\", ".$number.", \"".$instance['season']."\", \"".$instance['group']."\", ".intval($home_only).", \"".$instance['date_format']."\"); return false'><img src='".LEAGUEMANAGER_URL."/images/arrow_right.png' alt='&raquo;' /></a>";
 			}
 			if ( $curr > 0 ) {
-				$prev_link = "<a class='prev' href='#null' onclick='Leaguemanager.setMatchBox(\"".LEAGUEMANAGER_URL."/ajax.php\", ".$curr.", \"prev\", \"next\", ".$instance['league'].", \"".$match_limit_js."\", ".$number.", \"".$instance['season']."\", \"".$instance['group']."\", ".intval($home_only).", \"".$instance['date_format']."\"); return false'><img src='".LEAGUEMANAGER_URL."/images/arrow_left.png' alt='&laquo;' /></a>";
+				$prev_link = "<a class='prev' href='#null' onclick='Leaguemanager.setMatchBox(\"".admin_url( 'admin-ajax.php' )."\", ".$curr.", \"prev\", \"next\", ".$instance['league'].", \"".$match_limit_js."\", ".$number.", \"".$instance['season']."\", \"".$instance['group']."\", ".intval($home_only).", \"".$instance['date_format']."\"); return false'><img src='".LEAGUEMANAGER_URL."/images/arrow_left.png' alt='&laquo;' /></a>";
 			}
 	
 			$out = "<div id='next_match_box_".$number."' class='match_box'>";
@@ -264,10 +264,10 @@ class LeagueManagerWidget extends WP_Widget
 			
 			$next_link = $prev_link = '';
 			if ( $curr < count($matches) - 1 ) {
-				$next_link = "<a class='next' href='#null' onclick='Leaguemanager.setMatchBox(\"".LEAGUEMANAGER_URL."/ajax.php\", ".$curr.", \"next\", \"prev\", ".$instance['league'].", \"".$match_limit_js."\", ".$number.", \"".$instance['season']."\", \"".$instance['group']."\", ".intval($home_only).", \"".$instance['date_format']."\"); return false'><img src='".LEAGUEMANAGER_URL."/images/arrow_right.png' alt='&raquo;' /></a>";
+				$next_link = "<a class='next' href='#null' onclick='Leaguemanager.setMatchBox(\"".admin_url( 'admin-ajax.php' )."\", ".$curr.", \"next\", \"prev\", ".$instance['league'].", \"".$match_limit_js."\", ".$number.", \"".$instance['season']."\", \"".$instance['group']."\", ".intval($home_only).", \"".$instance['date_format']."\"); return false'><img src='".LEAGUEMANAGER_URL."/images/arrow_right.png' alt='&raquo;' /></a>";
 			}
 			if ( $curr > 0 ) {
-				$prev_link = "<a class='prev' href='#null' onclick='Leaguemanager.setMatchBox(\"".LEAGUEMANAGER_URL."/ajax.php\", ".$curr.", \"prev\", \"prev\", ".$instance['league'].", \"".$match_limit_js."\", ".$number.", \"".$instance['season']."\", \"".$instance['group']."\", ".intval($home_only).", \"".$instance['date_format']."\"); return false'><img src='".LEAGUEMANAGER_URL."/images/arrow_left.png' alt='&laquo;' /></a>";
+				$prev_link = "<a class='prev' href='#null' onclick='Leaguemanager.setMatchBox(\"".admin_url( 'admin-ajax.php' )."\", ".$curr.", \"prev\", \"prev\", ".$instance['league'].", \"".$match_limit_js."\", ".$number.", \"".$instance['season']."\", \"".$instance['group']."\", ".intval($home_only).", \"".$instance['date_format']."\"); return false'><img src='".LEAGUEMANAGER_URL."/images/arrow_left.png' alt='&laquo;' /></a>";
 			}
 			
 			$out = "<div id='prev_match_box_".$number."' class='match_box'>";
@@ -371,7 +371,7 @@ class LeagueManagerWidget extends WP_Widget
 		echo '<p><input type="checkbox" name="'.$this->get_field_name('home_only').'" id="'.$this->get_field_id('home_only').'" value="1"'.$home_checked.' /><label for="'.$this->get_field_id('home_only').'" class="right">'.__('Only own matches','leaguemanager').'</label></p>';
 		echo '<p><label for="'.$this->get_field_id('match_limit').'">'.__('Limit','leaguemanager').': </label><input type="text" name="'.$this->get_field_name('match_limit').'" id="'.$this->get_field_id('match_limit').'" value="'.$match_limit.'" size="5" /></p>';
 
-		$table_display = array( 'none' => __('Do not show','leaguemanager'), 'compact' => __('Compact Version','leaguemanager'), 'extend' => __('Extend Version','leaguemanager') );
+		$table_display = array( 'none' => __('Do not show','leaguemanager'), 'slim' => __( 'Slim Version', 'leaguemanager'), 'compact' => __('Compact Version','leaguemanager'), 'extend' => __('Extend Version','leaguemanager'), 'last5' => __( 'Last 5', 'leaguemanager' ) );
 		echo '<p><label for="'.$this->get_field_id('table').'">'.__('Table','leaguemanager').': </label>';
 		echo '<select size="1" name="'.$this->get_field_name('table').'" id="'.$this->get_field_id('table').'">';
 		foreach ( $table_display AS $key => $text ) {

@@ -68,12 +68,12 @@ else :
                     <td>
                         <label>
                             <input type='radio' name='hide_admin_widgets' id='hide_admin_widgets_no' value='0'
-                            <?php if(!$options['hide_admin_widgets']) print 'checked="checked"'; ?> />
+                            <?php if(!isset($options['hide_admin_widgets']) || !$options['hide_admin_widgets']) print 'checked="checked"'; ?> />
                             No
                         </label>
                         <label>
                             <input type='radio' name='hide_admin_widgets' id='hide_admin_widgets_yes' value='1'
-                            <?php if($options['hide_admin_widgets']) print 'checked="checked"'; ?> />
+                            <?php if(isset($options['hide_admin_widgets']) && $options['hide_admin_widgets']) print 'checked="checked"'; ?> />
                             Yes
                         </label>
                     </td>

@@ -55,6 +55,7 @@ class LeagueManagerTennis extends LeagueManager
 		add_filter( 'leaguemanager_tie_matches_'.$this->key, array(&$this, 'getNumTieMatches'), 10, 2 );
 		add_filter( 'leaguemanager_lost_matches_'.$this->key, array(&$this, 'getNumLostMatches'), 10, 2 );
 		add_action( 'leaguemanager_save_standings_'.$this->key, array(&$this, 'saveStandings') );
+		add_action( 'leaguemanager_get_standings_'.$this->key, array(&$this, 'getStandingsFilter'), 10, 3 );
 
 		add_action( 'league_settings_'.$this->key, array(&$this, 'leagueSettings') );
 		
@@ -285,13 +286,33 @@ class LeagueManagerTennis extends LeagueManager
 
 
 	/**
+	 * get standings table data
+	 *
+	 * @param object $team
+	 * @param array $matches
+	 */
+	function getStandingsFilter( $team, $matches, $point_rule )
+	{
+		/*
+		 * analogue to leaguemanager_save_standings_$sport filter
+		 */
+		$data = $this->getStandingsData( $team->id, maybe_unserialize($team->custom), $matches );
+		$team->straight_set = $data['straight_set'];
+		$team->split_set = $data['split_set'];
+		$team->games_allowed = $data['games_allowed'];
+		
+		return $team;
+	}
+	
+	
+	/**
 	 * get standings data for given team
 	 *
 	 * @param int $team_id
 	 * @param array $data
 	 * @return array number of runs for and against as assoziative array
 	 */
-	function getStandingsData( $team_id, $data = array() )
+	function getStandingsData( $team_id, $data = array(), $matches = false )
 	{
 		global $leaguemanager;
 		
@@ -301,7 +322,7 @@ class LeagueManagerTennis extends LeagueManager
 		$league = $leaguemanager->getCurrentLeague();
 		$season = $leaguemanager->getSeason($league);
 
-		$matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => '', "limit" => false) );
+		if ( !$matches ) $matches = $leaguemanager->getMatches( array("league_id" => $league->id, "season" => $season['name'], "final" => '', "limit" => false, "cache" => false) );
 		foreach ( $matches AS $match ) {
 			if ( $match->home_team == $team_id || $match->away_team == $team_id || ( isset($match->home_partner) && $match->home_partner == $team_id ) || ( isset($match->guest_partner) && $match->guest_partner == $team_id ) ) {
 				if (!isset($match->home_partner)) $match->home_partner = '';
@@ -597,14 +618,16 @@ class LeagueManagerTennis extends LeagueManager
 	{
 		global $wpdb, $leaguemanager;
 		
-		$match = $leaguemanager->getMatch( $match_id );
+		$match = $leaguemanager->getMatch( $match_id, false );
 		if ( $match->home_points == "" && $match->away_points == "" ) {
-			$score = array( 'home' => 0, 'guest' => '' );
+			$score = array( 'home' => '', 'guest' => '' );
 			foreach ( $match->sets AS $set ) {
-				if ( $set['player1'] > $set['player2'] ) {
-					$score['home'] += 1;
-				} else {
-					$score['guest'] += 1;
+				if ( $set['player1'] != '' && $set['player2'] != '' ) {
+					if ( $set['player1'] > $set['player2'] ) {
+						$score['home'] += 1;
+					} else {
+						$score['guest'] += 1;
+					}
 				}
 			}
 			

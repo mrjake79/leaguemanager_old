@@ -88,16 +88,15 @@ class LeagueManagerTabletennis extends LeagueManager
 		global $leaguemanager;
 
 		$points = array( 'plus' => 0, 'minus' => 0 );
-		$home = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
-		foreach ( $home AS $match ) {
-			$points['plus'] += $match->home_points;
-			$points['minus'] += $match->away_points;
-		}
-
-		$away = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
-		foreach ( $away AS $match ) {
-			$points['plus'] += $match->away_points;
-			$points['minus'] += $match->home_points;
+		$matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
+		foreach ( $matches AS $match ) {
+			if ( $team_id == $match->home_team ) {
+				$points['plus'] += $match->home_points;
+				$points['minus'] += $match->away_points;
+			} else {
+				$points['plus'] += $match->away_points;
+				$points['minus'] += $match->home_points;
+			}
 		}
 
 		return $points;

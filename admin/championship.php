@@ -12,6 +12,10 @@ if ( empty($group) ) {
 	$group = $group_tmp[0];
 }
 
+if ( isset($_POST['startFinals']) ) {
+	$championship->startFinalRounds($league->id);
+}
+
 if ( isset($_POST['updateFinalResults']) ) {
 	if ( !is_numeric(end($_POST['home_team'])) ) {
 		$leaguemanager->setMessage(__( "It seems the previous round is not over yet.", 'leaguemanager'), true);
@@ -21,7 +25,21 @@ if ( isset($_POST['updateFinalResults']) ) {
 		$championship->updateResults(intval($_POST['league_id']), $_POST['matches'], $_POST['home_points'], $_POST['away_points'], $_POST['home_team'], $_POST['away_team'], $custom, $_POST['round']);
 	}
 }
+$tab = 0;
+if (isset($_GET['jquery-ui-tab'])) $tab = intval($_GET['jquery-ui-tab']);
+if (isset($_POST['jquery-ui-tab'])) $tab = intval($_POST['jquery-ui-tab']);
+
 ?>
+<script type='text/javascript'>
+	jQuery(function() {
+		jQuery("#tabs").tabs({
+			activate: function(event ,ui){
+				jQuery(".jquery_ui_tab_index").val(ui.newTab.index());
+			},
+			active: <?php echo $tab ?>
+		});
+	});
+</script>
 
 <div class="wrap">
 	<!--<p class="leaguemanager_breadcrumb"><a href="admin.php?page=leaguemanager"><?php _e( 'LeagueManager', 'leaguemanager' ) ?></a> &raquo; <a href="admin.php?page=leaguemanager&amp;subpage=show-league&amp;league_id=<?php echo $league->id ?>"><?php echo $league->title ?></a> &raquo; <?php _e( 'Championship Finals', 'leaguemanager') ?></p>-->
@@ -36,6 +54,7 @@ if ( isset($_POST['updateFinalResults']) ) {
 				<option value="<?php echo $g ?>"<?php selected($g, $group) ?>><?php printf(__('Group %s','leaguemanager'), $g) ?></option>
 			<?php endforeach; ?>
 			</select>
+			<input type="hidden" name="jquery-ui-tab" value="<?php echo $tab ?>" class="jquery_ui_tab_index" />
 			<input type="submit" class="button-secondary" value="<?php _e( 'Show', 'leaguemanager' ) ?>" />
 		</form>
 	</div>
@@ -65,7 +84,7 @@ if ( isset($_POST['updateFinalResults']) ) {
 					}
 				?>
 					<tr class="<?php echo $class ?>">
-						<th scope="row"><strong><?php echo $final['name'] ?></strong></th>
+						<th scope="row" style="padding-left: 1em;"><strong><?php echo $final['name'] ?></strong></th>
 						<?php for ( $i = 1; $i <= $final['num_matches']; $i++ ) : ((isset($matches[0])) ? $match = $matches[$i-1] : 0); ?>
 						<?php $colspan = ( $num_first_round/2 >= 4 ) ? ceil(4/$final['num_matches']) : ceil(($num_first_round/2)/$final['num_matches']); ?>
 						<td colspan="<?php echo $colspan ?>" style="text-align: center;">
@@ -74,12 +93,19 @@ if ( isset($_POST['updateFinalResults']) ) {
 							<?php 
 							$match->hadPenalty = $match->hadPenalty = ( isset($match->penalty) && $match->penalty['home'] != '' && $match->penalty['away'] != '' ) ? true : false;
 							$match->hadOvertime = $match->hadOvertime = ( isset($match->overtime) && $match->overtime['home'] != '' && $match->overtime['away'] != '' ) ? true : false;
+							
+							if ( is_numeric($match->home_team) && is_numeric($match->away_team) ) {
+								//$title = sprintf("%s &#8211; %s", $teams[$match->home_team]['title'], $teams[$match->away_team]['title']);
+								$title = $leaguemanager->getMatchTitle($match->id);
+							} else {
+								$title = sprintf("%s &#8211; %s", $teams2[$match->home_team], $teams2[$match->away_team]);
+							}  
 							?>
-							<?php if ( isset($teams[$match->home_team]) && isset($teams[$match->away_team]) ) : ?>
+							<?php //if ( isset($teams[$match->home_team]) && isset($teams[$match->away_team]) ) : ?>
 								<?php if ( $final['key'] == 'final' ) : ?>
-								<p><span id="final_home" style="margin-right: 0.5em;"></span><?php printf('%s &#8211; %s', $teams[$match->home_team]['title'], $teams[$match->away_team]['title']) ?><span id="final_away" style="margin-left: 0.5em;"></span></p>
+								<p><span id="final_home" style="margin-right: 0.5em;"></span><?php echo $title;//printf('%s &#8211; %s', $teams[$match->home_team]['title'], $teams[$match->away_team]['title']) ?><span id="final_away" style="margin-left: 0.5em;"></span></p>
 								<?php else : ?>
-								<p><?php printf('%s &#8211; %s', $teams[$match->home_team]['title'], $teams[$match->away_team]['title']) ?></p>
+								<p><?php echo $title;//printf('%s &#8211; %s', $teams[$match->home_team]['title'], $teams[$match->away_team]['title']) ?></p>
 								<?php endif; ?>
 
 								<?php if ( $match->home_points != NULL && $match->away_points != NULL ) : ?>
@@ -103,9 +129,9 @@ if ( isset($_POST['updateFinalResults']) ) {
 								<?php else : ?>
 									<p>-:-</p>
 								<?php endif; ?>
-							<?php else : ?>
-								&#8211;
-							<?php endif; ?>
+							<?php //else : ?>
+								<!--&#8211;-->
+							<?php //endif; ?>
 
 							<?php endif; ?>
 						</td>
@@ -123,7 +149,7 @@ if ( isset($_POST['updateFinalResults']) ) {
 		
 		<div id="finals" class="championship-block-container">
 			<h2><?php printf(__( 'Finals &#8211; %s', 'leaguemanager' ), $championship->getFinalName($finalkey)) ?></h2>
-			<div class="championship-block">
+			<div class="championship-block">			
 				<div class="tablenav">
 				<form action="admin.php" method="get" style="display: inline;">
 					<input type="hidden" name="page" value="<?php echo htmlspecialchars($_GET['page']) ?>" />
@@ -135,6 +161,7 @@ if ( isset($_POST['updateFinalResults']) ) {
 						<option value="<?php echo $final['key'] ?>"<?php selected($finalkey, $final['key']) ?>><?php echo $final['name'] ?></option>	
 						<?php endforeach; ?>
 					</select>
+					<input type="hidden" name="jquery-ui-tab" value="<?php echo $tab ?>" class="jquery_ui_tab_index" />
 					<input type="submit" class="button-secondary" value="<?php _e( 'Show', 'leaguemanager' ) ?>" />
 				</form>
 				<form action="admin.php" method="get" style="display: inline;">
@@ -154,6 +181,7 @@ if ( isset($_POST['updateFinalResults']) ) {
 						<option value="<?php echo $final['key'] ?>"><?php echo $final['name'] ?></option>
 					<?php endforeach; ?>
 					</select>
+					<input type="hidden" name="jquery-ui-tab" value="<?php echo $tab ?>" class="jquery_ui_tab_index" />
 					<input type="submit" class="button-secondary" value="<?php _e( 'Go', 'leaguemanager' ) ?>" />
 				</form>
 				</div>
@@ -167,10 +195,13 @@ if ( isset($_POST['updateFinalResults']) ) {
 				<form method="post" action="">
 				<input type="hidden" name="league_id" value="<?php echo $league->id ?>" />
 				<input type="hidden" name="round" value="<?php echo $final['round'] ?>" />
+				<input type="hidden" name="jquery-ui-tab" value="<?php echo $tab ?>" class="jquery_ui_tab_index" />
+				
 				<table class="widefat">
 				<thead>
 				<tr>
 					<th><?php _e( '#', 'leaguemanager' ) ?></th>
+					<th><?php _e( 'ID', 'leaguemanager' ) ?></th>
 					<th><?php _e( 'Date','leaguemanager' ) ?></th>
 					<th style="text-align: center;"><?php _e( 'Match','leaguemanager' ) ?></th>
 					<th><?php _e( 'Location','leaguemanager' ) ?></th>
@@ -185,19 +216,21 @@ if ( isset($_POST['updateFinalResults']) ) {
 					$class = ( 'alternate' == $class ) ? '' : 'alternate';
 					$title = "N/A";
 					if ( ( isset($match)) && ((is_numeric($match->home_team)) && (is_numeric($match->away_team))) ) {
-						$title = sprintf("%s &#8211; %s", $teams[$match->home_team]['title'], $teams[$match->away_team]['title']);
+						//$title = sprintf("%s &#8211; %s", $teams[$match->home_team]['title'], $teams[$match->away_team]['title']);
+						$title = $leaguemanager->getMatchTitle($match->id);
 					} elseif ( (isset($match)) ) {
 						$title = sprintf("%s &#8211; %s", $teams2[$match->home_team], $teams2[$match->away_team]);
 					}     
 					?>
 					<tr class="<?php echo $class ?>">
 						<td><?php echo $i ?><input type="hidden" name="matches[<?php echo $match->id ?>]" value="<?php echo $match->id ?>" /><input type="hidden" name="home_team[<?php echo $match->id ?>]" value="<?php echo $match->home_team ?>" /><input type="hidden" name="away_team[<?php echo $match->id ?>]" value="<?php echo $match->away_team ?>" /></td>
+						<td><?php echo $match->id ?></td>
 						<td><?php echo ( isset($match->date) ) ? mysql2date(get_option('date_format'), $match->date) : 'N/A' ?></td>
 						<td style="text-align: center;"><?php echo $title ?></td>
 						<td><?php echo ( isset($match->location) ) ? $match->location : 'N/A' ?></td>
 						<td><?php echo ( isset($match->hour) ) ? mysql2date(get_option('time_format'), $match->date) : 'N/A' ?></td>
 						<td style="text-align: center;">
-							<input class="points" type="text" size="2" style="text-align: center;" id="home_points[<?php echo $match->id ?>]" name="home_points[<?php echo $match->id ?>]" value="<?php echo ((isset($match->home_points)) ? $match->home_points : 0) ?>" /> : <input class="points" type="text" size="2" style="text-align: center;" id="away_points[<?php echo $match->id ?>]" name="away_points[<?php echo $match->id ?>]" value="<?php echo ((isset($match->away_points)) ? $match->away_points : 0) ?>" />
+							<input class="points" type="text" size="2" style="text-align: center;" id="home_points[<?php echo $match->id ?>]" name="home_points[<?php echo $match->id ?>]" value="<?php echo ((isset($match->home_points)) ? $match->home_points : '') ?>" /> : <input class="points" type="text" size="2" style="text-align: center;" id="away_points[<?php echo $match->id ?>]" name="away_points[<?php echo $match->id ?>]" value="<?php echo ((isset($match->away_points)) ? $match->away_points : '') ?>" />
 						</td>
 						<?php do_action( 'matchtable_columns_'.$league->sport, ( ( isset($match) ) ? $match : '' ) ) ?>
 					</tr>
@@ -213,6 +246,11 @@ if ( isset($_POST['updateFinalResults']) ) {
 		<div id='preliminary' class="championship-block-container">
 			<h2><?php _e( 'Preliminary Rounds', 'leaguemanager' ) ?></h2>
 			<div class="championship-block">
+				<form action="" method="post" style="display: inline;">
+					<input type="hidden" name="jquery-ui-tab" value="1" />
+					<p><?php _e( 'After the preliminary rounds are complete carefully check your results and then ', 'leaguemanager' ) ?><input type="submit" class="button-secondary" value="<?php _e( 'Proceed to Final Rounds', 'leaguemanager' ) ?>" name="startFinals" /> <?php _e( 'Afterwards changes to preliminary results will NOT affect the final results', 'leaguemanager' ) ?></p>
+				</form>
+					
 				<div class="alignright">
 					<form action="admin.php" method="get" style="display: inline;">
 						<input type="hidden" name="page" value="<?php echo htmlspecialchars($_GET['page']) ?>" />
@@ -224,6 +262,7 @@ if ( isset($_POST['updateFinalResults']) ) {
 						<option value="<?php echo $g ?>"<?php selected($g, $group) ?>><?php printf(__('Group %s','leaguemanager'), $g) ?></option>
 						<?php endforeach; ?>
 						</select>
+						<input type="hidden" name="jquery-ui-tab" value="<?php echo $tab ?>" class="jquery_ui_tab_index" />
 						<input type="submit" class="button-secondary" value="<?php _e( 'Show', 'leaguemanager' ) ?>" />
 					</form>
 				</div>

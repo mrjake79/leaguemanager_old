@@ -259,19 +259,17 @@ table.leaguemanager .last5 {
 	text-align: center;
 	width: 130px;
 	}
-table.leaguemanager .logo {
+table.leaguemanager .logo,
+table .leaguemanager .match-title.logo {
 	width: 20px;
 	}
+.match-title.logo {
+	max-width: 50px;
+}
 table.leaguemanager .logo img {
 	display: block;
 	margin: 0;
 	padding: 0;
-	}
-table.leaguemanager .rank {
-	text-align: center;
-	padding: 0;
-	font-weight: bold;
-	width: 1.2em;
 	}
 table.leaguemanager .home {
 	font-weight: bold;
@@ -295,6 +293,20 @@ table.leaguemanager a {
 .standingstable {
 	border: 1px solid !important;
 }
+.standingstable th,
+.standingstable td {
+	vertical-align: middle;
+}
+.standingstable .rank {
+	display: block;
+	margin: auto;
+	text-align: center;
+	padding: 5px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	font-weight: bold;
+}
 
 /*--- Crosstable Popup ---*/
 div#leaguemanager_crosstable div { text-align: center; padding-top: 1em;}
@@ -302,10 +314,15 @@ div#leaguemanager_crosstable div { text-align: center; padding-top: 1em;}
 table.leaguemanager.crosstable {
 }
 table.leaguemanager.crosstable th {
+	vertical-align: middle;
 	border: 1px solid;
 }
 table.leaguemanager.crosstable td {
 	border: 1px solid;
+}
+table.crosstable img {
+	display: inline-block;
+	vertical-align: middle;
 }
 
 
@@ -589,6 +606,12 @@ div.teamlist .header .ui-icon {
 .leaguemanager_widget .match_box .logos {
 	margin: 0.5em auto;
 	}
+.leaguemanager_widget .match_box .logos img {
+	display: inline;
+	width: auto;
+	max-width: 25% !important;
+	height: auto !important;
+}
 .leaguemanager_widget .match_box .home_logo {
 	margin-right: 0.5em;
 	}
@@ -614,18 +637,18 @@ div.teamlist .header .ui-icon {
 	padding: 0;
 	}
 .leaguemanager_widget table.leaguemanager th {
-	background-color: transparent;
+	/*background-color: transparent;*/
 	}
 .leaguemanager_widget table.leaguemanager th, .leaguemanager_widget table.leaguemanager td {
 	padding: 4px;
 	margin: 0;
 	border: 0;
 	border-bottom: 1px solid;
-	background-color: transparent;
+	/*background-color: transparent;*/
 	}
 
 .leaguemanager_widget table.leaguemanager tr, .leaguemanager_widget table.leaguemanager tr.alternate {
-	background-color: transparent;
+	/*background-color: transparent;*/
 	}
 
 /*--- Fancy Slideshow Overlay ---*/

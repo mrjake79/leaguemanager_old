@@ -3,7 +3,7 @@
 Plugin Name: LeagueManager
 Plugin URI: http://wordpress.org/extend/plugins/leaguemanager/
 Description: Manage and present sports league results.
-Version: 4.0.6
+Version: 4.1.1
 Author: Kolja Schleich, LaMonte Forthun
 
 Copyright 2008-2016  Kolja Schleich  (email : kolja.schleich@googlemail.com)
@@ -38,7 +38,7 @@ class LeagueManagerLoader
 	 *
 	 * @var string
 	 */
-	var $version = '4.0.6';
+	var $version = '4.1.1';
 
 
 	/**
@@ -46,7 +46,7 @@ class LeagueManagerLoader
 	 *
 	 * @var string
 	 */
-	var $dbversion = '3.7.4';
+	var $dbversion = '3.7.6';
 
 
 	/**
@@ -105,6 +105,9 @@ class LeagueManagerLoader
 		add_filter( 'fancy_slideshow_overlay_styles', array( &$this, 'addSlideshowOverlayStyles' ) );
 		add_filter( 'fancy_slideshow_get_slides_matches', array(&$this, 'getSlideshowSlides') );
 		
+		// add LeagueManager template directory to projectmanager search path
+		add_filter( 'projectmanager_template_paths', array(&$this, 'addProjectmangerTemplatePath') );
+		
 		$leaguemanager = new LeagueManager( $this->bridge );
 		$championship = new LeagueManagerChampionship();
 		$lmStats = new LeagueManagerStats();
@@ -118,6 +121,19 @@ class LeagueManagerLoader
 	}
 
 
+	/**
+	 * add Leaguemanager template path to Projectmanager search path
+	 *
+	 * @param array $paths
+	 * @return array
+	 */
+	function addProjectmangerTemplatePath( $paths )
+	{
+		$paths[] = LEAGUEMANAGER_PATH . "/templates";
+		return $paths;
+	}
+	
+	
 	/**
 	 * Add individual league matches to slideshow categories
 	 *
@@ -182,7 +198,7 @@ class LeagueManagerLoader
 			$slides = array();
 			if ( $matches ) {
 				foreach ( $matches AS $match ) {
-					$title = $leaguemanager->getMatchTitle($match->id, $show_logos, $match);
+					$title = $leaguemanager->getMatchTitle($match->id, false, $match);
 					
 					if ( $time == 'next' ) {
 						$score = ' v.s. ';
@@ -191,11 +207,11 @@ class LeagueManagerLoader
 							$score = "N/A";
 						} else {
 							if ( $match->hadPenalty )
-								$score = sprintf($league->point_format, $match->penalty['home'], $match->penalty['away'])." "._x( 'o.P.', 'leaguemanager' );
+								$score = sprintf("%d-%d", $match->penalty['home'], $match->penalty['away'])." ".__( 'o.P.', 'leaguemanager' );
 							elseif ( $match->hadOvertime )
-								$score = sprintf($league->point_format, $match->overtime['home'], $match->overtime['away'])." "._x( 'AET', 'leaguemanager' );
+								$score = sprintf("%d-%d", $match->overtime['home'], $match->overtime['away'])." ".__( 'AET', 'leaguemanager' );
 							else
-								$score = sprintf($league->point_format, $match->home_points, $match->away_points);
+								$score = sprintf("%d-%d", $match->home_points, $match->away_points);
 						}
 						
 						$score = "<span class='result'>".$score."</span>";
@@ -208,7 +224,7 @@ class LeagueManagerLoader
 					$slide_title = "";
 					$slide_title .= "<p class='match_title'><strong>". $match->title."</strong></p>";
 					if ( $show_logos )
-						$slide_title .= "<p class='logos'><img class='logo home_logo' src='".$teams[$match->home_team]['logo']."' alt='' />".$score."<img class='logo away_logo' src='".$teams[$match->away_team]['logo']."' alt='' /></p>";
+						$slide_title .= "<p class='logos'><img class='logo home_logo' src='".$leaguemanager->getImageUrl($teams[$match->home_team]['logo'], false, 'thumb')."' alt='' />".$score."<img class='logo away_logo' src='".$leaguemanager->getImageUrl($teams[$match->away_team]['logo'], false, 'thumb')."' alt='' /></p>";
 					else
 						$slide_title .= "<p class='logos'>".$score."</p>";
 
@@ -216,7 +232,7 @@ class LeagueManagerLoader
 					if ( !empty($match->match_day) )
 						$slide_desc .= "<p class='match_day'>".sprintf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $match->match_day)."</p>";
 					
-					$slide_desc .= "<p class='date'>".mysql2date(get_option('date_format'), $match->date).", <span class='time'>".$match->time."</span></p>";
+					$slide_desc .= "<p class='date'>".mysql2date(get_option('date_format'), $match->date).", <span class='time'>".$match->start_time."</span></p>";
 					$slide_desc .= "<p class='location'>".$match->location."</p>";
 				
 					if ( $match->post_id != 0 )
@@ -459,7 +475,7 @@ class LeagueManagerLoader
 			blogUrl: "<?php bloginfo( 'wpurl' ); ?>",
 			//pluginPath: "<?php echo LEAGUEMANAGER_PATH; ?>",
 			pluginUrl: "<?php echo LEAGUEMANAGER_URL; ?>",
-			requestUrl: "<?php echo LEAGUEMANAGER_URL ?>/ajax.php",
+			requestUrl: "<?php echo admin_url( 'admin-ajax.php' ) ?>",
 			Edit: "<?php _e("Edit"); ?>",
 			Post: "<?php _e("Post"); ?>",
 			Save: "<?php _e("Save"); ?>",

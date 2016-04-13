@@ -42,6 +42,7 @@ class LeagueManagerPool extends LeagueManager
 		add_action( 'team_edit_form_'.$this->key, array(&$this, 'editTeam') );
 
 		add_action( 'leaguemanager_save_standings_'.$this->key, array(&$this, 'saveStandings') );
+		add_action( 'leaguemanager_get_standings_'.$this->key, array(&$this, 'getStandingsFilter'), 10, 3 );
 	}
 	function LeagueManagerSoccer()
 	{
@@ -74,13 +75,33 @@ class LeagueManagerPool extends LeagueManager
 			$points[$key] = $row->points['plus']+$row->add_points;
 			$diff[$key] = $row->forScore - $row->againstScore;
 			$won[$key] = $row->won_matches;
+			$draw[$key] = $row->draw_matches;
+			$done[$key] = $row->done_matches;
 		}
 
-		array_multisort( $points, SORT_DESC, $diff, SORT_DESC, $won, SORT_DESC, $teams );
+		array_multisort( $points, SORT_DESC, $diff, SORT_DESC, $won, SORT_DESC, $draw, SORT_DESC, $done, SORT_ASC, $teams );
 		return $teams;
 	}
 
 
+	/**
+	 * get standings table data
+	 *
+	 * @param object $team
+	 * @param array $matches
+	 */
+	function getStandingsFilter( $team, $matches, $point_rule )
+	{
+		/*
+		 * analogue to leaguemanager_save_standings_$sport filter
+		 */
+		$team->forScore = $this->getPoolScore($team->id, 'for', $matches);
+		$team->againstScore = $this->getPoolScore($team->id, 'against', $matches);
+		
+		return $team;
+	}
+	
+	
 	/**
 	 * save custom standings
 	 *
@@ -108,21 +129,20 @@ class LeagueManagerPool extends LeagueManager
 	 * @param int $team_id
 	 * @return array number of runs for and against as assoziative array
 	 */
-	function getPoolScore( $team_id, $index )
+	function getPoolScore( $team_id, $index, $matches = false )
 	{
 		global $leaguemanager;
 
 		$score = array( 'for' => 0, 'against' => 0 );
-		$home = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
+		if ( !$matches ) $matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
 		foreach ( $home AS $match ) {
-			$score['for'] += $match->forScore;
-			$score['against'] += $match->againstScore;
-		}
-
-		$away = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
-		foreach ( $away AS $match ) {
-			$score['for'] += $match->againstScore;
-			$score['against'] += $match->forScore;
+			if ( $team_id == $match->home_team ) {
+				$score['for'] += $match->forScore;
+				$score['against'] += $match->againstScore;
+			} else {
+				$score['for'] += $match->againstScore;
+				$score['against'] += $match->forScore;
+			}
 		}
 
 		return $score[$index];

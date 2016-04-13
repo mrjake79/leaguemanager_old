@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
 	/* jQuery UI accordion list */	
-	jQuery( ".teamlist, .matchlist" ).accordion({
+	jQuery( ".jquery-ui-accordion" ).accordion({
 		header: "h3.header",
 		collapsible: true,
 		heightStyle: "content"

@@ -12,7 +12,7 @@
 	<th scope='row' class='rank'><?php echo $rank + 1 ?></th>
 	<td>
 		<?php if ( $team->logo != '' ) : ?>
-		<img src='<?php echo $leaguemanager->getThumbnailUrl($team->logo) ?>' alt='<?php _e('Logo','leaguemanager') ?>' title='<?php _e('Logo','leaguemanager')." ".$team->title ?>' />
+		<img src='<?php echo $leaguemanager->getImageUrl($team->logo, false, 'tiny') ?>' alt='<?php _e('Logo','leaguemanager') ?>' title='<?php _e('Logo','leaguemanager')." ".$team->title ?>' />
 		<?php endif; ?>
 		<?php echo $team->title ?>
 	</td>

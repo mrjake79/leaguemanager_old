@@ -1,0 +1,717 @@
+# LeagueManager POT file.
+# Copyright (C) 2008 Kolja Schleich
+# This file is distributed under the same license as the WordPress package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/leaguemanager\n"
+"POT-Creation-Date: 2009-02-04 17:22+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Bar Shai <baraluf@gmail.com>\n"
+"Language-Team: \n"
+"Language: he_IL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: admin/admin.php:24
+#, fuzzy
+msgid "Match Report"
+msgstr "סיקור משחק"
+
+#: admin/admin.php:48 admin/index.php:36 admin/index.php:67
+#: admin/tinymce/window.php:52 admin/tinymce/window.php:82
+#: admin/tinymce/window.php:113 lib/widget.php:37
+msgid "League"
+msgstr "ליגה"
+
+#: admin/admin.php:49 admin/index.php:17 admin/match.php:84
+#: admin/settings.php:45 admin/show-league.php:73 admin/team.php:33
+#: admin/tinymce/window.php:28
+msgid "Leaguemanager"
+msgstr "מנהל הליגות"
+
+#: admin/admin.php:49
+msgid "Overview"
+msgstr "מבט כללי"
+
+#: admin/admin.php:50 admin/admin.php:108
+msgid "Settings"
+msgstr "הגדרות"
+
+#: admin/admin.php:217
+#, fuzzy
+msgid "Active"
+msgstr "פעולה"
+
+#: admin/admin.php:219
+msgid "Inactive"
+msgstr "לא פעיל"
+
+#: admin/admin.php:232
+msgid "Deactivate"
+msgstr "השבת"
+
+#: admin/admin.php:234
+msgid "Activate"
+msgstr "הפעל"
+
+#: admin/admin.php:448
+msgid "League added"
+msgstr "ליגה נוספה"
+
+#: admin/admin.php:470 admin/admin.php:802
+msgid "Settings saved"
+msgstr "הגדרות נשמרו"
+
+#: admin/admin.php:511
+msgid "Team added"
+msgstr "קבוצה נוספה"
+
+#: admin/admin.php:542
+msgid "Team updated"
+msgstr "קבוצה עודכנה"
+
+#: admin/admin.php:583
+msgid ""
+"Logo exists and is not uploaded. Set the overwrite option if you want to "
+"replace it."
+msgstr "הלוגו קיים ולא הועלה. יש לסמן את אפשרות הדריסה כדי להחליף את הלוגו."
+
+#: admin/admin.php:594
+#, php-format
+msgid "The uploaded file could not be moved to %s."
+msgstr "הקובץ שהועלה לא יכול להיכתב לנתיב %s"
+
+#: admin/admin.php:599
+msgid "The file type is not supported."
+msgstr "סוג הקובץ אינו נתמך."
+
+#: admin/admin.php:719
+msgid "Updated League Results"
+msgstr "תוצאות משחקים מעודכנות"
+
+#: admin/admin.php:832
+msgid "No Match"
+msgstr "אין משחק"
+
+#: admin/index.php:25 admin/show-league.php:91 admin/show-league.php:202
+msgid "Bulk Actions"
+msgstr "פעולות קבוצתיות"
+
+#: admin/index.php:26 admin/show-league.php:92 admin/show-league.php:203
+msgid "Delete"
+msgstr "מחק"
+
+#: admin/index.php:28 admin/show-league.php:94 admin/show-league.php:205
+msgid "Apply"
+msgstr "החל"
+
+#: admin/index.php:37
+msgid "Teams"
+msgstr "קבוצות"
+
+#: admin/index.php:38 admin/settings.php:87 admin/tinymce/window.php:42
+msgid "Matches"
+msgstr "משחקים"
+
+#: admin/index.php:39
+msgid "Status"
+msgstr "מצב"
+
+#: admin/index.php:40
+msgid "Action"
+msgstr "פעולה"
+
+#: admin/index.php:64 admin/index.php:70
+msgid "Add League"
+msgstr "הוסף ליגה"
+
+#: admin/match.php:10
+msgid "Edit Match"
+msgstr "ערוך משחק"
+
+#: admin/match.php:37
+#, php-format
+msgid "Edit Matches &#8211; %d. Match Day"
+msgstr "עריכת משחקים &#8211; מחזור %d"
+
+#: admin/match.php:38 admin/show-league.php:194
+msgid "Edit Matches"
+msgstr "ערוך משחקים"
+
+#: admin/match.php:73 admin/show-league.php:80
+msgid "Add Matches"
+msgstr "הוסף משחקים"
+
+#: admin/match.php:94 admin/match.php:118 admin/show-league.php:221
+msgid "Date"
+msgstr "תאריך"
+
+#: admin/match.php:99
+msgid "Match Day"
+msgstr "מחזור"
+
+#: admin/match.php:111
+msgid ""
+"Note: Matches with different Home and Guest Teams will be added to the "
+"database."
+msgstr "הערה: משחקים עם קבוצת בית שונה מקבוצת החוץ יתווספו לבסיס הנתונים."
+
+#: admin/match.php:120
+msgid "Home"
+msgstr "מקומיים"
+
+#: admin/match.php:121
+msgid "Guest"
+msgstr "אורחים"
+
+#: admin/match.php:122 admin/show-league.php:223
+msgid "Location"
+msgstr "מיקום"
+
+#: admin/match.php:123 admin/show-league.php:224
+msgid "Begin"
+msgstr "מתחיל"
+
+#: admin/match.php:126 admin/show-league.php:226
+msgid "Apparatus Points"
+msgstr "שיטת ניקוד"
+
+#: admin/match.php:128
+msgid "Points"
+msgstr "נקודות"
+
+#: admin/match.php:187
+msgid "No Matches found"
+msgstr "לא נמצאו משחקים"
+
+#: admin/settings-global.php:5
+msgid "Leaguemanager Global Settings"
+msgstr "הגדרות כלליות של ליג מנג'ר"
+
+#: admin/settings-global.php:6
+msgid "Color Scheme"
+msgstr "צבעי תצוגה"
+
+#: admin/settings-global.php:9
+msgid "Table Headers"
+msgstr "כותרות הטבלה"
+
+#: admin/settings-global.php:12
+msgid "Table Rows"
+msgstr "שורות הטבלה"
+
+#: admin/settings-global.php:21 admin/settings.php:119
+msgid "Save Preferences"
+msgstr "שמירת הגדרות"
+
+#: admin/settings.php:28
+msgid "League Preferences"
+msgstr "הגדרות ליגה"
+
+#: admin/settings.php:33
+#, fuzzy
+msgid "All Teams"
+msgstr "קבוצות"
+
+#: admin/settings.php:33
+msgid "Only own matches"
+msgstr "רק משחקים ביתיים"
+
+#: admin/settings.php:34
+msgid "Gymnastics"
+msgstr "התעמלות"
+
+#: admin/settings.php:34
+msgid "Ball Game"
+msgstr "משחק כדור"
+
+#: admin/settings.php:34
+msgid "Other"
+msgstr "אחר"
+
+#: admin/settings.php:53
+msgid "Title"
+msgstr "כותרת"
+
+#: admin/settings.php:56
+#, fuzzy
+msgid "Points for win"
+msgstr "נקודות"
+
+#: admin/settings.php:59
+msgid "Points for draw"
+msgstr "נקודות עבור תיקו"
+
+#: admin/settings.php:62
+msgid "Points for loss"
+msgstr "נקודות עבור הפסד"
+
+#: admin/settings.php:65
+msgid "Type"
+msgstr "סוג"
+
+#: admin/settings.php:75
+msgid "Number of Match Days"
+msgstr "מספר מחזורי משחקים"
+
+#: admin/settings.php:79
+#, fuzzy
+msgid "Show Logo"
+msgstr "הצג"
+
+#: admin/settings.php:84
+msgid "Widget Settings"
+msgstr "הגדרות וידג'ט"
+
+#: admin/settings.php:90
+msgid "Do not show"
+msgstr "הסתר"
+
+#: admin/settings.php:91 admin/tinymce/window.php:101
+msgid "All"
+msgstr "הכל"
+
+#: admin/settings.php:104
+#, fuzzy
+msgid "Show Table"
+msgstr "טבלה"
+
+#: admin/settings.php:111
+msgid ""
+"If the Time Format is empty, no time will be displayed in the match list"
+msgstr "אם פורמט התאריך ריק, לא יוצג זמן בלוח המשחקים"
+
+#: admin/settings.php:114
+msgid "Page"
+msgstr "עמוד"
+
+#: admin/show-league.php:26
+#, php-format
+msgid "%d Match added"
+msgid_plural "%d Matches added"
+msgstr[0] "משחק %d נוסף"
+msgstr[1] "%d משחקים נוספים"
+
+#: admin/show-league.php:34
+#, php-format
+msgid "%d Match updated"
+msgid_plural "%d Matches updated"
+msgstr[0] "משחק %d עודכן"
+msgstr[1] "%d משחקים עודכנו"
+
+#: admin/show-league.php:44
+msgid "Standings Table updated"
+msgstr "טבלת המיקומים עודכנה"
+
+#: admin/show-league.php:78
+msgid "Preferences"
+msgstr "העדפות"
+
+#: admin/show-league.php:79 admin/team.php:21
+msgid "Add Team"
+msgstr "הוסף קבוצה"
+
+#: admin/show-league.php:83 admin/show-league.php:97
+#: admin/tinymce/window.php:41 lib/widget.php:122
+msgid "Table"
+msgstr "טבלה"
+
+#: admin/show-league.php:105 view/crosstable.php:21 view/standings.php:24
+msgid "Club"
+msgstr "קבוצה"
+
+#: admin/show-league.php:106 view/standings.php:27
+msgid "Pld"
+msgstr "מש'"
+
+#: admin/show-league.php:107 view/standings.php:27
+msgid "W"
+msgstr "נצ'"
+
+#: admin/show-league.php:108 view/standings.php:27
+msgid "T"
+msgstr "ת'"
+
+#: admin/show-league.php:109 view/standings.php:27
+msgid "L"
+msgstr "הפ'"
+
+#: admin/show-league.php:111 view/matches.php:40 view/standings.php:31
+msgid "AP"
+msgstr ""
+
+#: admin/show-league.php:113 view/standings.php:31
+msgid "Goals"
+msgstr "שערים"
+
+#: admin/show-league.php:115 view/standings.php:32
+msgid "Diff"
+msgstr "הפרש"
+
+#: admin/show-league.php:116 view/standings.php:34
+msgid "Pts"
+msgstr "נק'"
+
+#: admin/show-league.php:129 admin/team.php:48 view/standings.php:51
+msgid "Logo"
+msgstr "לוגו"
+
+#: admin/show-league.php:179
+msgid "Save Standings"
+msgstr "שמירת מיקומים"
+
+#: admin/show-league.php:183 admin/show-league.php:217 view/matches.php:35
+msgid "Match Plan"
+msgstr "לוח המשחקים"
+
+#: admin/show-league.php:191 admin/show-league.php:211 view/matches.php:24
+#, php-format
+msgid "%d. Match Day"
+msgstr "מחזור %d"
+
+#: admin/show-league.php:209
+msgid "Show all Matches"
+msgstr "כל המשחקים"
+
+#: admin/show-league.php:214
+msgid "Filter"
+msgstr "סינון"
+
+#: admin/show-league.php:222 view/matches.php:37
+msgid "Match"
+msgstr "משחק"
+
+#: admin/show-league.php:228
+msgid "Halftime"
+msgstr "מחצית"
+
+#: admin/show-league.php:230 view/matches.php:38
+msgid "Score"
+msgstr "תוצאה"
+
+#: admin/show-league.php:261
+msgid "Update Results"
+msgstr "עדכון תוצאות"
+
+#: admin/team.php:18
+msgid "Edit Team"
+msgstr "ערוך קבוצה"
+
+#: admin/team.php:41
+msgid "Team"
+msgstr "קבוצה"
+
+#: admin/team.php:44
+msgid "Short Name"
+msgstr "שם מקוצר"
+
+#: admin/team.php:44
+msgid "Used for Widget"
+msgstr "בשימוש בוידג'ט"
+
+#: admin/team.php:53
+msgid "Supported file types"
+msgstr "סוגי קבצים נתמכים"
+
+#: admin/team.php:55
+msgid "Overwrite existing image"
+msgstr "דריסת תמונה קיימת"
+
+#: admin/team.php:57
+msgid "Delete Logo"
+msgstr "מחיקת סמל"
+
+#: admin/team.php:63
+msgid "Home Team"
+msgstr "קבוצה ביתית"
+
+#: admin/tinymce/window.php:43 view/crosstable.php:19 view/crosstable.php:48
+msgid "Crosstable"
+msgstr "טבלה חוצת בתים"
+
+#: admin/tinymce/window.php:55 admin/tinymce/window.php:85
+#: admin/tinymce/window.php:116
+msgid "No League"
+msgstr "אין ליגה"
+
+#: admin/tinymce/window.php:67 admin/tinymce/window.php:97
+#: admin/tinymce/window.php:128
+msgid "Display"
+msgstr "תצוגה"
+
+#: admin/tinymce/window.php:70
+msgid "Extend"
+msgstr "מורחבת"
+
+#: admin/tinymce/window.php:71
+msgid "Compact"
+msgstr "מצומצמת"
+
+#: admin/tinymce/window.php:100
+msgid "Match day based"
+msgstr "מבוסס מחזור משחקים"
+
+#: admin/tinymce/window.php:102
+msgid "Only Home Team"
+msgstr "קבוצת הבית בלבד"
+
+#: admin/tinymce/window.php:130
+msgid "Embed"
+msgstr "הטמעה"
+
+#: admin/tinymce/window.php:131 view/crosstable.php:48
+msgid "Popup"
+msgstr "חלון קופץ"
+
+#: admin/tinymce/window.php:141
+msgid "Cancel"
+msgstr "ביטול"
+
+#: admin/tinymce/window.php:145
+msgid "Insert"
+msgstr "הכנס"
+
+#: admin/upgrade.php:164
+msgid "finished"
+msgstr "הסתיים"
+
+#: admin/upgrade.php:184 admin/upgrade.php:203
+msgid "Upgrade LeagueManager"
+msgstr "שדרוג ליג מנג'ר"
+
+#: admin/upgrade.php:185
+msgid ""
+"Your database for LeagueManager is out-of-date, and must be upgraded before "
+"you can continue."
+msgstr ""
+"בסיס הנתונים של ליג מנג'ר לא עדכני, וחייב לעבור שדרוג לפני שתוכל להמשיך."
+
+#: admin/upgrade.php:186
+msgid "The upgrade process may take a while, so please be patient."
+msgstr "תהליך השדרוג עלול להיערך זמן מה, אנא התעזר בסבלנות."
+
+#: admin/upgrade.php:187
+msgid "Start upgrade now"
+msgstr "התחל שדרוג כעת"
+
+#: admin/upgrade.php:205
+msgid "Upgrade sucessfull"
+msgstr "השדרוג הושלם בהצלחה"
+
+#: admin/upgrade.php:206
+msgid "Continue"
+msgstr "המשך"
+
+#: lib/shortcodes.php:264
+#, php-format
+msgid "Could not load template %s.php"
+msgstr "לא ניתן לטעון את התבנית %s.php"
+
+#: lib/widget.php:39
+msgid "League results and upcoming matches at a glance"
+msgstr "תוצאות משחקים והמשחקים הקרובים במבט קצר"
+
+#: lib/widget.php:97
+#, fuzzy
+msgid "Upcoming Matches"
+msgstr "משחקים"
+
+#: lib/widget.php:117
+#, fuzzy
+msgid "Nothing found"
+msgstr "לא נמצאו משחקים"
+
+#: lib/widget.php:127
+msgid "More Info"
+msgstr "מידע נוסף"
+
+#: lib/widget.php:147
+#, php-format
+msgid ""
+"The Widget Settings are controlled via the <a href='%s'>League Settings</a>"
+msgstr "הגדרות הוידג'ט מנוהלות דרך <a href='%s'>הגדרות הליגה</a>"
+
+#: view/matches.php:27
+msgid "Show"
+msgstr "הצג"
+
+#: view/matches.php:59
+msgid "Report"
+msgstr "סיקור"
+
+#: view/standings.php:16
+msgid "Standings"
+msgstr "טבלה"
+
+#~ msgid "Season"
+#~ msgstr "עונה"
+
+#~ msgid "Website"
+#~ msgstr "אתר"
+
+#~ msgid "Coach"
+#~ msgstr "מאמן"
+
+#~ msgid "W|Won"
+#~ msgstr "נ|נצחונות"
+
+#~ msgid "T|Tie"
+#~ msgstr "ת|תיקו"
+
+#~ msgid "L|Lost"
+#~ msgstr "ה|הפסדים"
+
+#~ msgid "Points2"
+#~ msgstr "2נקודות"
+
+#~ msgid "Championchip Finals"
+#~ msgstr "גמר"
+
+#~ msgid "Round"
+#~ msgstr "סיבוב"
+
+#~ msgid "Seasons"
+#~ msgstr "עונות"
+
+#~ msgid "Match Statistics"
+#~ msgstr "סטטיסטיקה"
+
+#~ msgid "Match Statistics &#8211; %s v.s. %s"
+#~ msgstr "סטטיסטיקה &#8211; %s - %s"
+
+#~ msgid "Time"
+#~ msgstr "זמן"
+
+#~ msgid "Scorer"
+#~ msgstr "כובש"
+
+#~ msgid "Standing"
+#~ msgstr "טבלה"
+
+#~ msgid "Insert more"
+#~ msgstr "הוסף עוד"
+
+#~ msgid "Cards"
+#~ msgstr "כרטיסים"
+
+#~ msgid "Player"
+#~ msgstr "שחקן"
+
+#~ msgid "Card"
+#~ msgstr "כרטיס"
+
+#~ msgid "Exchanges"
+#~ msgstr "חילופים"
+
+#~ msgid "Player in"
+#~ msgstr "שחקן נכנס"
+
+#~ msgid "Player out"
+#~ msgstr "שחקן יצא"
+
+#~ msgid "Match Days"
+#~ msgstr "מחזורים"
+
+#~ msgid "No Teams"
+#~ msgstr "אין קבוצות"
+
+#~ msgid "Win"
+#~ msgstr "נצחו"
+
+#~ msgid "Tie"
+#~ msgstr "תיקו"
+
+#~ msgid "Defeat"
+#~ msgstr "הפסידו"
+
+#~ msgid "Archive"
+#~ msgstr "ארכיון"
+
+#~ msgid "Championchip"
+#~ msgstr "אליפות"
+
+#~ msgid "Teams Advance"
+#~ msgstr "קבוצות ממשיכות"
+
+#~ msgid "Final"
+#~ msgstr "גמר"
+
+#~ msgid "Semi Final"
+#~ msgstr "חצי גמר"
+
+#~ msgid "Quarter Final"
+#~ msgstr "רבע גמר"
+
+#~ msgid "Last-%d"
+#~ msgstr "%d האחרונות"
+
+#~ msgid "o.P.|on penalty"
+#~ msgstr "פנ|בפנדלים"
+
+#~ msgid "AET|after extra time"
+#~ msgstr "הא'|לאחר הארכה"
+
+#~ msgid "Stats"
+#~ msgstr "נתונים"
+
+#~ msgid "Next Match"
+#~ msgstr "המשחק הבא"
+
+#~ msgid "<strong>%d.</strong> Match Day"
+#~ msgstr "מחזור <strong>%d.</strong>"
+
+#~ msgid "Last Match"
+#~ msgstr "המשחק האחרון"
+
+#~ msgid "Last Matches"
+#~ msgstr "משחקים אחרונים"
+
+#~ msgid "Next Matches"
+#~ msgstr "משחקים הבאים"
+
+#~ msgid "Next & Last Matches"
+#~ msgstr "המשחקים הבאים והקודמים"
+
+#~ msgid "Limit"
+#~ msgstr "הגבלה"
+
+#~ msgid "Quarters"
+#~ msgstr "רבעים"
+
+#~ msgid "Overtime"
+#~ msgstr "הארכה"
+
+#~ msgid "For"
+#~ msgstr "זכות"
+
+#~ msgid "Against"
+#~ msgstr "חובה"
+
+#~ msgid "Pos|Position"
+#~ msgstr "מ|מיקום"
+
+#~ msgid "Rank"
+#~ msgstr "דירוג"
+
+#~ msgid "Groups"
+#~ msgstr "בתים"
+
+#~ msgid "Group"
+#~ msgstr "בית"
+
+#~ msgid "Played Games"
+#~ msgstr "משחקים שוחקו"
+
+#~ msgid "Won Games"
+#~ msgstr "נצחונות"
+
+#~ msgid "Tie Games"
+#~ msgstr "תוצאות תיקו"
+
+#~ msgid "Lost Games"
+#~ msgstr "הפסדים"

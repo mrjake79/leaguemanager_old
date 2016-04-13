@@ -14,6 +14,7 @@
 		<option value="<?php echo $i ?>"><?php printf(__( '%d. Match Day', 'leaguemanager'), $i) ?></option>
 	<?php endfor; ?>
 	</select>
+	<input type="hidden" name="jquery-ui-tab" value="0" class="jquery_ui_tab_index" />
 	<input type="submit" value="<?php _e('Edit Matches', 'leaguemanager'); ?>" class="button-secondary action" />
 </form>
 <?php endif; ?>
@@ -22,6 +23,9 @@
 <?php wp_nonce_field( 'matches-bulk' ) ?>
 
 	<input type="hidden" name="current_match_day" value="<?php echo $matchDay ?>" />
+	<input type="hidden" name="jquery-ui-tab" value="0" class="jquery_ui_tab_index" />
+	<input type="hidden" name="group" value="<?php echo $group ?>" />
+	
 	<div class="tablenav" style="margin-bottom: 0.1em; clear: none;">
 		<!-- Bulk Actions -->
 		<select name="action2" size="1">

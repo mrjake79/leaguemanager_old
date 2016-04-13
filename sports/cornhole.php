@@ -57,16 +57,15 @@ class LeagueManagerCornhole extends LeagueManager
 	{
 		global $leaguemanager;
 
-		$home = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
+		$matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
 		foreach ( $home AS $match ) {
-			$points['plus'] += $match->home_points;
-			$points['minus'] += $match->away_points;
-		}
-
-		$away = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
-		foreach ( $away AS $match ) {
-			$points['plus'] += $match->away_points;
-			$points['minus'] += $match->home_points;
+			if ( $match->home_team == $team_id ) {
+				$points['plus'] += $match->home_points;
+				$points['minus'] += $match->away_points;
+			} else {
+				$points['plus'] += $match->away_points;
+				$points['minus'] += $match->home_points;
+			}
 		}
 
 		return $points;

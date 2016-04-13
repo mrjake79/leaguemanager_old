@@ -37,6 +37,8 @@ class LeagueManagerHandball extends LeagueManager
 		add_action( 'matchtable_columns_'.$this->key, array(&$this, 'displayMatchesColumns') );
 		add_action( 'leaguemanager_standings_header_'.$this->key, array(&$this, 'displayStandingsHeader') );
 		add_action( 'leaguemanager_standings_columns_'.$this->key, array(&$this, 'displayStandingsColumns'), 10, 2 );
+		
+		add_action( 'leaguemanager_get_standings_'.$this->key, array(&$this, 'getStandingsFilter'), 10, 3 );
 
 	}
 	function LeagueManagerSoccer()
@@ -77,6 +79,25 @@ class LeagueManagerHandball extends LeagueManager
 	}
 
 
+	/**
+	 * get standings table data
+	 *
+	 * @param object $team
+	 * @param array $matches
+	 */
+	function getStandingsFilter( $team, $matches, $point_rule )
+	{
+		/*
+		 * analogue to team_points2_$sport filter
+		 */
+		$goals = $this->calculateGoalStatistics( $team->id, $matches );
+		$team->points2_plus = $goals['plus'];
+		$team->points2_minus = $goals['minus'];
+		
+		return $team;
+	}
+	
+	
 	/**
 	 * extend header for Standings Table in Backend
 	 *
@@ -206,13 +227,13 @@ class LeagueManagerHandball extends LeagueManager
 	 * @param string $option
 	 * @return int
 	 */
-	function calculateGoalStatistics( $team_id )
+	function calculateGoalStatistics( $team_id, $matches = false )
 	{
 		global $wpdb, $leaguemanager;
 
 		$goals = array( 'plus' => 0, 'minus' => 0 );
 
-		$matches = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
+		if ( !$matches ) $matches =  $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
@@ -224,25 +245,13 @@ class LeagueManagerHandball extends LeagueManager
 					$away_goals = $match->away_points;
 				}
 
-				$goals['plus'] += $home_goals;
-				$goals['minus'] += $away_goals;
-			}
-		}
-
-		$matches = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
-		if ( $matches ) {
-			foreach ( $matches AS $match ) {
-				$custom = maybe_unserialize($match->custom);
-				if ( !empty($custom['overtime']['home']) && !empty($custom['overtime']['away']) ) {
-					$home_goals = $custom['overtime']['home'];
-					$away_goals = $custom['overtime']['away'];
+				if ( $match->home_team == $team_id ) {
+					$goals['plus'] += $home_goals;
+					$goals['minus'] += $away_goals;
 				} else {
-					$home_goals = $match->home_points;
-					$away_goals = $match->away_points;
+					$goals['plus'] += $away_goals;
+					$goals['minus'] += $home_goals;
 				}
-
-				$goals['plus'] += $away_goals;
-				$goals['minus'] += $home_goals;
 			}
 		}
 

@@ -19,6 +19,12 @@ else :
 		if ( $settings['point_rule'] == 'user' && isset($_POST['forwin']) && is_numeric($_POST['forwin']) )
 			$settings['point_rule'] = array( 'forwin' => intval($_POST['forwin']), 'fordraw' => intval($_POST['fordraw']), 'forloss' => intval($_POST['forloss']), 'forwin_overtime' => intval($_POST['forwin_overtime']), 'forloss_overtime' => intval($_POST['forloss_overtime']) );
 
+		$settings['tiny_size'] = array( 'width' => intval($settings['tiny_size']['width']), 'height' => intval($settings['tiny_size']['height']) );
+		$settings['thumb_size'] = array( 'width' => intval($settings['thumb_size']['width']), 'height' => intval($settings['thumb_size']['height']) );
+		$settings['large_size'] = array( 'width' => intval($settings['large_size']['width']), 'height' => intval($settings['large_size']['height']) );
+		$settings['crop_image']['tiny'] = isset($settings['crop_image']['tiny']) ? 1 : 0;
+		$settings['crop_image']['thumb'] = isset($settings['crop_image']['thumb']) ? 1 : 0;
+		$settings['crop_image']['large'] = isset($settings['crop_image']['large']) ? 1 : 0;
 		$settings['standings']['pld'] = isset($settings['standings']['pld']) ? 1 : 0;
 		$settings['standings']['won'] = isset($settings['standings']['won']) ? 1 : 0;
 		$settings['standings']['tie'] = isset($settings['standings']['tie']) ? 1 : 0;
@@ -46,6 +52,18 @@ else :
 		$forloss_overtime = $league->point_rule['forloss_overtime'];
 		$league->point_rule = 'user';
 	}
+	
+	if ( isset($_GET['regenerate_thumbnails']) ) {
+		$this->regenerateThumbnails();
+		$tab = 1;
+	}
+	
+	if ( isset($_GET['cleanUnusedFiles']) ) {
+		$this->cleanUnusedMediaFiles();
+		$tab = 1;
+	}
+	
+	$menu_page_url = menu_page_url('leaguemanager', 0) . "&amp;subpage=settings&amp;league_id=".$league->id."&amp;season=".htmlspecialchars($_GET['season'])."&amp;group=".htmlspecialchars($_GET['group']);
 ?>
 
 <script type='text/javascript'>
@@ -67,6 +85,7 @@ else :
 			
 			<ul id="tablist" style="display: none";>
 				<li><a href="#general"><?php _e( 'General', 'leaguemanager' ) ?></a></li>
+				<li><a href='#logos'><?php _e( 'Logos', 'projectmanager' ) ?></a></li>
 				<li><a href="#standings"><?php _e( 'Standings Table', 'leaguemanager' ) ?></a></li>
 				<li><a href="#slideshows"><?php _e( 'Slideshows', 'leaguemanager' ) ?></a></li>
 				<li><a href="#advanced"><?php _e( 'Advanced', 'leaguemanager' ) ?></a></li>
@@ -201,7 +220,29 @@ else :
 					</table>
 				</div>
 			</div>
-				
+			
+			<div id='logos' class='settings-block-container'>
+				<h2><?php _e( 'Logos', 'leaguemanager' ) ?></h2>
+				<div class="settings-block">
+					<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="thumb_size"><?php _e( 'Tiny size', 'leaguemanager' ) ?></label></th><td><label for="tiny_width"><?php _e( 'Max Width' ) ?>&#160;</label><input type="number" step="1" min="0" class="small-text" name="settings[tiny_size][width]" id="tiny_width" value="<?php echo $league->tiny_size['width'] ?>" />  <label for="tiny_height"><?php _e( 'Max Height' ) ?>&#160;</label><input type="number" step="1" min="0" class="small-text" name="settings[tiny_size][height]" id="tiny_height" value="<?php echo $league->tiny_size['height'] ?>" /><p><input type="checkbox" value="1" name="settings[crop_image][tiny]" <?php checked( 1, $league->crop_image['tiny'] ) ?> id="crop_image_tiny" /><label for="crop_image_tiny"><?php _e( 'Crop image to exact dimensions', 'leaguemanager') ?></label></p></td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="thumb_size"><?php _e( 'Thumbnail size', 'leaguemanager' ) ?></label></th><td><label for="thumb_width"><?php _e( 'Max Width' ) ?>&#160;</label><input type="number" step="1" min="0" class="small-text" name="settings[thumb_size][width]" id="thumb_width" value="<?php echo $league->thumb_size['width'] ?>" />  <label for="thumb_height"><?php _e( 'Max Height' ) ?>&#160;</label><input type="number" step="1" min="0" class="small-text" name="settings[thumb_size][height]" id="thumb_height" value="<?php echo $league->thumb_size['height'] ?>" /><p><input type="checkbox" value="1" name="settings[crop_image][thumb]" <?php checked( 1, $league->crop_image['thumb'] ) ?> id="crop_image_thumb" /><label for="crop_image_thumb"><?php _e( 'Crop image to exact dimensions', 'leaguemanager') ?></label></p></td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="large_size"><?php _e( 'Large size', 'leaguemanager' ) ?></label></th><td><label for="large_width"><?php _e( 'Max Width' ) ?>&#160;</label><input type="number" step="1" min="0" class="small-text" id="large_width" name="settings[large_size][width]" value="<?php echo $league->large_size['width'] ?>" /> <label for="large_height"><?php _e( 'Max Height' ) ?>&#160;</label> <input type="number" step="1" min="0" class="small-text" id="large_height" name="settings[large_size][height]" value="<?php echo $league->large_size['height'] ?>" /><p><input type="checkbox" value="1" name="settings[crop_image][large]" <?php checked( 1, $league->crop_image['large'] ) ?> id="crop_image_large" /><label for="crop_image_large"><?php _e( 'Crop image to exact dimensions', 'leaguemanager') ?></label></p></td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="regenerate_thumbnails"><?php _e( 'Regenerate Thumbnails', 'leaguemanager' ) ?></th><td><a href="<?php echo $menu_page_url ?>&amp;regenerate_thumbnails" class="button button-secondary"><?php _e( 'Regenerate Thumbnails Now', 'leaguemanager' ) ?></a><p class="setting-description"><?php _e( 'This will re-create all thumbnail images of this project. Depending on the number of images it could take some time.', 'leaguemanager' ) ?></p></td>
+					</tr>
+					</table>
+					
+					<p><a href="<?php echo $menu_page_url ?>&amp;cleanUnusedFiles" class="button-secondary"><?php _e( 'List unused media files', 'leaguemanager' ) ?></a></p>
+				</div>
+			</div>
+			
 			<div id='standings' class='settings-block-container'>
 				<h2><?php _e( 'Standings Table', 'leaguemanager' ) ?></h2>
 				<div class="settings-block">

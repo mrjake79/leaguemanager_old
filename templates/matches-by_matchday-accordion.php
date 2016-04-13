@@ -14,7 +14,7 @@ The following variables are usable:
 ?>
 <script type='text/javascript'>
 	jQuery(function() {
-		jQuery(".jquery-ui-accordion").accordion({
+		jQuery(".matchlist").accordion({
 			active: <?php echo $league->current_match_day - 1 ?>
 		});
 	});
@@ -24,16 +24,15 @@ The following variables are usable:
 <?php else : ?>
 
 <?php if ( $matches ) : ?>
-<div class="matchlist">
+<div class="matchlist jquery-ui-accordion">
 	<?php for ($i = 1; $i <= $league->num_match_days; $i++) : ?>
-	<div class="">
-		<h3 class=""><?php printf(__('%d. Match Day', 'leaguemanager'), $i) ?></h3>
-		<div class="">
+	<div class="match">
+		<h3 class="header"><?php printf(__('%d. Match Day', 'leaguemanager'), $i) ?></h3>
+		<div class="match-content">
 			<table class='leaguemanager matchtable' summary='' title='<?php echo __( 'Match Plan', 'leaguemanager' )." ".$league->title ?>'>
 			<tr>
 				<th class='match'><?php _e( 'Match', 'leaguemanager' ) ?></th>
 				<th class='score'><?php _e( 'Score', 'leaguemanager' ) ?></th>
-				<th class='ap'><?php echo _e( 'AP', 'leaguemanager' ) ?></th>
 			</tr>
 			
 			<?php $class = ''; ?>
@@ -43,9 +42,6 @@ The following variables are usable:
 			<tr class='<?php echo $class ?>'>
 				<td class='match'><?php echo $match->match_date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $match->title ?></a> <?php echo $match->report ?></td>
 				<td class='score' valign='bottom'><?php echo $match->score ?></td>
-				<td class='ap' valign='bottom'>
-					<?php if ( $match->score == '-:-' ) echo '-:-'; else printf($league->point_format2, $match->apparatus_points['plus'], $match->apparatus_points['minus']); ?>
-				</td>
 			</tr>
 			<?php endif; ?>
 			<?php endforeach; ?>

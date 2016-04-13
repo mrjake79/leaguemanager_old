@@ -27,7 +27,7 @@ The following variables are usable:
 <?php foreach ( $matches AS $match ) : ?>
 
 <tr class='<?php echo $match->class ?>'>
-	<td class='match'><?php echo $match->date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $leaguemanager->getMatchTitle($match->id) ?></a> <?php echo $match->report ?></td>
+	<td class='match'><?php echo $match->match_date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $leaguemanager->getMatchTitle($match->id) ?></a> <?php echo $match->report ?></td>
 	<td class='score' valign='bottom'><?php echo $match->score ?></td>
 </tr>
 

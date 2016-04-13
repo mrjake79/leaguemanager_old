@@ -47,6 +47,7 @@ class LeagueManagerRugby extends LeagueManager
 
 		add_action( 'leaguemanager_update_results_'.$this->key, array(&$this, 'updateResults') );
 		add_action( 'leaguemanager_save_standings_'.$this->key, array(&$this, 'saveStandings') );
+		add_action( 'leaguemanager_get_standings_'.$this->key, array(&$this, 'getStandingsFilter'), 10, 3 );
 	}
 	function LeagueManagerSoccer()
 	{
@@ -126,7 +127,7 @@ class LeagueManagerRugby extends LeagueManager
 		global $leaguemanager;
 		extract($rule);
 
-		$matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false) );
+		$matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
 		foreach ( $matches AS $match ) {
 			$index = ( $match->home_team == $team_id ) ? 'home' : 'away';
 
@@ -197,19 +198,37 @@ class LeagueManagerRugby extends LeagueManager
 
 
 	/**
+	 * get standings table data
+	 *
+	 * @param object $team
+	 * @param array $matches
+	 */
+	function getStandingsFilter( $team, $matches, $point_rule )
+	{
+		/*
+		 * analogue to leaguemanager_save_standings_$sport filter
+		 */
+		$data = $this->getStandingsData( $team->id, maybe_unserialize($team->custom), $matches );
+		$team->gamepoints = $data['gamepoints'];
+		
+		return $team;
+	}
+	
+	
+	/**
 	 * get standings data for given team
 	 *
 	 * @param int $team_id
 	 * @param array $data
 	 * @return array number of runs for and against as assoziative array
 	 */
-	function getStandingsData( $team_id, $data = array() )
+	function getStandingsData( $team_id, $data = array(), $matches = false )
 	{
 		global $leaguemanager;
 		
 		$data['gamepoints'] = array( 'plus' => 0, 'minus' => 0 );
 
-		$matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false) );
+		if ( !$matches ) $matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
 		foreach ( $matches AS $match ) {
 			// Home Match
 			if ( $team_id == $match->home_team ) {

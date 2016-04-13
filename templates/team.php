@@ -35,7 +35,7 @@ The following variables are usable:
 		</dl>
 
 		<?php if ( !empty($team->logo) ) : ?>
-		<p class="teamlogo alignright"><img src="<?php echo $team->logo ?>" alt="<?php _e( 'Logo', 'leaguemanager' ) ?>" /></p>
+		<p class="teamlogo alignright"><img src="<?php echo $leaguemanager->getImageUrl($team->logo, false, 'thumb') ?>" alt="<?php _e( 'Logo', 'leaguemanager' ) ?>" /></p>
 		<?php endif; ?>
 		
 		<div class="matches">			
@@ -46,7 +46,7 @@ The following variables are usable:
 				<div class="content">
 					<p class="match"><?php echo $team->next_match->match ?></p>
 					<p class='match_day'><?php printf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $team->next_match->match_day); ?></p>
-					<p class='match_date'><?php echo mysql2date("j. F Y", $team->next_match->date) ?>&#160;<span class='time'><?php echo $team->next_match->time ?></span> <span class='location'><?php echo $team->next_match->location ?></span></p>
+					<p class='match_date'><?php echo mysql2date("j. F Y", $team->next_match->match_date) ?>&#160;<span class='time'><?php echo $team->next_match->start_time ?></span> <span class='location'><?php echo $team->next_match->location ?></span></p>
 					<p class="score">&#160;</p>
 				</div>
 			</div>
@@ -60,7 +60,7 @@ The following variables are usable:
 				<div class="content">
 					<p class="match"><?php echo $team->prev_match->match ?></p>
 					<p class='match_day'><?php printf(__("<strong>%d.</strong> Match Day", 'leaguemanager'), $team->prev_match->match_day); ?></p>
-					<p class='match_date'><?php echo mysql2date("j. F Y", $team->prev_match->date) ?>&#160;<span class='time'><?php echo $team->prev_match->time ?></span> <span class='location'><?php echo $team->prev_match->location ?></span></p>
+					<p class='match_date'><?php echo mysql2date("j. F Y", $team->prev_match->match_date) ?>&#160;<span class='time'><?php echo $team->prev_match->start_time ?></span> <span class='location'><?php echo $team->prev_match->location ?></span></p>
 					<p class="score"><?php echo $team->prev_match->score ?></p>
 				</div>
 			</div>

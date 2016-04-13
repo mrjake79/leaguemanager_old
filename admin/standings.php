@@ -1,5 +1,6 @@
 <form id="teams-filter" action="" method="post" name="standings">
 <input type="hidden" name="js-active" value="0" class="js-active" />
+<input type="hidden" name="jquery-ui-tab" value="0" class="jquery_ui_tab_index" />
 
 <?php wp_nonce_field( 'teams-bulk' ) ?>
 <?php $league_id = intval($_GET['league_id']); ?>
@@ -25,9 +26,9 @@
 		<th><?php _e( 'Club', 'leaguemanager' ) ?></th>
 		<?php if ( !empty($league->groups) && $league->mode == 'championship' ) : ?><th class="num"><?php _e( 'Group', 'leaguemanager' ) ?></th><?php endif; ?>
 		<th class="num"><?php if ( isset($league->standings['pld']) && 1 == $league->standings['pld'] ) : ?><?php _e( 'Pld', 'leaguemanager' ) ?><?php endif; ?></th>
-		<th class="num"><?php if ( isset($league->standings['won']) && 1 == $league->standings['won'] ) : ?><?php echo _x( 'W','leaguemanager' ) ?><?php endif; ?></th>
-		<th class="num"><?php if ( isset($league->standings['tie']) && 1 == $league->standings['tie'] ) : ?><?php echo _x( 'T','leaguemanager' ) ?><?php endif; ?></th>
-		<th class="num"><?php if ( isset($league->standings['lost']) && 1 == $league->standings['lost'] ) : ?><?php echo _x( 'L','leaguemanager' ) ?><?php endif; ?></th>
+		<th class="num"><?php if ( isset($league->standings['won']) && 1 == $league->standings['won'] ) : ?><?php _e( 'W','leaguemanager' ) ?><?php endif; ?></th>
+		<th class="num"><?php if ( isset($league->standings['tie']) && 1 == $league->standings['tie'] ) : ?><?php _e( 'T','leaguemanager' ) ?><?php endif; ?></th>
+		<th class="num"><?php if ( isset($league->standings['lost']) && 1 == $league->standings['lost'] ) : ?><?php _e( 'L','leaguemanager' ) ?><?php endif; ?></th>
 		<?php do_action( 'leaguemanager_standings_header_'.$sport ) ?>
 		<th class="num"><?php _e( 'Pts', 'leaguemanager' ) ?></th>
 		<th class="num"><?php _e( '+/- Points', 'leaguemanager' ) ?></th>
@@ -35,7 +36,7 @@
 	</thead>
 	<tbody id="<?php echo ( $league->mode == 'championship' ) ? "the-list-standings-".$group : "the-list-standings" ?>" class="form-table standings-table <?php if ($league->team_ranking == 'manual') echo 'sortable' ?>">
 	<?php if ( count($teams) > 0 ) : $class = ''; ?>
-	<?php foreach( $teams AS $team ) : $class = ( 'alternate' == $class ) ? '' : 'alternate'; ?>
+	<?php foreach( $teams AS $i => $team ) : $class = ( 'alternate' == $class ) ? '' : 'alternate'; ?>
 	<tr class="<?php echo $class ?>" id="team_<?php echo $team->id ?>">
 		<th scope="row" class="check-column"><input type="hidden" name="team_id[<?php echo $team->id ?>]" value="<?php echo $team->id ?>" /><input type="checkbox" value="<?php echo $team->id ?>" name="team[<?php echo $team->id ?>]" /></th>
 		<td class="num"><?php echo $team->id ?></td>
@@ -43,13 +44,13 @@
 			<?php if ($league->team_ranking == 'manual') : ?>
 			<input type="text" name="rank[<?php echo $team->id ?>]" size="2" id="rank_<?php echo $team->id ?>" class="rank-input" value="<?php echo $team->rank ?>" />
 			<?php else : ?>
-			<?php echo $team->rank ?>
+			<?php echo $i+1;//$team->rank ?>
 			<?php endif; ?>
 		</td>
 		<td class="num"><?php echo $team->status ?></td>
 		<td class="logo">
 		<?php if ( !empty($team->logo) ) : ?>
-			<img src="<?php echo $leaguemanager->getThumbnailUrl($team->logo) ?>" alt="<?php _e( 'Logo', 'leaguemanager' ) ?>" title="<?php _e( 'Logo', 'leaguemanager' ) ?> <?php echo $team->title ?>" />
+			<img src="<?php echo $leaguemanager->getImageUrl($team->logo, false, 'tiny') ?>" alt="<?php _e( 'Logo', 'leaguemanager' ) ?>" title="<?php _e( 'Logo', 'leaguemanager' ) ?> <?php echo $team->title ?>" />
 		<?php endif; ?>
 		</td>
 		<td><a href="admin.php?page=leaguemanager&amp;subpage=team&amp;league_id=<?php echo $league_id ?>&amp;edit=<?php echo $team->id; ?>"><?php if ($team->home == 1) echo "<strong>".$team->title."</strong>"; else echo $team->title; ?></a></td>

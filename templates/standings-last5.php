@@ -46,12 +46,12 @@ The following variables are usable:
 <?php foreach( $teams AS $team ) : ?>
 
 <tr class='<?php echo $team->class ?>'>
-	<td class='rank'><?php echo $team->rank ?></td>
+	<td class='num'><span class="rank"><?php echo $team->rank ?></span></td>
 	<td class="num"><?php echo $team->status ?></td>
 	<?php if ( $league->show_logo ) : ?>
 	<td class="logo">
 		<?php if ( $team->logo != '' ) : ?>
-		<img src='<?php echo $team->logoURL ?>' alt='<?php _e('Logo','leaguemanager') ?>' title='<?php _e('Logo','leaguemanager')." ".$team->title ?>' />
+		<img src='<?php echo $leaguemanager->getImageUrl($team->logo, false, 'tiny') ?>' alt='<?php _e('Logo','leaguemanager') ?>' title='<?php _e('Logo','leaguemanager')." ".$team->title ?>' />
 		<?php endif; ?>
 	</td>
 	<?php endif; ?>
@@ -78,7 +78,8 @@ The following variables are usable:
     $last5 = '';
 
 // Get Next Match
-    $next_results = get_next_match($team->id, 1);
+    //$next_results = get_next_match($team->id, 1);
+	$next_results = $leaguemanager->getMatches( array("time" => "next", "team_id" => $team->id, "limit" => 1) );
     $last5 = '<td style="text-align: right;" class="last5Icon last5">';
     if ( $next_results ) {
         foreach ($next_results as $next_result)
@@ -97,7 +98,8 @@ The following variables are usable:
 
     // Get the latest results
     //$results = get_last_matches($team->id, 5);
-	$results = get_latest_results($team->id, 5);
+	//$results = get_latest_results($team->id, 5);
+	$results = $leaguemanager->getMatches( array("time" => "latest", "team_id" => $team->id, "limit" => 5) );
     foreach ($results as $result)
     {
 		$result->hadPenalty = ( isset($result->penalty) && $result->penalty['home'] != '' && $result->penalty['away'] != '' ) ? true : false;

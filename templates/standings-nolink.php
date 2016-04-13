@@ -45,12 +45,12 @@ The following variables are usable:
 <?php foreach( $teams AS $team ) : ?>
 
 <tr class='<?php echo $team->class ?>'>
-	<td class='rank'><?php echo $team->rank ?></td>
+	<td class=''><span class="rank"><?php echo $team->rank ?></span></td>
 	<td class="num"><?php echo $team->status ?></td>
 	<?php if ( $league->show_logo ) : ?>
 	<td class="logo">
 		<?php if ( $team->logo != '' ) : ?>
-		<img src='<?php echo $team->logoURL ?>' alt='<?php _e('Logo','leaguemanager') ?>' title='<?php _e('Logo','leaguemanager')." ".$team->title ?>' />
+		<img src='<?php echo $leaguemanager->getImageUrl($team->logo, false, 'tiny') ?>' alt='<?php _e('Logo','leaguemanager') ?>' title='<?php _e('Logo','leaguemanager')." ".$team->title ?>' />
 		<?php endif; ?>
 	</td>
 	<?php endif; ?>

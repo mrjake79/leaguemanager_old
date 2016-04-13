@@ -15,6 +15,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Current Table"
+msgstr "Aktuelle Tabelle"
+
+msgid "Hometable"
+msgstr "Heimtabelle"
+
+msgid "Awaytable"
+msgstr "Auswärtstabelle"
+
 #: sports/gymnastics
 msgid "Floor"
 msgstr "Boden"

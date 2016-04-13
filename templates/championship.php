@@ -26,13 +26,12 @@ The following variables are usable:
 	<?php foreach ( (array)$final->matches AS $no => $match ) : ?>
 	<td colspan="<?php echo $final->colspan ?>" style="text-align: center;">
 		<?php if ( $final->isFinal ) : ?>
-		<p><span id="final_home" style="margin-right: 0.5em;"></span><?php echo $match->title2 ?><span id="final_away" style="margin-left: 0.5em;"></span></p>
+		<p><span id="final_home" style="margin-right: 0.5em;"></span><?php echo $match->title ?><span id="final_away" style="margin-left: 0.5em;"></span></p>
 		<?php else : ?>
-		<p><?php echo $match->title2 ?></p>
+		<p><?php echo $match->title ?></p>
 		<?php endif; ?>
 
-		<?php if ( $match->home_points != NULL && $match->away_points != NULL ) : ?>
-		<?php if ( $final->isFinal ) : ?>
+		<?php if ( $match->home_points != NULL && $match->away_points != NULL && $final->isFinal ) : ?>
 		<?php $img = '<img style="vertical-align: middle;" src="'.LEAGUEMANAGER_URL . '/admin/icons/cup.png" />'; ?>
 		<script type="text/javascript">
 			jQuery('span#<?php echo $final->field_id ?>').html('<?php echo addslashes_gpc($img) ?>').fadeIn('fast');
@@ -40,7 +39,6 @@ The following variables are usable:
 		<?php endif; ?>
 
 		<p><strong><?php echo $match->score ?></strong></p>
-		<?php endif; ?>
 	</td>
 	<?php if ( $no%4 == 0 && $no < $final->num_matches ) : ?>
 	</tr><tr class="<?php echo $final->class ?>"><th>&#160;</th>
@@ -98,7 +96,7 @@ The following variables are usable:
 		<?php foreach ( $championship->getGroups() AS $key => $group ) : ?>
 		<li><a href="#group-<?php echo $group ?>"><?php printf(__('Group %s', 'leaguemanager'), $group) ?></a></li>
 		<?php endforeach ?>
-		<li><a href="#intergroup-matches"><?php _e( 'Inter Group Matches', 'leaguemanager' ) ?></a></li>
+		<!--<li><a href="#intergroup-matches"><?php _e( 'Inter Group Matches', 'leaguemanager' ) ?></a></li>-->
 	</ul>
 	<?php foreach ( $championship->getGroups() AS $key => $group ) : ?>
 	<?php $teams = $leaguemanager->getTeams( array("league_id" => $league->id, "season" => $league->season, "group" => $group) ); ?>
@@ -107,15 +105,15 @@ The following variables are usable:
 	<div id="group-<?php echo $group ?>">
 		<h4 class="header"><?php printf(__('Group %s', 'leaguemanager'), $group) ?></h4>
 		<h5><?php _e( 'Standings', 'leaguemanager' ) ?></h5>
-		<?php leaguemanager_standings( $league->id, array('season' => $league->season, 'group' => $group) ); ?>
+		<?php leaguemanager_standings( $league->id, array('season' => $league->season, 'group' => $group, 'template' => 'last5') ); ?>
 
 		<h5><?php _e( 'Match Plan', 'leaguemanager' ) ?></h5>
-		<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'limit' => 'false', 'group' => $group) ); ?>
+		<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'limit' => 'false', 'group' => $group, 'match_day' => 'all') ); ?>
 	</div>
 	<?php endforeach; ?>
 
 	<div id="intergroup-matches">
-		<h4 class="header"><?php _e( 'Inter Group Matches', 'leaguemanager' ) ?></h5>
-		<?php leaguemanager_matches( $league->id, array('season' => $league->season, 'group' => '', 'limit' => 'false') ); ?>
+		<!--<h4 class="header"><?php _e( 'Inter Group Matches', 'leaguemanager' ) ?></h5>-->
+		<?php //leaguemanager_matches( $league->id, array('season' => $league->season, 'group' => '', 'limit' => 'false') ); ?>
 	</div>
 </div>

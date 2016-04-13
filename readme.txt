@@ -1,10 +1,10 @@
 === LeagueManager ===
 Contributors: Kolja Schleich, LaMonte Forthun
 Donate link: 
-Tags: sport, widget, basketball, football, hockey, league, soccer, volleyball, gymnastics, tennis, baseball, rugby
+Tags: league management, sport, widget, basketball, football, hockey, league, soccer, volleyball, gymnastics, tennis, baseball, rugby
 Requires at least: 2.7
-Tested up to: 4.4.1
-Stable tag: 4.0.5
+Tested up to: 4.4.2
+Stable tag: 4.1.1
 License: LGPLv2.1 or later
 
 Plugin to manage and present Sports Leagues
@@ -40,6 +40,7 @@ This Plugin is designed to manage sports leagues and display them on your blog.
 * Czech
 * Italian
 * Arabian
+* Hebrew by Bar Shai
 
 == Installation ==
 
@@ -83,8 +84,49 @@ The LeagueManaager icons were designed by Yusuke Kamiyamane (http://p.yusukekami
 * TO-DO - Updating the translation code to remove the deprecated code has broken some translations due to a change in how WordPress handles multiple options. The translations files need some attention, so do the sport files...
 * Coming soon - Players, pagination for leagues, teams, matches, and players. New admin dashboard. New sport files.
 
+= 4.1.1 =
+* BUGFIX: fixed problem that matches per page was not set correctly with league mysql cache
+* BUGFIX: fixed issue with negative offsets for matches
+
+= 4.1 =
+* BUGFIX: fixed double logos in widget
+* BUGFIX: fixed issue with negtive offset error when multiple leagues are on same page
+* BUGFIX: fixed some issues with cache system
+* BUGFIX: fixed issue with fatal error on plugin activation
+* BUGFIX: fixed error in Fancy Slideshows filter
+
+= 4.0.9 =
+* NEW: show standingstable for home/away matches and after each match day
+* NEW: functions get_next_matches() and get_last_matches() (functions.php) to get next or last matches for specific team
+* NEW: added hebrew translation by Bar Shai
+* BUGFIX: fixed match_day option in [matches] shortcode when using multiple shortcodes on same page
+* BUGFIX: fixed calculation of apparatus points for gymnastics
+* BUGFIX: improved page loading times by caching MySQL query results and prevent unneccessary queries
+* BUGFIX: fix in matches pagination
+* BUGFIX: several small fixes
+
+= 4.0.8 =
+* NEW: options to set various logo sizes and cropping options
+* NEW: button to regenerate all thumbnails
+* NEW: button to scan for and delete unused logo files
+* NEW: set relegation teams for up and down
+* NEW: use last5 standings template in championship mode
+* UPDATE: some style updates
+* BUGFIX: fixed standings table colors in widget
+* BUGFIX: fixed soccer team ranking
+* BUGFIX: fixed pool team ranking
+* BUGFIX: fixed an AJAX issue
+
+= 4.0.7 =
+* NEW: show team logos in final matches and final results tree in championship mode including marking home team in bold
+* BUGFIX: some additional fixes for championship mode
+* BUGIFX: fixed logo size in widget
+* BUGFIX: some small fixed to prevent notices in championship mode
+
 = 4.0.6 =
 * NEW: new shortcode [league id=ID] to display all contents of a league, i.e. standings, crosstable, matchlist and teamlist with fancy jQuery UI Tabs
+* BUGFIX: several fixes for championship mode
+* UPDATE: updated some german translations for championship mode
 
 = 4.0.5 =
 * NEW: added logos to crosstable

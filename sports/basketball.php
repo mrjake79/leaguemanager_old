@@ -37,6 +37,7 @@ class LeagueManagerBasketball extends LeagueManager
 		add_action( 'leaguemanager_standings_columns_'.$this->key, array(&$this, 'displayStandingsColumns'), 10, 2 );
 		
 		add_action( 'leaguemanager_update_results_'.$this->key, array(&$this, 'updateResults') );
+		add_action( 'leaguemanager_get_standings_'.$this->key, array(&$this, 'getStandingsFilter'), 10, 3 );
 	}
 	function LeagueManagerBasketball()
 	{
@@ -79,44 +80,56 @@ class LeagueManagerBasketball extends LeagueManager
 
 
 	/**
+	 * get standings table data
+	 *
+	 * @param object $team
+	 * @param array $matches
+	 */
+	function getStandingsFilter( $team, $matches, $point_rule )
+	{
+		/*
+		 * analogue to team_points2_$sport filter
+		 */
+		$baskets = $this->calculateBasketStatistics( $team->id, $matches );
+		$team->points2_plus = $baskets['plus'];
+		$team->points2_minus = $baskets['minus'];
+		
+		return $team;
+	}
+	
+	
+	/**
 	 * calculate baskets. Penalty is not counted in statistics
 	 *
 	 * @param int $team_id
 	 * @param string $option
 	 * @return int
 	 */
-	function calculateBasketStatistics( $team_id )
+	function calculateBasketStatistics( $team_id, $matches = false )
 	{
 		global $wpdb, $leaguemanager;
 
 		$goals = array( 'plus' => 0, 'minus' => 0 );
 
 		$team_id = intval($team_id);
-		//$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `home_team` = '%d'", $team_id) );
-		$matches = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
+		if ( !$matches ) $matches =  $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
 		if ( $matches ) {
 			foreach ( $matches AS $match ) {
 				$custom = maybe_unserialize($match->custom);
 				$home_goals = $match->home_points;
 				$away_goals = $match->away_points;
-
-				$goals['plus'] += $home_goals;
-				$goals['minus'] += $away_goals;
-
-			}
-		}
-
-		//$matches = $wpdb->get_results( $wpdb->prepare("SELECT `home_points`, `away_points`, `custom` FROM {$wpdb->leaguemanager_matches} WHERE `away_team` = '%d'", $team_id) );
-		$matches = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
-		if ( $matches ) {
-			foreach ( $matches AS $match ) {
-				$custom = maybe_unserialize($match->custom);
-				$home_goals = $match->home_points;
-				$away_goals = $match->away_points;
-
-				$goals['plus'] += $away_goals;
-				$goals['minus'] += $home_goals;
-
+					
+				// home match
+				if ( $match->home_team == $team_id ) {
+					$goals['plus'] += $home_goals;
+					$goals['minus'] += $away_goals;
+				}
+				
+				// away match
+				if ( $match->away_team == $team_id ) {
+					$goals['plus'] += $away_goals;
+					$goals['minus'] += $home_goals;
+				}
 			}
 		}
 
@@ -271,16 +284,20 @@ class LeagueManagerBasketball extends LeagueManager
 	{
 		global $wpdb, $leaguemanager;
 		
-		$match = $leaguemanager->getMatch( $match_id );
+		$match = $leaguemanager->getMatch( $match_id, false );
 		
 		if ( $match->home_points == "" && $match->away_points == "" ) {
-			$score = array( 'home' => 0, 'guest' => 0 );
+			$score = array( 'home' => "", 'guest' => "" );
 			foreach ( $match->quarters AS $quarter ) {
-				$score['home'] += intval($quarter['plus']);
-				$score['guest'] += intval($quarter['minus']);
+				if ($quarter['plus'] != '' && $quarter['minus'] != '') {
+					$score['home'] += intval($quarter['plus']);
+					$score['guest'] += intval($quarter['minus']);
+				}
 			}
-			$score['home'] += intval($match->overtime['home']);
-			$score['guest'] += intval($match->overtime['away']);			
+			if ($match->overtime['home'] != '' && $match->overtime['away'] != '') {
+				$score['home'] += intval($match->overtime['home']);
+				$score['guest'] += intval($match->overtime['away']);			
+			}
 			
 			$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
 		}

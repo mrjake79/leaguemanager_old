@@ -29,7 +29,7 @@ The following variables are usable:
 <?php foreach ( $matches AS $match ) : ?>
 
 <tr class='<?php echo $match->class ?>'>
-	<td class='match'><?php echo $match->date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $match->title ?></a> <?php echo $match->report ?></td>
+	<td class='match'><?php echo $match->match_date." ".$match->start_time." ".$match->location ?><br /><a href="<?php echo $match->pageURL ?>"><?php echo $match->title ?></a> <?php echo $match->report ?></td>
 	<td class='score' valign='bottom'><?php echo $match->score ?></td>
 	<td class='ap' valign='bottom'>
 		<?php if ( $match->score == '-:-' ) echo '-:-'; else printf($league->point_format2, $match->apparatus_points['plus'], $match->apparatus_points['minus']); ?>
@@ -38,6 +38,8 @@ The following variables are usable:
 
 <?php endforeach; ?>
 </table>
+
+<p class='page-numbers'><?php echo $league->pagination ?></p>
 
 <?php endif; ?>
 

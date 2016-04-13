@@ -28,12 +28,6 @@ The following variables are usable:
 	<?php if ( 1 == $league->standings['pld'] ) : ?>
 	<th class="num"><?php _e( 'Pld', 'leaguemanager' ) ?></th>
 	<?php endif; ?>
-	<?php if ( 1 == $league->standings['won'] ) : ?>
-	<th class="num"><?php _e( 'W','leaguemanager' ) ?></th>
-	<?php endif; ?>
-	<?php if ( 1 == $league->standings['lost'] ) : ?>
-	<th class="num"><?php _e( 'L','leaguemanager' ) ?></th>
-	<?php endif; ?>
 	<th class="num"><?php _e( 'Pts', 'leaguemanager' ) ?></th>
 </tr>
 <?php if ( $teams ) : ?>
@@ -54,12 +48,6 @@ The following variables are usable:
 	<td><?php echo $team->title ?></td>
 	<?php if ( 1 == $league->standings['pld'] ) : ?>
 	<td class='num'><?php echo $team->done_matches ?></td>
-	<?php endif; ?>
-	<?php if ( 1 == $league->standings['won'] ) : ?>
-	<td class='num'><?php echo $team->won_matches ?></td>
-	<?php endif; ?>
-	<?php if ( 1 == $league->standings['lost'] ) : ?>
-	<td class='num'><?php echo $team->lost_matches ?></td>
 	<?php endif; ?>
 	<td class='num'><?php echo $team->points ?></td>
 </tr>

@@ -12,7 +12,7 @@ The following variables are usable:
 ?>
 <?php if ( $teams ) : ?>
 
-<div class="teamlist">
+<div class="teamlist jquery-ui-accordion">
 <?php foreach ( $teams AS $team ) : ?>
 	<?php include('team.php'); ?>
 <?php endforeach; ?>

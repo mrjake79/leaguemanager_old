@@ -42,6 +42,7 @@ class LeagueManagerGymnastics extends LeagueManager
 		add_action( 'leaguemanager_standings_columns_'.$this->key, array(&$this, 'displayStandingsColumns'), 10, 2 );
 		
 		add_action( 'leaguemanager_save_standings_'.$this->key, array(&$this, 'saveStandings') );
+		add_action( 'leaguemanager_get_standings_'.$this->key, array(&$this, 'getStandingsFilter'), 10, 3 );
 		add_action( 'leaguemanager_update_results_'.$this->key, array(&$this, 'updateResults') );
 	}
 	function LeagueManagerGymnastics()
@@ -83,20 +84,45 @@ class LeagueManagerGymnastics extends LeagueManager
 	
 	
 	/**
+	 * get standings table data
+	 *
+	 * @param object $team
+	 * @param array $matches
+	 */
+	function getStandingsFilter( $team, $matches, $point_rule )
+	{
+		/*
+		 * analogue to team_points2_$sport filter
+		 */
+		$apparatus_points = $this->calculateApparatusPoints( $team->id, $matches );
+		$team->points2_plus = $apparatus_points['plus'];
+		$team->points2_minus = $apparatus_points['minus'];
+		
+		/*
+		 * analogue to leaguemanager_save_standings_$sport filter
+		 */
+		$data = $this->getStandingsData( $team->id, maybe_unserialize($team->custom), $matches );
+		$team->apparatus = $data['apparatus'];
+		
+		return $team;
+	}
+	
+	
+	/**
 	 * get standings data for given team
 	 *
 	 * @param int $team_id
 	 * @param array $data
 	 * @return array number of runs for and against as assoziative array
 	 */
-	function getStandingsData( $team_id, $data = array() )
+	function getStandingsData( $team_id, $data = array(), $matches = false )
 	{
 		global $leaguemanager;
 		
 		$data['apparatus'] = array( "floor" => 0, "pommelhorse" => 0, "rings" => 0, "vault" => 0, "parallelbars" => 0, "highbars" => 0 );
 		$points = array( 'win' => 2, 'lost' => 0);
 		
-		$matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false) );
+		if ( !$matches ) $matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
 		foreach ( $matches AS $match ) {
 			if ( isset($match->floor) ) {
 				// Home Match
@@ -134,9 +160,10 @@ class LeagueManagerGymnastics extends LeagueManager
 			$points[$key] = $row->points['plus']+$row->add_points;
 			$points2[$key] = $row->points2['plus'];
 			$done[$key] = $row->done_matches;
+			$diff[$key] = $row->diff;
 		}
 
-		array_multisort( $points, SORT_DESC, $points2, SORT_DESC, $done, SORT_ASC, $teams );
+		array_multisort( $points, SORT_DESC, $diff, SORT_DESC, $done, SORT_ASC, $teams );
 		return $teams;
 	}
 
@@ -365,34 +392,29 @@ class LeagueManagerGymnastics extends LeagueManager
 	 * @param int $team_id
 	 * @return array of points
 	 */
-	function calculateApparatusPoints( $team_id )
+	function calculateApparatusPoints( $team_id, $matches = false )
 	{
 		global $wpdb, $leaguemanager;
 
-		$home = $leaguemanager->getMatches( array("home_team" => $team_id, "limit" => false) );
-		$away = $leaguemanager->getMatches( array("away_team" => $team_id, "limit" => false) );
-
 		$points = array( 'plus' => 0, 'minus' => 0);
-		if ( count($home) > 0 ) {
-			foreach ( $home AS $match ) {
+		
+		if ( !$matches ) $matches =  $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
+		if ( $matches ) {
+			foreach ( $matches AS $match ) {
 				$custom = (array)maybe_unserialize($match->custom);
-				
+					
 				if (!isset($custom['apparatus_points'])) $custom['apparatus_points'] = array('plus' => '', 'minus' => '');
-				$points['plus'] += intval($custom['apparatus_points']['plus']);
-				$points['minus'] += intval($custom['apparatus_points']['minus']);
+				if ( $match->home_team == $team_id ) {
+					$points['plus'] += intval($custom['apparatus_points']['plus']);
+					$points['minus'] += intval($custom['apparatus_points']['minus']);
+				}
+				if ( $match->away_team == $team_id ) {
+					$points['plus'] += intval($custom['apparatus_points']['minus']);
+					$points['minus'] += intval($custom['apparatus_points']['plus']);
+				}
 			}
 		}
-
-		if ( count($away) > 0 ) {
-			foreach ( $away AS $match ) {
-				$custom = (array)maybe_unserialize($match->custom);
-				
-				if (!isset($custom['apparatus_points'])) $custom['apparatus_points'] = array('plus' => '', 'minus' => '');
-				$points['plus'] += intval($custom['apparatus_points']['minus']);
-				$points['minus'] += intval($custom['apparatus_points']['plus']);
-			}
-		}
-
+		
 		return $points;
 	}
 	
@@ -407,7 +429,7 @@ class LeagueManagerGymnastics extends LeagueManager
 	{
 		global $wpdb, $leaguemanager;
 		
-		$match = $leaguemanager->getMatch( $match_id );
+		$match = $leaguemanager->getMatch( $match_id, false );
 		
 		if ( $match->home_points == "" && $match->away_points == "" ) {
 			$home_points = $match->floor['home'] + $match->pommelhorse['home'] + $match->rings['home'] + $match->vault['home'] + $match->parallelbars['home'] + $match->highbars['home'];
@@ -419,10 +441,14 @@ class LeagueManagerGymnastics extends LeagueManager
 			$apparatus = array( 'floor', 'pommelhorse', 'rings', 'vault', 'parallelbars', 'highbars' );
 			foreach ( $apparatus AS $key ) {
 				if ( $match->{$key}['home'] != '' && $match->{$key}['guest'] != '' ) {
-					if ( $match->{$key}['home'] > $match->{$key}['guest'] )
+					if ( $match->{$key}['home'] > $match->{$key}['guest'] ) {
 						$ap['plus'] += 2;
-					else
+					} elseif ( $match->{$key}['home'] < $match->{$key}['guest'] ) {
 						$ap['minus'] += 2;
+					} else {
+						$ap['plus'] += 1;
+						$ap['minus'] += 1;
+					}
 				}
 			}
 			if ( $ap['plus'] == 0 && $ap['minus'] == 0 ) $ap = array( 'plus' => '', 'minus' => '' );

@@ -10,25 +10,27 @@ table.leaguemanager tr {
 }
 <?php endif; ?>
 <?php if ( !empty($this->options['colors']['rows']['alternate']) ) : ?>
-table.leaguemanager tr.alternate { 
+table.leaguemanager tr.alternate {
 	background-color: <?php echo $this->options['colors']['rows']['alternate'] ?>;
 }
 <?php endif; ?>
 <?php if ( !empty($this->options['colors']['rows']['ascend']) ) : ?>
-table.standingstable tr.ascend td,
-table.standingstable tr.ascend.alternate td {
+table.standingstable tr.ascend .rank,
+table.standingstable tr.ascend.alternate .rank {
 	background-color: <?php echo $this->options['colors']['rows']['ascend'] ?>;
 }
 <?php endif; ?>
 <?php if ( !empty($this->options['colors']['rows']['descend']) ) : ?>
-table.standingstable .descend td,
-table.standingstable .descend.alternate td {
+table.standingstable .descend .rank,
+table.standingstable .descend.alternate .rank {
 	background-color: <?php echo $this->options['colors']['rows']['descend'] ?>;
 }
 <?php endif; ?>
 <?php if ( !empty($this->options['colors']['rows']['relegation']) ) : ?>
-table.standingstable tr.relegation,
-table.standingstable tr.relegation.alternate {
+table.standingstable tr.relegation-up .rank,
+table.standingstable tr.relegation-up.alternate .rank,
+table.standingstable tr.relegation-down .rank,
+table.standingstable tr.relegation-down.alternate .rank {
 	background-color: <?php echo $this->options['colors']['rows']['relegation'] ?>;
 }
 <?php endif; ?>

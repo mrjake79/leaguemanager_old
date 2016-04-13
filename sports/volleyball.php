@@ -18,6 +18,14 @@ class LeagueManagerVolleyball extends LeagueManager
 
 
 	/**
+	 * number of sets
+	 *
+	 * @var int
+	 */
+	var $num_sets = 5;
+	
+	
+	/**
 	 * load specifif settings
 	 *
 	 * @param none
@@ -45,6 +53,8 @@ class LeagueManagerVolleyball extends LeagueManager
 		add_action( 'team_edit_form_'.$this->key, array(&$this, 'editTeam') );
 
 		add_action( 'leaguemanager_save_standings_'.$this->key, array(&$this, 'saveStandings') );
+		add_action( 'leaguemanager_get_standings_'.$this->key, array(&$this, 'getStandingsFilter'), 10, 3 );
+		add_action( 'leaguemanager_update_results_'.$this->key, array(&$this, 'updateResults') );
 	}
 	function LeagueManagerSoccer()
 	{
@@ -204,20 +214,39 @@ class LeagueManagerVolleyball extends LeagueManager
 
 
 	/**
+	 * get standings table data
+	 *
+	 * @param object $team
+	 * @param array $matches
+	 */
+	function getStandingsFilter( $team, $matches, $point_rule )
+	{
+		/*
+		 * analogue to leaguemanager_save_standings_$sport filter
+		 */
+		$data = $this->getStandingsData( $team->id, maybe_unserialize($team->custom), $matches );
+		$team->sets = $data['sets'];
+		$team->ballpoints = $data['ballpoints'];
+		
+		return $team;
+	}
+	
+	
+	/**
 	 * get standings data for given team
 	 *
 	 * @param int $team_id
 	 * @param array $data
 	 * @return array number of runs for and against as assoziative array
 	 */
-	function getStandingsData( $team_id, $data = array() )
+	function getStandingsData( $team_id, $data = array(), $matches = false )
 	{
 		global $leaguemanager;
 		
 		$data['sets'] = array( "won" => 0, "lost" => 0 );
 		$data['ballpoints'] = array( 'plus' => 0, 'minus' => 0 );
 
-		$matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false) );
+		if ( !$matches ) $matches = $leaguemanager->getMatches( array("team_id" => $team_id, "limit" => false, "cache" => false) );
 		foreach ( $matches AS $match ) {
 			// Home Match
 			if ( $team_id == $match->home_team ) {
@@ -316,7 +345,7 @@ class LeagueManagerVolleyball extends LeagueManager
 			$match->sets = array();
 		}
 		
-		for ( $i = 1; $i <= 5; $i++ ) {
+		for ( $i = 1; $i <= $this->num_sets; $i++ ) {
 			if (!isset($match->sets[$i]['home'])) $match->sets[$i]['home'] = '';
 			if (!isset($match->sets[$i]['away'])) $match->sets[$i]['away'] = '';
 			
@@ -425,6 +454,34 @@ class LeagueManagerVolleyball extends LeagueManager
 		$custom['ballpoints'] = array( 'plus' => $ballpoints[0], 'minus' => $ballpoints[1] );
 
 		return $custom;
+	}
+	
+	
+	/**
+	 * update match results and automatically calculate score
+	 *
+	 * @param int $match_id
+	 * @return none
+	 */
+	function updateResults( $match_id )
+	{
+		global $wpdb, $leaguemanager;
+		
+		$match = $leaguemanager->getMatch( $match_id, false );
+		if ( $match->home_points == "" && $match->away_points == "" ) {
+			$score = array( 'home' => '', 'guest' => '' );
+			for ( $i = 1; $i <= $this->num_sets; $i++ ) {
+				if ( $match->sets[$i]['home'] != '' && $match->sets[$i]['away'] != '' ) {
+					if ( $match->sets[$i]['home'] > $match->sets[$i]['away'] ) {
+						$score['home'] += 1;
+					} else {
+						$score['guest'] += 1;
+					}
+				}
+			}
+			
+			$wpdb->query( $wpdb->prepare("UPDATE {$wpdb->leaguemanager_matches} SET `home_points` = '%s', `away_points` = '%s' WHERE `id` = '%d'", $score['home'], $score['guest'], $match_id) );
+		}
 	}
 }
 
